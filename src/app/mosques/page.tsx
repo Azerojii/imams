@@ -1,0 +1,97 @@
+import Link from 'next/link'
+import { Landmark, MapPin } from 'lucide-react'
+import WikiHeader from '@/components/WikiHeader'
+import WikiSidebar from '@/components/WikiSidebar'
+import { getMosques } from '@/lib/wiki'
+
+export const dynamic = 'force-dynamic'
+
+export default function MosquesPage() {
+  const mosques = getMosques()
+
+  // Group by wilaya
+  const byWilaya = new Map<string, typeof mosques>()
+  const noWilaya: typeof mosques = []
+  mosques.forEach(mosque => {
+    if (mosque.wilaya) {
+      if (!byWilaya.has(mosque.wilaya)) byWilaya.set(mosque.wilaya, [])
+      byWilaya.get(mosque.wilaya)!.push(mosque)
+    } else {
+      noWilaya.push(mosque)
+    }
+  })
+
+  return (
+    <div className="min-h-screen bg-bg-main">
+      <WikiHeader />
+
+      <div className="flex max-w-[1400px] mx-auto">
+        <WikiSidebar />
+
+        <main className="flex-1 px-6 py-4 max-w-[960px]">
+          <h1 className="text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-2 flex items-center gap-3">
+            <Landmark size={32} />
+            المساجد
+          </h1>
+          <p className="text-text-secondary mb-6">{mosques.length} مسجد في الموسوعة</p>
+
+          {mosques.length === 0 ? (
+            <div className="text-center py-16 text-text-secondary">
+              <Landmark size={48} className="mx-auto mb-4 opacity-30" />
+              <p className="text-lg">لا توجد مقالات عن مساجد بعد.</p>
+              <Link href="/submit" className="text-primary hover:underline mt-2 inline-block">
+                كن أول من يضيف مقالاً
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {Array.from(byWilaya.entries())
+                .sort(([a], [b]) => a.localeCompare(b, 'ar'))
+                .map(([wilayaName, wilayaMosques]) => (
+                  <section key={wilayaName}>
+                    <h2 className="text-xl font-heading font-bold text-primary-dark mb-3 flex items-center gap-2">
+                      <MapPin size={18} className="text-accent" />
+                      {wilayaName}
+                      <span className="text-sm text-text-secondary font-normal">({wilayaMosques.length})</span>
+                    </h2>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      {wilayaMosques.map(mosque => (
+                        <Link
+                          key={mosque.slug}
+                          href={`/wiki/${mosque.slug}`}
+                          className="card-islamic rounded-lg p-4 hover:no-underline"
+                        >
+                          <h3 className="font-bold text-primary">{mosque.title}</h3>
+                          <p className="text-sm text-text-secondary mt-1 line-clamp-2">{mosque.description}</p>
+                          {mosque.commune && (
+                            <span className="text-xs text-accent-dark mt-2 inline-block">{mosque.commune}</span>
+                          )}
+                        </Link>
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              {noWilaya.length > 0 && (
+                <section>
+                  <h2 className="text-xl font-heading font-bold text-primary-dark mb-3">بدون ولاية محددة</h2>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {noWilaya.map(mosque => (
+                      <Link
+                        key={mosque.slug}
+                        href={`/wiki/${mosque.slug}`}
+                        className="card-islamic rounded-lg p-4 hover:no-underline"
+                      >
+                        <h3 className="font-bold text-primary">{mosque.title}</h3>
+                        <p className="text-sm text-text-secondary mt-1 line-clamp-2">{mosque.description}</p>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  )
+}
