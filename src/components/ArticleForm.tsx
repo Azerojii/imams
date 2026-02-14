@@ -325,7 +325,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
           {/* Mosques served */}
           <div>
-            <label className="block text-sm font-bold mb-2">المساجد التي خدم فيها</label>
+            <label className="block text-sm font-bold mb-2">المساجد التي عمل فيها</label>
             <div className="space-y-2">
               {mosquesServed.map((m, idx) => (
                 <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
