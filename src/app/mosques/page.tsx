@@ -6,8 +6,8 @@ import { getMosques } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 
-export default function MosquesPage() {
-  const mosques = getMosques()
+export default async function MosquesPage() {
+  const mosques = await getMosques()
 
   // Group by wilaya
   const byWilaya = new Map<string, typeof mosques>()

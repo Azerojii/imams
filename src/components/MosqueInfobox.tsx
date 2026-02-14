@@ -14,7 +14,21 @@ interface MosqueInfoboxProps {
   imamsServed?: ImamReference[]
 }
 
-export default function MosqueInfobox({
+async function ImamLink({ imam }: { imam: ImamReference }) {
+  const exists = imam.slug ? await checkArticleExists(imam.slug) : false
+  return exists && imam.slug ? (
+    <Link
+      href={`/wiki/${imam.slug}`}
+      className="text-primary hover:underline font-medium"
+    >
+      {imam.name}
+    </Link>
+  ) : (
+    <span className="text-text-secondary">{imam.name}</span>
+  )
+}
+
+export default async function MosqueInfobox({
   title,
   image,
   dateBuilt,
@@ -70,32 +84,20 @@ export default function MosqueInfobox({
           <div className="infobox-section-header">الأئمة الذين خدموا فيه</div>
           <table className="w-full border-collapse text-sm">
             <tbody>
-              {imamsServed.map((imam, idx) => {
-                const exists = imam.slug ? checkArticleExists(imam.slug) : false
-                return (
-                  <tr key={idx} className="border-t border-border-light">
-                    <td className="py-1.5 px-3">
-                      {exists && imam.slug ? (
-                        <Link
-                          href={`/wiki/${imam.slug}`}
-                          className="text-primary hover:underline font-medium"
-                        >
-                          {imam.name}
-                        </Link>
-                      ) : (
-                        <span className="text-text-secondary">{imam.name}</span>
-                      )}
-                    </td>
-                    <td className="py-1.5 px-3 text-xs text-text-secondary text-left whitespace-nowrap">
-                      {imam.startDate && imam.endDate
-                        ? `${imam.startDate} - ${imam.endDate}`
-                        : imam.startDate
-                          ? `منذ ${imam.startDate}`
-                          : ''}
-                    </td>
-                  </tr>
-                )
-              })}
+              {imamsServed.map((imam, idx) => (
+                <tr key={idx} className="border-t border-border-light">
+                  <td className="py-1.5 px-3">
+                    <ImamLink imam={imam} />
+                  </td>
+                  <td className="py-1.5 px-3 text-xs text-text-secondary text-left whitespace-nowrap">
+                    {imam.startDate && imam.endDate
+                      ? `${imam.startDate} - ${imam.endDate}`
+                      : imam.startDate
+                        ? `منذ ${imam.startDate}`
+                        : ''}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </>

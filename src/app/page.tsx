@@ -2,13 +2,13 @@ import Link from 'next/link'
 import { BookOpen, Landmark, MapPin, ArrowLeft } from 'lucide-react'
 import SearchBar from '@/components/SearchBar'
 import WikiHeader from '@/components/WikiHeader'
-import { getAllWikiMetadata, getImams, getMosques } from '@/lib/wiki'
+import { getAllWikiMetadata } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export default function Home() {
-  const articles = getAllWikiMetadata()
+export default async function Home() {
+  const articles = await getAllWikiMetadata()
   const imams = articles.filter(a => a.articleType === 'imam')
   const mosques = articles.filter(a => a.articleType === 'mosque')
 

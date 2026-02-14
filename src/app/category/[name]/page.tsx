@@ -10,7 +10,7 @@ export const revalidate = 0
 export default async function CategoryPage({ params }: { params: Promise<{ name: string }> }) {
   const { name } = await params
   const categoryName = decodeURIComponent(name)
-  const allArticles = getAllWikiMetadata()
+  const allArticles = await getAllWikiMetadata()
   const categoryArticles = allArticles.filter(article => article.category === categoryName)
 
   const isImamCategory = categoryName === 'أئمة'

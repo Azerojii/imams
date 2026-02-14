@@ -15,7 +15,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export async function generateStaticParams() {
-  const slugs = getAllWikiSlugs()
+  const slugs = await getAllWikiSlugs()
   return slugs.map((slug) => ({ slug }))
 }
 

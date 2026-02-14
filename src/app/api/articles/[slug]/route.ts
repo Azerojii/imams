@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
-import matter from 'gray-matter'
+import { supabase } from '@/lib/supabase'
 import { getWikiArticle } from '@/lib/wiki'
-import { createOrUpdateGitHubFile, deleteGitHubFile, fileExistsOnGitHub } from '@/lib/github'
 
 export async function GET(
   request: Request,
@@ -11,7 +10,7 @@ export async function GET(
     const { slug } = await params
     const decodedSlug = decodeURIComponent(slug)
     const article = await getWikiArticle(decodedSlug)
-    
+
     if (!article) {
       return NextResponse.json(
         { error: 'Article not found' },
@@ -35,9 +34,13 @@ export async function PUT(
 ) {
   try {
     const body = await request.json()
-    const { title, description, category, content, infobox, youtubeVideos } = body
+    const {
+      title, description, category, content, articleType,
+      wilaya, commune, wilayaCode, image, youtubeVideos,
+      birthDate, deathDate, isAlive, mosquesServed,
+      dateBuilt, imamsServed,
+    } = body
 
-    // Validate required fields
     if (!title || !content) {
       return NextResponse.json(
         { error: 'Title and content are required' },
@@ -47,48 +50,63 @@ export async function PUT(
 
     const { slug } = await params
     const decodedSlug = decodeURIComponent(slug)
-    const filePath = `content/wiki/${decodedSlug}.md`
 
-    // Check if file exists
-    const exists = await fileExistsOnGitHub(filePath)
-    if (!exists) {
+    // Check if article exists
+    const { data: existing } = await supabase
+      .from('articles')
+      .select('slug')
+      .eq('slug', decodedSlug)
+      .maybeSingle()
+
+    if (!existing) {
       return NextResponse.json(
         { error: 'Article not found' },
         { status: 404 }
       )
     }
 
-    // Create frontmatter
-    const frontmatter = {
+    const updates: Record<string, unknown> = {
       title,
       description: description || '',
-      lastUpdated: new Date().toISOString().split('T')[0],
-      category: category || 'General',
-      ...(infobox && { infobox }),
-      ...(youtubeVideos && youtubeVideos.length > 0 && { youtubeVideos }),
+      content,
+      category: category || '',
+      last_updated: new Date().toISOString().split('T')[0],
     }
 
-    // Create markdown file with frontmatter
-    const fileContent = matter.stringify(content, frontmatter)
+    if (articleType) updates.article_type = articleType
+    if (wilaya !== undefined) updates.wilaya = wilaya || null
+    if (commune !== undefined) updates.commune = commune || null
+    if (wilayaCode !== undefined) updates.wilaya_code = wilayaCode || null
+    if (image) {
+      updates.image_src = image.src
+      updates.image_caption = image.caption
+    }
+    if (youtubeVideos !== undefined) updates.youtube_videos = youtubeVideos || []
 
-    // Update file via GitHub API or local filesystem
-    const result = await createOrUpdateGitHubFile(
-      filePath,
-      fileContent,
-      `Update article: ${title}`
-    )
+    if (birthDate !== undefined) updates.birth_date = birthDate || null
+    if (deathDate !== undefined) updates.death_date = deathDate || null
+    if (isAlive !== undefined) updates.is_alive = isAlive
+    if (mosquesServed !== undefined) updates.mosques_served = mosquesServed || []
+    if (dateBuilt !== undefined) updates.date_built = dateBuilt || null
+    if (imamsServed !== undefined) updates.imams_served = imamsServed || []
 
-    if (!result.success) {
+    const { error } = await supabase
+      .from('articles')
+      .update(updates)
+      .eq('slug', decodedSlug)
+
+    if (error) {
+      console.error('Supabase update error:', error)
       return NextResponse.json(
-        { error: result.error || 'Failed to update article' },
+        { error: 'Failed to update article' },
         { status: 500 }
       )
     }
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       slug: decodedSlug,
-      message: 'Article updated successfully' 
+      message: 'Article updated successfully'
     })
   } catch (error) {
     console.error('Error updating article:', error)
@@ -106,33 +124,36 @@ export async function DELETE(
   try {
     const { slug } = await params
     const decodedSlug = decodeURIComponent(slug)
-    const filePath = `content/wiki/${decodedSlug}.md`
 
-    // Check if file exists
-    const exists = await fileExistsOnGitHub(filePath)
-    if (!exists) {
+    const { data: existing } = await supabase
+      .from('articles')
+      .select('slug')
+      .eq('slug', decodedSlug)
+      .maybeSingle()
+
+    if (!existing) {
       return NextResponse.json(
         { error: 'Article not found' },
         { status: 404 }
       )
     }
 
-    // Delete file via GitHub API or local filesystem
-    const result = await deleteGitHubFile(
-      filePath,
-      `Delete article: ${decodedSlug}`
-    )
+    const { error } = await supabase
+      .from('articles')
+      .delete()
+      .eq('slug', decodedSlug)
 
-    if (!result.success) {
+    if (error) {
+      console.error('Supabase delete error:', error)
       return NextResponse.json(
-        { error: result.error || 'Failed to delete article' },
+        { error: 'Failed to delete article' },
         { status: 500 }
       )
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
-      message: 'Article deleted successfully' 
+      message: 'Article deleted successfully'
     })
   } catch (error) {
     console.error('Error deleting article:', error)
@@ -142,4 +163,3 @@ export async function DELETE(
     )
   }
 }
-

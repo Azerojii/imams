@@ -7,11 +7,11 @@ export async function GET(request: Request) {
     const query = searchParams.get('q')
 
     if (query) {
-      const results = searchArticles(query)
+      const results = await searchArticles(query)
       return NextResponse.json({ results })
     }
 
-    const articles = getAllWikiMetadata()
+    const articles = await getAllWikiMetadata()
     return NextResponse.json({ results: articles })
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch articles' }, { status: 500 })

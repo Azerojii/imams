@@ -6,8 +6,8 @@ import { getImams } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 
-export default function ImamsPage() {
-  const imams = getImams()
+export default async function ImamsPage() {
+  const imams = await getImams()
 
   // Group by wilaya
   const byWilaya = new Map<string, typeof imams>()

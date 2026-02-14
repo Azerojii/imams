@@ -1,14 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
+import { supabase } from '@/lib/supabase'
 
-const pendingDirectory = path.join(process.cwd(), 'content/pending')
-const contentDirectory = path.join(process.cwd(), 'content/wiki')
-
-// Get single submission
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -20,19 +14,39 @@ export async function GET(
     }
 
     const { id } = await params
-    const filePath = path.join(pendingDirectory, `${id}.md`)
-    
-    if (!fs.existsSync(filePath)) {
+
+    const { data, error } = await supabase
+      .from('submissions')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle()
+
+    if (error || !data) {
       return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
     }
 
-    const fileContents = fs.readFileSync(filePath, 'utf8')
-    const { data, content } = matter(fileContents)
-
     return NextResponse.json({
-      id,
-      ...data,
-      content,
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      articleType: data.article_type,
+      content: data.content,
+      wilaya: data.wilaya,
+      commune: data.commune,
+      wilayaCode: data.wilaya_code,
+      image: data.image_src ? { src: data.image_src, caption: data.image_caption || '' } : undefined,
+      youtubeVideos: data.youtube_videos,
+      birthDate: data.birth_date,
+      deathDate: data.death_date,
+      isAlive: data.is_alive,
+      mosquesServed: data.mosques_served,
+      dateBuilt: data.date_built,
+      imamsServed: data.imams_served,
+      submitterName: data.submitter_name,
+      submitterEmail: data.submitter_email,
+      submittedAt: data.submitted_at,
+      status: data.status,
     })
   } catch (error) {
     console.error('Error fetching submission:', error)
@@ -43,7 +57,6 @@ export async function GET(
   }
 }
 
-// Approve submission
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -55,46 +68,77 @@ export async function PUT(
     }
 
     const body = await request.json()
-    const { action, title, description, category, content, infobox } = body
+    const { action } = body
 
     const { id } = await params
-    const pendingPath = path.join(pendingDirectory, `${id}.md`)
-    
-    if (!fs.existsSync(pendingPath)) {
+
+    // Fetch the submission
+    const { data: submission, error: fetchError } = await supabase
+      .from('submissions')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle()
+
+    if (fetchError || !submission) {
       return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
     }
 
     if (action === 'approve') {
-      // Create slug and move to published
-      const slug = title.trim().replace(/\s+/g, '_')
-      const publishedPath = path.join(contentDirectory, `${slug}.md`)
+      const slug = submission.title.trim().replace(/\s+/g, '_')
 
-      const frontmatter = {
-        title,
-        description: description || '',
-        lastUpdated: new Date().toISOString().split('T')[0],
-        category: category || 'Général',
-        ...(infobox && { infobox }),
+      // Insert into articles table
+      const articleRow: Record<string, unknown> = {
+        slug,
+        title: submission.title,
+        description: submission.description || '',
+        content: submission.content || '',
+        category: submission.category || '',
+        article_type: submission.article_type,
+        wilaya: submission.wilaya,
+        commune: submission.commune,
+        wilaya_code: submission.wilaya_code,
+        image_src: submission.image_src,
+        image_caption: submission.image_caption,
+        youtube_videos: submission.youtube_videos || [],
+        birth_date: submission.birth_date,
+        death_date: submission.death_date,
+        is_alive: submission.is_alive,
+        mosques_served: submission.mosques_served || [],
+        date_built: submission.date_built,
+        imams_served: submission.imams_served || [],
+        last_updated: new Date().toISOString().split('T')[0],
       }
 
-      const fileContent = matter.stringify(content, frontmatter)
-      fs.writeFileSync(publishedPath, fileContent, 'utf8')
+      const { error: insertError } = await supabase.from('articles').insert(articleRow)
 
-      // Delete from pending
-      fs.unlinkSync(pendingPath)
+      if (insertError) {
+        console.error('Error publishing article:', insertError)
+        return NextResponse.json(
+          { error: 'Failed to publish article' },
+          { status: 500 }
+        )
+      }
 
-      return NextResponse.json({ 
+      // Mark submission as approved
+      await supabase
+        .from('submissions')
+        .update({ status: 'approved' })
+        .eq('id', id)
+
+      return NextResponse.json({
         success: true,
         slug,
-        message: 'Article approuvé et publié' 
+        message: 'Article approuvé et publié'
       })
     } else if (action === 'reject') {
-      // Delete submission
-      fs.unlinkSync(pendingPath)
+      await supabase
+        .from('submissions')
+        .update({ status: 'rejected' })
+        .eq('id', id)
 
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: true,
-        message: 'Soumission rejetée' 
+        message: 'Soumission rejetée'
       })
     }
 
@@ -107,4 +151,3 @@ export async function PUT(
     )
   }
 }
-

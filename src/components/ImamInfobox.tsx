@@ -16,7 +16,21 @@ interface ImamInfoboxProps {
   mosquesServed?: MosqueReference[]
 }
 
-export default function ImamInfobox({
+async function MosqueLink({ mosque }: { mosque: MosqueReference }) {
+  const exists = mosque.slug ? await checkArticleExists(mosque.slug) : false
+  return exists && mosque.slug ? (
+    <Link
+      href={`/wiki/${mosque.slug}`}
+      className="text-primary hover:underline font-medium"
+    >
+      {mosque.name}
+    </Link>
+  ) : (
+    <span className="text-text-secondary">{mosque.name}</span>
+  )
+}
+
+export default async function ImamInfobox({
   title,
   image,
   birthDate,
@@ -85,32 +99,20 @@ export default function ImamInfobox({
           <div className="infobox-section-header">المساجد التي خدم فيها</div>
           <table className="w-full border-collapse text-sm">
             <tbody>
-              {mosquesServed.map((mosque, idx) => {
-                const exists = mosque.slug ? checkArticleExists(mosque.slug) : false
-                return (
-                  <tr key={idx} className="border-t border-border-light">
-                    <td className="py-1.5 px-3">
-                      {exists && mosque.slug ? (
-                        <Link
-                          href={`/wiki/${mosque.slug}`}
-                          className="text-primary hover:underline font-medium"
-                        >
-                          {mosque.name}
-                        </Link>
-                      ) : (
-                        <span className="text-text-secondary">{mosque.name}</span>
-                      )}
-                    </td>
-                    <td className="py-1.5 px-3 text-xs text-text-secondary text-left whitespace-nowrap">
-                      {mosque.startDate && mosque.endDate
-                        ? `${mosque.startDate} - ${mosque.endDate}`
-                        : mosque.startDate
-                          ? `منذ ${mosque.startDate}`
-                          : ''}
-                    </td>
-                  </tr>
-                )
-              })}
+              {mosquesServed.map((mosque, idx) => (
+                <tr key={idx} className="border-t border-border-light">
+                  <td className="py-1.5 px-3">
+                    <MosqueLink mosque={mosque} />
+                  </td>
+                  <td className="py-1.5 px-3 text-xs text-text-secondary text-left whitespace-nowrap">
+                    {mosque.startDate && mosque.endDate
+                      ? `${mosque.startDate} - ${mosque.endDate}`
+                      : mosque.startDate
+                        ? `منذ ${mosque.startDate}`
+                        : ''}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </>

@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
 export default async function WilayaPage({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params
   const wilayaName = decodeURIComponent(code)
-  const articles = getArticlesByWilaya(wilayaName)
+  const articles = await getArticlesByWilaya(wilayaName)
   const imams = articles.filter(a => a.articleType === 'imam')
   const mosques = articles.filter(a => a.articleType === 'mosque')
 

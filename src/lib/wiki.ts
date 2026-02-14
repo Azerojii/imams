@@ -1,8 +1,4 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
-
-const contentDirectory = path.join(process.cwd(), 'content/wiki')
+import { supabase } from './supabase'
 
 export interface MosqueReference {
   name: string
@@ -94,14 +90,59 @@ export function generateTableOfContents(content: string): TocItem[] {
   return toc
 }
 
+// Helper to map a Supabase row to WikiArticle
+function rowToArticle(row: any): WikiArticle {
+  return {
+    slug: row.slug,
+    title: row.title,
+    description: row.description || '',
+    lastUpdated: row.last_updated || '',
+    category: row.category || '',
+    articleType: row.article_type as 'imam' | 'mosque',
+    content: parseWikiLinks(row.content || ''),
+    rawContent: row.content || '',
+    wilaya: row.wilaya || undefined,
+    commune: row.commune || undefined,
+    wilayaCode: row.wilaya_code || undefined,
+    image: row.image_src ? { src: row.image_src, caption: row.image_caption || '' } : undefined,
+    youtubeVideos: row.youtube_videos?.length ? row.youtube_videos : undefined,
+    birthDate: row.birth_date || undefined,
+    deathDate: row.death_date || undefined,
+    isAlive: row.is_alive ?? undefined,
+    mosquesServed: row.mosques_served?.length ? row.mosques_served : undefined,
+    dateBuilt: row.date_built || undefined,
+    imamsServed: row.imams_served?.length ? row.imams_served : undefined,
+  }
+}
+
+// Helper to map a Supabase row to WikiMetadata
+function rowToMetadata(row: any): WikiMetadata {
+  return {
+    slug: row.slug,
+    title: row.title,
+    description: row.description || '',
+    category: row.category || '',
+    articleType: row.article_type as 'imam' | 'mosque',
+    wilaya: row.wilaya || undefined,
+    commune: row.commune || undefined,
+    lastUpdated: row.last_updated || '',
+  }
+}
+
 /**
  * Check if an article exists by slug
  */
-export function checkArticleExists(slug: string): boolean {
+export async function checkArticleExists(slug: string): Promise<boolean> {
   try {
     const decodedSlug = decodeURIComponent(slug)
-    const fullPath = path.join(contentDirectory, `${decodedSlug}.md`)
-    return fs.existsSync(fullPath)
+    const { data, error } = await supabase
+      .from('articles')
+      .select('slug')
+      .eq('slug', decodedSlug)
+      .maybeSingle()
+
+    if (error) return false
+    return !!data
   } catch {
     return false
   }
@@ -110,73 +151,79 @@ export function checkArticleExists(slug: string): boolean {
 /**
  * Get all wiki article slugs
  */
-export function getAllWikiSlugs(): string[] {
-  try {
-    const fileNames = fs.readdirSync(contentDirectory)
-    return fileNames
-      .filter(f => f.endsWith('.md'))
-      .map((fileName) => fileName.replace(/\.md$/, ''))
-  } catch {
-    return []
-  }
+export async function getAllWikiSlugs(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('slug')
+
+  if (error || !data) return []
+  return data.map((row: any) => row.slug)
 }
 
 /**
  * Get metadata for all articles
  */
-export function getAllWikiMetadata(): WikiMetadata[] {
-  const slugs = getAllWikiSlugs()
-  return slugs.map((slug) => {
-    const fullPath = path.join(contentDirectory, `${slug}.md`)
-    const fileContents = fs.readFileSync(fullPath, 'utf8')
-    const { data } = matter(fileContents)
+export async function getAllWikiMetadata(): Promise<WikiMetadata[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('slug, title, description, category, article_type, wilaya, commune, last_updated')
 
-    return {
-      slug,
-      title: String(data.title || ''),
-      description: String(data.description || ''),
-      category: String(data.category || ''),
-      articleType: (data.articleType as 'imam' | 'mosque') || 'imam',
-      wilaya: data.wilaya ? String(data.wilaya) : undefined,
-      commune: data.commune ? String(data.commune) : undefined,
-      lastUpdated: typeof data.lastUpdated === 'string'
-        ? data.lastUpdated
-        : data.lastUpdated instanceof Date
-          ? data.lastUpdated.toISOString().split('T')[0]
-          : String(data.lastUpdated),
-    }
-  })
+  if (error || !data) return []
+  return data.map(rowToMetadata)
 }
 
 /**
  * Get all imam articles
  */
-export function getImams(): WikiMetadata[] {
-  return getAllWikiMetadata().filter(a => a.articleType === 'imam')
+export async function getImams(): Promise<WikiMetadata[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('slug, title, description, category, article_type, wilaya, commune, last_updated')
+    .eq('article_type', 'imam')
+
+  if (error || !data) return []
+  return data.map(rowToMetadata)
 }
 
 /**
  * Get all mosque articles
  */
-export function getMosques(): WikiMetadata[] {
-  return getAllWikiMetadata().filter(a => a.articleType === 'mosque')
+export async function getMosques(): Promise<WikiMetadata[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('slug, title, description, category, article_type, wilaya, commune, last_updated')
+    .eq('article_type', 'mosque')
+
+  if (error || !data) return []
+  return data.map(rowToMetadata)
 }
 
 /**
  * Get articles by wilaya
  */
-export function getArticlesByWilaya(wilaya: string): WikiMetadata[] {
-  return getAllWikiMetadata().filter(a => a.wilaya === wilaya)
+export async function getArticlesByWilaya(wilaya: string): Promise<WikiMetadata[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('slug, title, description, category, article_type, wilaya, commune, last_updated')
+    .eq('wilaya', wilaya)
+
+  if (error || !data) return []
+  return data.map(rowToMetadata)
 }
 
 /**
  * Get all unique wilayas that have articles
  */
-export function getWilayasWithArticles(): string[] {
-  const articles = getAllWikiMetadata()
+export async function getWilayasWithArticles(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('wilaya')
+    .not('wilaya', 'is', null)
+
+  if (error || !data) return []
   const wilayas = new Set<string>()
-  articles.forEach(a => {
-    if (a.wilaya) wilayas.add(a.wilaya)
+  data.forEach((row: any) => {
+    if (row.wilaya) wilayas.add(row.wilaya)
   })
   return Array.from(wilayas).sort()
 }
@@ -187,37 +234,14 @@ export function getWilayasWithArticles(): string[] {
 export async function getWikiArticle(slug: string): Promise<WikiArticle | null> {
   try {
     const decodedSlug = decodeURIComponent(slug)
-    const fullPath = path.join(contentDirectory, `${decodedSlug}.md`)
-    const fileContents = fs.readFileSync(fullPath, 'utf8')
+    const { data, error } = await supabase
+      .from('articles')
+      .select('*')
+      .eq('slug', decodedSlug)
+      .maybeSingle()
 
-    const { data, content } = matter(fileContents)
-    const contentWithLinks = parseWikiLinks(content)
-
-    return {
-      slug: decodedSlug,
-      title: data.title,
-      description: data.description,
-      lastUpdated: typeof data.lastUpdated === 'string'
-        ? data.lastUpdated
-        : data.lastUpdated instanceof Date
-          ? data.lastUpdated.toISOString().split('T')[0]
-          : String(data.lastUpdated),
-      category: data.category,
-      articleType: (data.articleType as 'imam' | 'mosque') || 'imam',
-      wilaya: data.wilaya,
-      commune: data.commune,
-      wilayaCode: data.wilayaCode,
-      image: data.image,
-      youtubeVideos: data.youtubeVideos && Array.isArray(data.youtubeVideos) ? data.youtubeVideos : undefined,
-      birthDate: data.birthDate,
-      deathDate: data.deathDate,
-      isAlive: data.isAlive,
-      mosquesServed: data.mosquesServed,
-      dateBuilt: data.dateBuilt,
-      imamsServed: data.imamsServed,
-      content: contentWithLinks,
-      rawContent: content,
-    }
+    if (error || !data) return null
+    return rowToArticle(data)
   } catch (error) {
     console.error(`Error loading article ${slug}:`, error)
     return null
@@ -227,13 +251,12 @@ export async function getWikiArticle(slug: string): Promise<WikiArticle | null> 
 /**
  * Search articles by query
  */
-export function searchArticles(query: string): WikiMetadata[] {
-  const allArticles = getAllWikiMetadata()
-  return allArticles.filter(
-    (article) =>
-      article.title.includes(query) ||
-      article.title.toLowerCase().includes(query.toLowerCase()) ||
-      article.description.includes(query) ||
-      (article.wilaya && article.wilaya.includes(query))
-  )
+export async function searchArticles(query: string): Promise<WikiMetadata[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('slug, title, description, category, article_type, wilaya, commune, last_updated')
+    .or(`title.ilike.%${query}%,description.ilike.%${query}%,wilaya.ilike.%${query}%`)
+
+  if (error || !data) return []
+  return data.map(rowToMetadata)
 }
