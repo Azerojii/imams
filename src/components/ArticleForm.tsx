@@ -27,6 +27,12 @@ interface ImamRef {
   slug: string
   startDate: string
   endDate: string
+  rutba: string
+}
+
+interface FounderRef {
+  name: string
+  rutba: string
 }
 
 interface Wilaya {
@@ -157,7 +163,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
   const [title, setTitle] = useState(initialTitle)
   const [description, setDescription] = useState('')
   const [content, setContent] = useState('')
-  const [useRichText, setUseRichText] = useState(false)
+  const [useRichText, setUseRichText] = useState(true)
 
   // Submitter info (only for submit mode)
   const [submitterName, setSubmitterName] = useState('')
@@ -175,12 +181,14 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
   const [birthDate, setBirthDate] = useState('')
   const [deathDate, setDeathDate] = useState('')
   const [isAlive, setIsAlive] = useState(true)
+  const [rank, setRank] = useState('')
   const [mosquesServed, setMosquesServed] = useState<MosqueRef[]>([])
   const [customFields, setCustomFields] = useState<CustomField[]>([])
 
   // Mosque fields
   const [mosqueType, setMosqueType] = useState('')
   const [dateBuilt, setDateBuilt] = useState('')
+  const [founders, setFounders] = useState<FounderRef[]>([])
   const [imamsServed, setImamsServed] = useState<ImamRef[]>([])
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -230,7 +238,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
   }
 
   const addImamRef = () => {
-    setImamsServed([...imamsServed, { name: '', slug: '', startDate: '', endDate: '' }])
+    setImamsServed([...imamsServed, { name: '', slug: '', startDate: '', endDate: '', rutba: '' }])
   }
 
   const updateImamRef = (idx: number, field: keyof ImamRef, value: string) => {
@@ -244,6 +252,20 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
   const removeImamRef = (idx: number) => {
     setImamsServed(imamsServed.filter((_, i) => i !== idx))
+  }
+
+  const addFounder = () => {
+    setFounders([...founders, { name: '', rutba: '' }])
+  }
+
+  const updateFounder = (idx: number, field: keyof FounderRef, value: string) => {
+    const updated = [...founders]
+    updated[idx][field] = value
+    setFounders(updated)
+  }
+
+  const removeFounder = (idx: number) => {
+    setFounders(founders.filter((_, i) => i !== idx))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -271,11 +293,13 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
         articleData.birthDate = birthDate || undefined
         articleData.deathDate = isAlive ? undefined : deathDate || undefined
         articleData.isAlive = isAlive
+        articleData.rank = rank || undefined
         articleData.mosquesServed = mosquesServed.filter(m => m.name.trim() !== '')
         articleData.customFields = customFields.filter(f => f.label.trim() !== '' && f.value.trim() !== '')
       } else {
         articleData.mosqueType = mosqueType || undefined
         articleData.dateBuilt = dateBuilt || undefined
+        articleData.founders = founders.filter(f => f.name.trim() !== '')
         articleData.imamsServed = imamsServed.filter(i => i.name.trim() !== '')
       }
 
@@ -464,6 +488,18 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
             </div>
           </div>
 
+          {/* Rank */}
+          <div>
+            <label className="block text-sm font-bold mb-2">الرتبة</label>
+            <input
+              type="text"
+              value={rank}
+              onChange={(e) => setRank(e.target.value)}
+              className="w-full px-4 py-2 border border-border-light rounded"
+              placeholder="مثال: إمام مسجد، إمام خطيب، مفتي..."
+            />
+          </div>
+
           {/* Mosques served */}
           <div>
             <label className="block text-sm font-bold mb-2">المساجد التي عمل فيها</label>
@@ -584,9 +620,45 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
             />
           </div>
 
+          {/* Founders */}
+          <div>
+            <label className="block text-sm font-bold mb-2">المؤسسون</label>
+            <div className="space-y-2">
+              {founders.map((f, idx) => (
+                <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
+                  <input
+                    type="text"
+                    value={f.name}
+                    onChange={(e) => updateFounder(idx, 'name', e.target.value)}
+                    className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                    placeholder="اسم المؤسس"
+                  />
+                  <input
+                    type="text"
+                    value={f.rutba}
+                    onChange={(e) => updateFounder(idx, 'rutba', e.target.value)}
+                    className="w-40 px-3 py-1.5 border border-border-light rounded text-sm"
+                    placeholder="الرتبة"
+                  />
+                  <button type="button" onClick={() => removeFounder(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded">
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addFounder}
+                className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
+              >
+                <Plus size={16} />
+                إضافة مؤسس
+              </button>
+            </div>
+          </div>
+
           {/* Imams served */}
           <div>
-            <label className="block text-sm font-bold mb-2">الأئمة الذين خدموا فيه</label>
+            <label className="block text-sm font-bold mb-2">الأئمة الذين عملو فيه</label>
             <div className="space-y-2">
               {imamsServed.map((im, idx) => (
                 <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
@@ -596,6 +668,13 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
                     onChange={(e) => updateImamRef(idx, 'name', e.target.value)}
                     className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
                     placeholder="اسم الإمام"
+                  />
+                  <input
+                    type="text"
+                    value={im.rutba}
+                    onChange={(e) => updateImamRef(idx, 'rutba', e.target.value)}
+                    className="w-32 px-3 py-1.5 border border-border-light rounded text-sm"
+                    placeholder="الرتبة"
                   />
                   <input
                     type="text"

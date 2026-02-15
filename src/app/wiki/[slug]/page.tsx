@@ -138,6 +138,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   birthDate={article.birthDate}
                   deathDate={article.deathDate}
                   isAlive={article.isAlive}
+                  rank={article.rank}
                   wilaya={article.wilaya}
                   commune={article.commune}
                   mosquesServed={article.mosquesServed}
@@ -151,6 +152,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   dateBuilt={article.dateBuilt}
                   wilaya={article.wilaya}
                   commune={article.commune}
+                  founders={article.founders}
                   imamsServed={article.imamsServed}
                 />
               )}

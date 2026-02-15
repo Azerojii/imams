@@ -20,6 +20,12 @@ export interface ImamReference {
   slug?: string
   startDate?: string
   endDate?: string
+  rutba?: string
+}
+
+export interface Founder {
+  name: string
+  rutba?: string
 }
 
 export interface WikiArticle {
@@ -44,11 +50,13 @@ export interface WikiArticle {
   birthDate?: string
   deathDate?: string
   isAlive?: boolean
+  rank?: string
   mosquesServed?: MosqueReference[]
   customFields?: CustomField[]
   // Mosque-specific
   mosqueType?: string
   dateBuilt?: string
+  founders?: Founder[]
   imamsServed?: ImamReference[]
 }
 
@@ -119,10 +127,12 @@ function rowToArticle(row: any): WikiArticle {
     birthDate: row.birth_date || undefined,
     deathDate: row.death_date || undefined,
     isAlive: row.is_alive ?? undefined,
+    rank: row.rank || undefined,
     mosquesServed: row.mosques_served?.length ? row.mosques_served : undefined,
     customFields: row.custom_fields?.length ? row.custom_fields : undefined,
     mosqueType: row.mosque_type || undefined,
     dateBuilt: row.date_built || undefined,
+    founders: row.founders?.length ? row.founders : undefined,
     imamsServed: row.imams_served?.length ? row.imams_served : undefined,
   }
 }

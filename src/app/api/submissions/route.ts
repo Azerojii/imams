@@ -38,8 +38,8 @@ export async function POST(request: Request) {
     const {
       title, description, category, content, submitterName, submitterEmail,
       articleType, wilaya, commune, wilayaCode, image, youtubeVideos,
-      birthDate, deathDate, isAlive, mosquesServed, customFields,
-      mosqueType, dateBuilt, imamsServed,
+      birthDate, deathDate, isAlive, rank, mosquesServed, customFields,
+      mosqueType, dateBuilt, founders, imamsServed,
     } = body
 
     if (!title || !content || !submitterName || !submitterEmail) {
@@ -76,6 +76,7 @@ export async function POST(request: Request) {
       if (birthDate) row.birth_date = birthDate
       if (deathDate) row.death_date = deathDate
       if (isAlive !== undefined) row.is_alive = isAlive
+      if (rank) row.rank = rank
       if (mosquesServed?.length) row.mosques_served = mosquesServed
       if (customFields?.length) row.custom_fields = customFields
     }
@@ -83,6 +84,7 @@ export async function POST(request: Request) {
     if (articleType === 'mosque') {
       if (mosqueType) row.mosque_type = mosqueType
       if (dateBuilt) row.date_built = dateBuilt
+      if (founders?.length) row.founders = founders
       if (imamsServed?.length) row.imams_served = imamsServed
     }
 

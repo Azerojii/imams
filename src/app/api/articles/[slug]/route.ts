@@ -37,8 +37,8 @@ export async function PUT(
     const {
       title, description, category, content, articleType,
       wilaya, commune, wilayaCode, image, youtubeVideos,
-      birthDate, deathDate, isAlive, mosquesServed,
-      dateBuilt, imamsServed,
+      birthDate, deathDate, isAlive, rank, mosquesServed,
+      dateBuilt, founders, imamsServed,
     } = body
 
     if (!title || !content) {
@@ -86,8 +86,10 @@ export async function PUT(
     if (birthDate !== undefined) updates.birth_date = birthDate || null
     if (deathDate !== undefined) updates.death_date = deathDate || null
     if (isAlive !== undefined) updates.is_alive = isAlive
+    if (rank !== undefined) updates.rank = rank || null
     if (mosquesServed !== undefined) updates.mosques_served = mosquesServed || []
     if (dateBuilt !== undefined) updates.date_built = dateBuilt || null
+    if (founders !== undefined) updates.founders = founders || []
     if (imamsServed !== undefined) updates.imams_served = imamsServed || []
 
     const { error } = await supabase

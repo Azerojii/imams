@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --primary: #1B5E20;
-  --primary-light: #2E7D32;
-  --primary-dark: #0D3B13;
-  --accent: #D4A843;
-  --accent-light: #E8C876;
-  --accent-dark: #B8892E;
-  --bg-main: #FDF8F0;
+  --primary: #0D4F5C;
+  --primary-light: #167A8A;
+  --primary-dark: #073540;
+  --accent: #5BA4B5;
+  --accent-light: #8DC5D2;
+  --accent-dark: #3D8999;
+  --bg-main: #F0F4F6;
   --bg-card: #FFFFFF;
-  --bg-sidebar: #F5F0E8;
-  --text-primary: #1A1A1A;
-  --text-secondary: #4A4A4A;
-  --border: #D4C5A0;
-  --border-light: #E8DCC8;
+  --bg-sidebar: #E6ECF0;
+  --text-primary: #1A1F24;
+  --text-secondary: #4A5568;
+  --border: #B0C4CE;
+  --border-light: #D1DEE5;
   --destructive: #C62828;
 }
 
@@ -30,8 +30,8 @@ body {
 /* Islamic geometric pattern overlay for headers */
 .islamic-pattern {
   background-image:
-    radial-gradient(circle at 25% 25%, rgba(212, 168, 67, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(27, 94, 32, 0.06) 0%, transparent 50%);
+    radial-gradient(circle at 25% 25%, rgba(91, 164, 181, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(13, 79, 92, 0.06) 0%, transparent 50%);
 }
 
 /* Decorative border using Islamic motif */
@@ -91,7 +91,7 @@ body {
 
 .card-islamic:hover {
   border-color: var(--border);
-  box-shadow: 0 4px 16px rgba(27, 94, 32, 0.08);
+  box-shadow: 0 4px 16px rgba(13, 79, 92, 0.08);
 }
 
 .card-islamic:hover::before {
@@ -192,7 +192,7 @@ input, textarea, select {
 input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--primary) !important;
-  box-shadow: 0 0 0 2px rgba(27, 94, 32, 0.15);
+  box-shadow: 0 0 0 2px rgba(13, 79, 92, 0.15);
 }
 
 /* Button base */
@@ -255,6 +255,6 @@ input:focus, textarea:focus, select:focus {
 
 /* Selection color */
 ::selection {
-  background-color: rgba(27, 94, 32, 0.2);
+  background-color: rgba(13, 79, 92, 0.2);
   color: var(--text-primary);
 }

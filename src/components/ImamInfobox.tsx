@@ -11,6 +11,7 @@ interface ImamInfoboxProps {
   birthDate?: string
   deathDate?: string
   isAlive?: boolean
+  rank?: string
   wilaya?: string
   commune?: string
   mosquesServed?: MosqueReference[]
@@ -37,6 +38,7 @@ export default async function ImamInfobox({
   birthDate,
   deathDate,
   isAlive,
+  rank,
   wilaya,
   commune,
   mosquesServed,
@@ -63,6 +65,12 @@ export default async function ImamInfobox({
       <div className="infobox-section-header">معلومات شخصية</div>
       <table className="w-full border-collapse text-sm">
         <tbody>
+          {rank && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">الرتبة</td>
+              <td className="py-1.5 px-3">{rank}</td>
+            </tr>
+          )}
           {birthDate && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">الميلاد</td>

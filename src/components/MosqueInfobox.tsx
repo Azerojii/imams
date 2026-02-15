@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { checkArticleExists } from '@/lib/wiki'
-import type { ImamReference } from '@/lib/wiki'
+import type { ImamReference, Founder } from '@/lib/wiki'
 
 interface MosqueInfoboxProps {
   title: string
@@ -12,6 +12,7 @@ interface MosqueInfoboxProps {
   dateBuilt?: string
   wilaya?: string
   commune?: string
+  founders?: Founder[]
   imamsServed?: ImamReference[]
 }
 
@@ -36,6 +37,7 @@ export default async function MosqueInfobox({
   dateBuilt,
   wilaya,
   commune,
+  founders,
   imamsServed,
 }: MosqueInfoboxProps) {
   return (
@@ -86,6 +88,27 @@ export default async function MosqueInfobox({
         </tbody>
       </table>
 
+      {/* Founders */}
+      {founders && founders.length > 0 && (
+        <>
+          <div className="infobox-section-header">المؤسسون</div>
+          <table className="w-full border-collapse text-sm">
+            <tbody>
+              {founders.map((founder, idx) => (
+                <tr key={idx} className="border-t border-border-light">
+                  <td className="py-1.5 px-3">
+                    <span className="font-medium">{founder.name}</span>
+                  </td>
+                  <td className="py-1.5 px-3 text-xs text-text-secondary text-left">
+                    {founder.rutba || ''}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+
       {/* Imams Served */}
       {imamsServed && imamsServed.length > 0 && (
         <>
@@ -95,9 +118,14 @@ export default async function MosqueInfobox({
               {imamsServed.map((imam, idx) => (
                 <tr key={idx} className="border-t border-border-light">
                   <td className="py-1.5 px-3">
-                    <ImamLink imam={imam} />
+                    <div>
+                      <ImamLink imam={imam} />
+                      {imam.rutba && (
+                        <div className="text-xs text-text-secondary mt-0.5">{imam.rutba}</div>
+                      )}
+                    </div>
                   </td>
-                  <td className="py-1.5 px-3 text-xs text-text-secondary text-left whitespace-nowrap">
+                  <td className="py-1.5 px-3 text-xs text-text-secondary text-left whitespace-nowrap align-top">
                     {imam.startDate && imam.endDate
                       ? `${imam.startDate} - ${imam.endDate}`
                       : imam.startDate
