@@ -15,7 +15,7 @@ export default function WikiHeader() {
               <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
                 <Landmark size={22} className="text-accent" />
               </div>
-              <div className="font-heading text-xl text-accent-light">
+              <div className="font-heading text-xl text-white">
                 موسوعة أئمة ومساجد الجزائر
               </div>
             </Link>

@@ -9,23 +9,23 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#1B5E20',
-          light: '#2E7D32',
-          dark: '#0D3B13',
+          DEFAULT: '#0D4F5C',
+          light: '#167A8A',
+          dark: '#073540',
         },
         accent: {
-          DEFAULT: '#D4A843',
-          light: '#E8C876',
-          dark: '#B8892E',
+          DEFAULT: '#5BA4B5',
+          light: '#8DC5D2',
+          dark: '#3D8999',
         },
         destructive: '#C62828',
-        'bg-main': '#FDF8F0',
+        'bg-main': '#F0F4F6',
         'bg-card': '#FFFFFF',
-        'bg-sidebar': '#F5F0E8',
-        'text-primary': '#1A1A1A',
-        'text-secondary': '#4A4A4A',
-        border: '#D4C5A0',
-        'border-light': '#E8DCC8',
+        'bg-sidebar': '#E6ECF0',
+        'text-primary': '#F8F9FA',
+        'text-secondary': '#CBD5E0',
+        border: '#B0C4CE',
+        'border-light': '#D1DEE5',
       },
       fontFamily: {
         arabic: ['Noto Naskh Arabic', 'Amiri', 'serif'],
@@ -35,33 +35,33 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
-            color: '#1A1A1A',
+            color: '#F8F9FA',
             maxWidth: 'none',
             direction: 'rtl',
             textAlign: 'right',
             a: {
-              color: '#1B5E20',
+              color: '#0D4F5C',
               textDecoration: 'none',
-              borderBottom: '1px solid #E8C876',
+              borderBottom: '1px solid #8DC5D2',
               '&:hover': {
-                color: '#2E7D32',
-                borderBottomColor: '#D4A843',
+                color: '#167A8A',
+                borderBottomColor: '#5BA4B5',
               },
             },
             h2: {
               fontFamily: 'Aref Ruqaa, Amiri, serif',
-              borderBottom: '2px solid #E8DCC8',
+              borderBottom: '2px solid #D1DEE5',
               paddingBottom: '0.5rem',
               marginBottom: '1rem',
-              color: '#1B5E20',
+              color: '#0D4F5C',
             },
             h3: {
               fontFamily: 'Aref Ruqaa, Amiri, serif',
-              color: '#0D3B13',
+              color: '#073540',
             },
             blockquote: {
               borderRightWidth: '4px',
-              borderRightColor: '#D4A843',
+              borderRightColor: '#5BA4B5',
               borderLeftWidth: '0',
               paddingRight: '1rem',
               paddingLeft: '0',
