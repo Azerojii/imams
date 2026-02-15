@@ -141,11 +141,13 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   wilaya={article.wilaya}
                   commune={article.commune}
                   mosquesServed={article.mosquesServed}
+                  customFields={article.customFields}
                 />
               ) : (
                 <MosqueInfobox
                   title={article.title}
                   image={article.image}
+                  mosqueType={article.mosqueType}
                   dateBuilt={article.dateBuilt}
                   wilaya={article.wilaya}
                   commune={article.commune}

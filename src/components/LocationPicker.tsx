@@ -34,6 +34,7 @@ export default function LocationPicker({
   const [currentWilayaCode, setCurrentWilayaCode] = useState(selectedWilayaCode || '')
   const [currentCommune, setCurrentCommune] = useState(selectedCommune || '')
   const [loading, setLoading] = useState(true)
+  const [customCommune, setCustomCommune] = useState(false)
 
   useEffect(() => {
     fetch('/api/locations')
@@ -110,22 +111,53 @@ export default function LocationPicker({
 
         {/* Commune dropdown */}
         <div>
-          <label className="block text-xs font-medium text-text-secondary mb-1">
-            البلدية
-          </label>
-          <select
-            value={currentCommune}
-            onChange={(e) => handleCommuneChange(e.target.value)}
-            disabled={!currentWilayaCode}
-            className="w-full px-3 py-2 border border-border-light rounded-md text-sm bg-white disabled:bg-gray-100 disabled:cursor-not-allowed focus:border-primary"
-          >
-            <option value="">اختر البلدية</option>
-            {currentWilaya?.communes.map(c => (
-              <option key={c.id} value={c.name}>
-                {c.name}
-              </option>
-            ))}
-          </select>
+          <div className="flex items-center justify-between mb-1">
+            <label className="block text-xs font-medium text-text-secondary">
+              البلدية
+            </label>
+            {currentWilayaCode && (
+              <button
+                type="button"
+                onClick={() => {
+                  setCustomCommune(!customCommune)
+                  if (!customCommune) {
+                    setCurrentCommune('')
+                    const wilaya = wilayas.find(w => w.code === currentWilayaCode)
+                    if (wilaya) {
+                      onSelect({ wilaya: wilaya.name, commune: '', wilayaCode: currentWilayaCode })
+                    }
+                  }
+                }}
+                className="text-xs text-primary hover:underline"
+              >
+                {customCommune ? 'اختيار من القائمة' : 'كتابة يدوية'}
+              </button>
+            )}
+          </div>
+          {customCommune ? (
+            <input
+              type="text"
+              value={currentCommune}
+              onChange={(e) => handleCommuneChange(e.target.value)}
+              disabled={!currentWilayaCode}
+              className="w-full px-3 py-2 border border-border-light rounded-md text-sm bg-white disabled:bg-gray-100 disabled:cursor-not-allowed focus:border-primary"
+              placeholder="اكتب اسم البلدية"
+            />
+          ) : (
+            <select
+              value={currentCommune}
+              onChange={(e) => handleCommuneChange(e.target.value)}
+              disabled={!currentWilayaCode}
+              className="w-full px-3 py-2 border border-border-light rounded-md text-sm bg-white disabled:bg-gray-100 disabled:cursor-not-allowed focus:border-primary"
+            >
+              <option value="">اختر البلدية</option>
+              {currentWilaya?.communes.map(c => (
+                <option key={c.id} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
       </div>
     </div>

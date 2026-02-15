@@ -1,4 +1,4 @@
-id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilaya_name,wilaya_name_ascii
+﻿id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilaya_name,wilaya_name_ascii
 22,تيمقتن,Timekten,أولف,Aoulef,01,أدرار,Adrar
 6,بودة,Bouda,أدرار,Adrar,01,أدرار,Adrar
 13,أولاد أحمد تيمي,Ouled Ahmed Timmi,أدرار,Adrar,01,أدرار,Adrar
@@ -50,20 +50,20 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 31,بنايرية,Benairia,الزبوجة,Zeboudja,02," الشلف",Chlef
 46,الأبيض مجاجة,Labiod Medjadja,أولاد فارس,Ouled Fares,02," الشلف",Chlef
 40,الظهرة,Dahra,تاوقريت,Taougrit,02," الشلف",Chlef
-67,البيضاء,El Beidha,قتلة سيدي سعيد,Gueltat Sidi Saad,03,الأغواط,Laghouat
-73,قلتة سيدي سعد,Gueltat Sidi Saad,قتلة سيدي سعيد,Gueltat Sidi Saad,03,الأغواط,Laghouat
-69,بريدة,Brida,بريدة,Brida,03,الأغواط,Laghouat
-66,عين سيدي علي,Ain Sidi Ali,قتلة سيدي سعيد,Gueltat Sidi Saad,03,الأغواط,Laghouat
+67,البيضاء,El Beidha,أفلو,Aflou,59,أفلو,Aflou
+73,قلتة سيدي سعد,Gueltat Sidi Saad,أفلو,Aflou,59,أفلو,Aflou
+69,بريدة,Brida,أفلو,Aflou,59,أفلو,Aflou
+66,عين سيدي علي,Ain Sidi Ali,أفلو,Aflou,59,أفلو,Aflou
 85,تاجموت,Tadjemout,عين ماضي,Ain Madhi,03,الأغواط,Laghouat
-74,الحاج مشري,Hadj Mechri,بريدة,Brida,03,الأغواط,Laghouat
-87,تاويالة,Taouiala,بريدة,Brida,03,الأغواط,Laghouat
-71,الغيشة,El Ghicha,الغيشة,El Ghicha,03,الأغواط,Laghouat
+74,الحاج مشري,Hadj Mechri,أفلو,Aflou,59,أفلو,Aflou
+87,تاويالة,Taouiala,أفلو,Aflou,59,أفلو,Aflou
+71,الغيشة,El Ghicha,أفلو,Aflou,59,أفلو,Aflou
 86,تاجرونة,Tadjrouna,عين ماضي,Ain Madhi,03,الأغواط,Laghouat
-82,سبقاق,Sebgag,أفلو,Aflou,03,الأغواط,Laghouat
-83,سيدي بوزيد,Sidi Bouzid,أفلو,Aflou,03,الأغواط,Laghouat
-80,وادي مرة,Oued Morra,وادي مرة,Oued Morra,03,الأغواط,Laghouat
+82,سبقاق,Sebgag,أفلو,Aflou,59,أفلو,Aflou
+83,سيدي بوزيد,Sidi Bouzid,أفلو,Aflou,59,أفلو,Aflou
+80,وادي مرة,Oued Morra,أفلو,Aflou,59,أفلو,Aflou
 79,الأغواط,Laghouat,الأغواط,Laghouat,03,الأغواط,Laghouat
-81,وادي مزي,Oued M'zi,وادي مرة,Oued Morra,03,الأغواط,Laghouat
+81,وادي مزي,Oued M'zi,أفلو,Aflou,59,أفلو,Aflou
 78,قصر الحيران,Ksar El Hirane,قصر الحيران,Ksar El Hirane,03,الأغواط,Laghouat
 70,العسافية,El Assafia,سيدي مخلوف,Sidi Makhlouf,03,الأغواط,Laghouat
 84,سيدي مخلوف,Sidi Makhlouf,سيدي مخلوف,Sidi Makhlouf,03,الأغواط,Laghouat
@@ -73,7 +73,7 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 72,الحويطة,El Haouaita,عين ماضي,Ain Madhi,03,الأغواط,Laghouat
 77,الخنق,Kheneg,عين ماضي,Ain Madhi,03,الأغواط,Laghouat
 68,بن ناصر بن شهرة,Benacer Benchohra,قصر الحيران,Ksar El Hirane,03,الأغواط,Laghouat
-64,أفلو,Aflou,أفلو,Aflou,03,الأغواط,Laghouat
+64,أفلو,Aflou,أفلو,Aflou,59,أفلو,Aflou
 104,فكيرينة,Fkirina,فكيرينة,F'kirina,04,أم البواقي,Oum El Bouaghi
 102,الفجوج بوغرارة سعودي,El Fedjoudj Boughrara Sa,عين فكرون,Ain Fekroun,04,أم البواقي,Oum El Bouaghi
 91,عين فكرون,Ain Fekroun,عين فكرون,Ain Fekroun,04,أم البواقي,Oum El Bouaghi
@@ -108,15 +108,15 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 176,تيمقاد,Timgad,تيمقاد,Timgad,05,باتنة,Batna
 170,تاكسلانت,Taxlent,أولاد سي سليمان,Ouled Si Slimane,05,باتنة,Batna
 161,أولاد سي سليمان,Ouled Si Slimane,أولاد سي سليمان,Ouled Si Slimane,05,باتنة,Batna
-148,لمسان,Lemcene,أولاد سي سليمان,Ouled Si Slimane,05,باتنة,Batna
+148,لمسان,Lemcene,الأبيض سيدي الشيخ,Labiodh Sidi Cheikh,67,الأبيض سيدي الشيخ,Labiodh Sidi Cheikh
 169,تالخمت,Talkhamt,رأس العيون,Ras El Aioun,05,باتنة,Batna
 164,رأس العيون,Ras El Aioun,رأس العيون,Ras El Aioun,05,باتنة,Batna
 163,الرحبات,Rahbat,رأس العيون,Ras El Aioun,05,باتنة,Batna
 160,أولاد سلام,Ouled Sellem,رأس العيون,Ras El Aioun,05,باتنة,Batna
-140,القيقبة,Guigba,رأس العيون,Ras El Aioun,05,باتنة,Batna
+140,القيقبة,Guigba,الأبيض سيدي الشيخ,Labiodh Sidi Cheikh,67,الأبيض سيدي الشيخ,Labiodh Sidi Cheikh
 172,ثنية العابد,Teniet El Abed,ثنية العابد,Theniet El Abed,05,باتنة,Batna
 123,باتنة,Batna,باتنة,Batna,05,باتنة,Batna
-136,فسديس,Fesdis,باتنة,Batna,05,باتنة,Batna
+136,فسديس,Fesdis,الأبيض سيدي الشيخ,Labiodh Sidi Cheikh,67,الأبيض سيدي الشيخ,Labiodh Sidi Cheikh
 154,وادي الشعبة,Oued Chaaba,باتنة,Batna,05,باتنة,Batna
 141,حيدوسة,Hidoussa,مروانة,Merouana,05,باتنة,Batna
 145,قصر بلزمة,Ksar Bellezma,مروانة,Merouana,05,باتنة,Batna
@@ -140,21 +140,21 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 173,تيغانمين,Tighanimine,أريس,Arris,05,باتنة,Batna
 117,عين جاسر,Ain Djasser,عين جاسر,Ain Djasser,05,باتنة,Batna
 134,الحاسي,El Hassi,عين جاسر,Ain Djasser,05,باتنة,Batna
-166,سقانة,Seggana,سقانة,Seggana,05,باتنة,Batna
-175,تيلاطو,Tilatou,سقانة,Seggana,05,باتنة,Batna
+166,سقانة,Seggana,بريكة,Barika,60,بريكة,Barika
+175,تيلاطو,Tilatou,بريكة,Barika,60,بريكة,Barika
 137,فم الطوب,Foum Toub,إشمول,Ichemoul,05,باتنة,Batna
 142,إشمول,Ichemoul,إشمول,Ichemoul,05,باتنة,Batna
-143,إينوغيسن,Inoughissen,إشمول,Ichemoul,05,باتنة,Batna
+143,إينوغيسن,Inoughissen,الأبيض سيدي الشيخ,Labiodh Sidi Cheikh,67,الأبيض سيدي الشيخ,Labiodh Sidi Cheikh
 129,بوزينة,Bouzina,بوزينة,Bouzina,05,باتنة,Batna
-146,لارباع,Larbaa,بوزينة,Bouzina,05,باتنة,Batna
+146,لارباع,Larbaa,الأبيض سيدي الشيخ,Labiodh Sidi Cheikh,67,الأبيض سيدي الشيخ,Labiodh Sidi Cheikh
 126,بولهيلات,Boulhilat,الشمرة,Chemora,05,باتنة,Batna
 130,الشمرة,Chemora,الشمرة,Chemora,05,باتنة,Batna
-122,بريكة,Barika,بريكة,Barika,05,باتنة,Batna
-125,بيطام,Bitam,بريكة,Barika,05,باتنة,Batna
-149,إمدوكل,M Doukal,بريكة,Barika,05,باتنة,Batna
-121,عزيل عبد القادر,Azil Abedelkader,الجزار,Djezzar,05,باتنة,Batna
-133,الجزار,Djezzar,الجزار,Djezzar,05,باتنة,Batna
-157,أولاد عمار,Ouled Ammar,الجزار,Djezzar,05,باتنة,Batna
+122,بريكة,Barika,بريكة,Barika,60,بريكة,Barika
+125,بيطام,Bitam,بريكة,Barika,60,بريكة,Barika
+149,إمدوكل,M Doukal,بريكة,Barika,60,بريكة,Barika
+121,عزيل عبد القادر,Azil Abedelkader,بريكة,Barika,60,بريكة,Barika
+133,الجزار,Djezzar,بريكة,Barika,60,بريكة,Barika
+157,أولاد عمار,Ouled Ammar,بريكة,Barika,60,بريكة,Barika
 138,غسيرة,Ghassira,تكوت,Tkout,05,باتنة,Batna
 144,كيمل,Kimmel,تكوت,Tkout,05,باتنة,Batna
 168,تكوت,T Kout,تكوت,Tkout,05,باتنة,Batna
@@ -220,12 +220,12 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 249,ليشانة,Lichana,طولقة,Tolga,07,بسكرة,Biskra
 235,بوشقرون,Bouchakroun,طولقة,Tolga,07,بسكرة,Biskra
 252,مخادمة,Mekhadma,أورلال,Ourlal,07,بسكرة,Biskra
-239,جمورة,Djemorah,جمورة,Djemorah,07,بسكرة,Biskra
-236,برانيس,Branis,جمورة,Djemorah,07,بسكرة,Biskra
-246,الوطاية,El Outaya,الوطاية,El Outaya,07,بسكرة,Biskra
-245,القنطرة,El Kantara,القنطرة,El Kantara,07,بسكرة,Biskra
+239,جمورة,Djemorah,القنطرة,El Kantara,68,القنطرة,El Kantara
+236,برانيس,Branis,القنطرة,El Kantara,68,القنطرة,El Kantara
+246,الوطاية,El Outaya,القنطرة,El Kantara,68,القنطرة,El Kantara
+245,القنطرة,El Kantara,القنطرة,El Kantara,68,القنطرة,El Kantara
 248,خنقة سيدي ناجي,Khenguet Sidi Nadji,زريبة الوادي,Zeribet El Oued,07,بسكرة,Biskra
-231,عين زعطوط,Ain Zaatout,القنطرة,El Kantara,07,بسكرة,Biskra
+231,عين زعطوط,Ain Zaatout,القنطرة,El Kantara,68,القنطرة,El Kantara
 262,زريبة الوادي,Zeribet El Oued,زريبة الوادي,Zeribet El Oued,07,بسكرة,Biskra
 253,المزيرعة,Meziraa,زريبة الوادي,Zeribet El Oued,07,بسكرة,Biskra
 233,بسكرة,Biskra,بسكرة,Biskra,07,بسكرة,Biskra
@@ -332,8 +332,8 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 359,أدلس,Idles,تاظروك,Tazrouk,11,تمنراست,Tamanrasset
 380,الحويجبات,El-Houidjbet,الماء الابيض,El Malabiod,12,تبسة,Tébessa
 379,العوينات,El-Aouinet,العوينات,El Aouinet,12,تبسة,Tébessa
-381,فركان,Ferkane,نقرين,Negrine,12,تبسة,Tébessa
-385,نقرين,Negrine,نقرين,Negrine,12,تبسة,Tébessa
+381,فركان,Ferkane,بئر العاتر,Bir El Ater,61,بئر العاتر,Bir El Ater
+385,نقرين,Negrine,بئر العاتر,Bir El Ater,61,بئر العاتر,Bir El Ater
 368,بئر مقدم,Bir Mokkadem,بئر مقدم,Bir Mokadem,12,تبسة,Tébessa
 367,بئر الذهب,Bir Dheheb,مرسط,Morsott,12,تبسة,Tébessa
 388,صفصاف الوسرى,Saf Saf El Ouesra,أم علي,Oum Ali,12,تبسة,Tébessa
@@ -353,8 +353,8 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 384,مرسط,Morsott,مرسط,Morsott,12,تبسة,Tébessa
 391,ثليجان,Telidjen,الشريعة,Cheria,12,تبسة,Tébessa
 372,الشريعة,Cheria,الشريعة,Cheria,12,تبسة,Tébessa
-378,العقلة المالحة,El Ogla El Malha,بئر العاتر,Bir El Ater,12,تبسة,Tébessa
-369,بئر العاتر,Bir-El-Ater,بئر العاتر,Bir El Ater,12,تبسة,Tébessa
+378,العقلة المالحة,El Ogla El Malha,بئر العاتر,Bir El Ater,61,بئر العاتر,Bir El Ater
+369,بئر العاتر,Bir-El-Ater,بئر العاتر,Bir El Ater,61,بئر العاتر,Bir El Ater
 390,تبسة,Tebessa,تبسة,Tebessa,12,تبسة,Tébessa
 383,الحمامات,Hammamet,بئر مقدم,Bir Mokadem,12,تبسة,Tébessa
 373,الكويف,El Kouif,الكويف,El Kouif,12,تبسة,Tébessa
@@ -368,16 +368,16 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 393,عين فزة,Ain Fezza,شتوان,Chetouane,13,تلمسان,Tlemcen
 422,هنين,Honnaine,هنين,Honnaine,13,تلمسان,Tlemcen
 403,بني خلاد,Beni Khellad,هنين,Honnaine,13,تلمسان,Tlemcen
-436,سيدي الجيلالي,Sidi Djillali,سيدي الجيلالي,Sidi Djillali,13,تلمسان,Tlemcen
-410,البويهي,Bouihi,سيدي الجيلالي,Sidi Djillali,13,تلمسان,Tlemcen
+436,سيدي الجيلالي,Sidi Djillali,العريشة,El Aricha,69,العريشة,El Aricha
+410,البويهي,Bouihi,العريشة,El Aricha,69,العريشة,El Aricha
 427,ندرومة,Nedroma,ندرومة,Nedroma,13,تلمسان,Tlemcen
 426,مسيردة الفواقة,M'sirda Fouaga,مرسى بن مهيدي,Marsa Ben Mehdi,13,تلمسان,Tlemcen
 425,مرسى بن مهيدي,Marsa Ben M'hidi,مرسى بن مهيدي,Marsa Ben Mehdi,13,تلمسان,Tlemcen
 437,سيدي مجاهد,Sidi Medjahed,بني بوسعيد,Beni Boussaid,13,تلمسان,Tlemcen
 402,بني بوسعيد,Beni Boussaid,بني بوسعيد,Beni Boussaid,13,تلمسان,Tlemcen
 434,سبدو,Sebdou,سبدو,Sebdou,13,تلمسان,Tlemcen
-417,القور,El Gor,سبدو,Sebdou,13,تلمسان,Tlemcen
-414,العريشة,El Aricha,سبدو,Sebdou,13,تلمسان,Tlemcen
+417,القور,El Gor,العريشة,El Aricha,69,العريشة,El Aricha
+414,العريشة,El Aricha,العريشة,El Aricha,69,العريشة,El Aricha
 409,بوحلو,Bouhlou,صبرة,Sabra,13,تلمسان,Tlemcen
 423,مغنية,Maghnia,مغنية,Maghnia,13,تلمسان,Tlemcen
 420,حمام بوغرارة,Hammam Boughrara,مغنية,Maghnia,13,تلمسان,Tlemcen
@@ -438,9 +438,9 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 454,جيلالي بن عمار,Djillali Ben Amar,مشرع الصفا,Mechraa Sfa,14,تيارت,Tiaret
 462,مشرع الصفا,Mechraa Safa,مشرع الصفا,Mechraa Sfa,14,تيارت,Tiaret
 481,تاقدمت,Tagdempt,مشرع الصفا,Mechraa Sfa,14,تيارت,Tiaret
-450,بوقرة,Bougara,حمادية,Hamadia,14,تيارت,Tiaret
-458,حمادية,Hamadia,حمادية,Hamadia,14,تيارت,Tiaret
-471,الرشايقة,Rechaiga,حمادية,Hamadia,14,تيارت,Tiaret
+450,بوقرة,Bougara,قصر الشلالة,Ksar Chellala,62,قصر الشلالة,Ksar Chellala
+458,حمادية,Hamadia,قصر الشلالة,Ksar Chellala,62,قصر الشلالة,Ksar Chellala
+471,الرشايقة,Rechaiga,قصر الشلالة,Ksar Chellala,62,قصر الشلالة,Ksar Chellala
 484,تيدة,Tidda,وادي ليلي,Oued Lili,14,تيارت,Tiaret
 467,الناظورة,Nadorah,مهدية,Mahdia,14,تيارت,Tiaret
 483,تيارت,Tiaret,تيارت,Tiaret,14,تيارت,Tiaret
@@ -586,30 +586,30 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 637,مليليحة,M'liliha,دار الشيوخ,Dar Chioukh,17,الجلفة,Djelfa
 622,دار الشيوخ,Dar Chioukh,دار الشيوخ,Dar Chioukh,17,الجلفة,Djelfa
 644,تعظميت,Taadmit,عين الإبل,Ain El Ibel,17,الجلفة,Djelfa
-632,حد الصحاري,Had Sahary,حد الصحاري,Had Sahary,17,الجلفة,Djelfa
-620,بويرة الأحداب,Bouira Lahdab,حد الصحاري,Had Sahary,17,الجلفة,Djelfa
-613,عين فقه,Ain Fekka,حد الصحاري,Had Sahary,17,الجلفة,Djelfa
-643,سيدي لعجال,Sidi Laadjel,سيدي لعجال,Sidi Laadjel,17,الجلفة,Djelfa
-635,حاسي فدول,Hassi Fedoul,سيدي لعجال,Sidi Laadjel,17,الجلفة,Djelfa
-628,الخميس,El Khemis,سيدي لعجال,Sidi Laadjel,17,الجلفة,Djelfa
-641,سلمانة,Selmana,مسعد,Messaad,17,الجلفة,Djelfa
-640,سد الرحال,Sed Rahal,مسعد,Messaad,17,الجلفة,Djelfa
-636,مسعد,Messaad,مسعد,Messaad,17,الجلفة,Djelfa
-631,قطارة,Guettara,مسعد,Messaad,17,الجلفة,Djelfa
-623,دلدول,Deldoul,مسعد,Messaad,17,الجلفة,Djelfa
+632,حد الصحاري,Had Sahary,عين وسارة,Ain Oussera,63,عين وسارة,Ain Oussera
+620,بويرة الأحداب,Bouira Lahdab,عين وسارة,Ain Oussera,63,عين وسارة,Ain Oussera
+613,عين فقه,Ain Fekka,عين وسارة,Ain Oussera,63,عين وسارة,Ain Oussera
+643,سيدي لعجال,Sidi Laadjel,عين وسارة,Ain Oussera,63,عين وسارة,Ain Oussera
+635,حاسي فدول,Hassi Fedoul,عين وسارة,Ain Oussera,63,عين وسارة,Ain Oussera
+628,الخميس,El Khemis,عين وسارة,Ain Oussera,63,عين وسارة,Ain Oussera
+641,سلمانة,Selmana,مسعد,Messaad,64,مسعد,Messaad
+640,سد الرحال,Sed Rahal,مسعد,Messaad,64,مسعد,Messaad
+636,مسعد,Messaad,مسعد,Messaad,64,مسعد,Messaad
+631,قطارة,Guettara,مسعد,Messaad,64,مسعد,Messaad
+623,دلدول,Deldoul,مسعد,Messaad,64,مسعد,Messaad
 646,زكار,Zaccar,عين الإبل,Ain El Ibel,17,الجلفة,Djelfa
 625,دويس,Douis,الادريسية,El Idrissia,17,الجلفة,Djelfa
 627,الادريسية,El Idrissia,الادريسية,El Idrissia,17,الجلفة,Djelfa
 611,عين الشهداء,Ain Chouhada,الادريسية,El Idrissia,17,الجلفة,Djelfa
 624,الجلفة,Djelfa,الجلفة,Djelfa,17,الجلفة,Djelfa
-619,بيرين,Birine,بيرين,Birine,17,الجلفة,Djelfa
-639,أم العظام,Oum Laadham,فيض البطمة,Faidh El Botma,17,الجلفة,Djelfa
-629,فيض البطمة,Faidh El Botma,فيض البطمة,Faidh El Botma,17,الجلفة,Djelfa
-616,عمورة,Amourah,فيض البطمة,Faidh El Botma,17,الجلفة,Djelfa
+619,بيرين,Birine,عين وسارة,Ain Oussera,63,عين وسارة,Ain Oussera
+639,أم العظام,Oum Laadham,مسعد,Messaad,64,مسعد,Messaad
+629,فيض البطمة,Faidh El Botma,مسعد,Messaad,64,مسعد,Messaad
+616,عمورة,Amourah,مسعد,Messaad,64,مسعد,Messaad
 645,زعفران,Zaafrane,حاسي بحبح,Hassi Bahbah,17,الجلفة,Djelfa
-630,قرنيني,Guernini,عين وسارة,Ain Oussera,17,الجلفة,Djelfa
-615,عين وسارة,Ain Oussera,عين وسارة,Ain Oussera,17,الجلفة,Djelfa
-617,بنهار,Benhar,بيرين,Birine,17,الجلفة,Djelfa
+630,قرنيني,Guernini,عين وسارة,Ain Oussera,63,عين وسارة,Ain Oussera
+615,عين وسارة,Ain Oussera,عين وسارة,Ain Oussera,63,عين وسارة,Ain Oussera
+617,بنهار,Benhar,عين وسارة,Ain Oussera,63,عين وسارة,Ain Oussera
 614,عين معبد,Ain Maabed,حاسي بحبح,Hassi Bahbah,17,الجلفة,Djelfa
 633,حاسي بحبح,Hassi Bahbah,حاسي بحبح,Hassi Bahbah,17,الجلفة,Djelfa
 638,مجبارة,Moudjebara,عين الإبل,Ain El Ibel,17,الجلفة,Djelfa
@@ -865,17 +865,17 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 895,ابن زياد,Ibn Ziad,ابن زياد,Ibn Ziad,25,قسنطينة,Constantine
 896,بوجريو مسعود,Messaoud Boudjeriou,ابن زياد,Ibn Ziad,25,قسنطينة,Constantine
 891,قسنطينة,Constantine,قسنطينة,Constantine,25,قسنطينة,Constantine
-943,أولاد هلال,Ouled Hellal,أولاد عنتر,Ouled Antar,26,المدية,Médéa
+943,أولاد هلال,Ouled Hellal,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
 956,السواقي,Souagui,السواقي,Souaghi,26,المدية,Médéa
-929,قصر البخاري,Ksar El Boukhari,قصر البخاري,Ksar El Boukhari,26,المدية,Médéa
-934,مفاتحة,M'fatha,قصر البخاري,Ksar El Boukhari,26,المدية,Médéa
-947,السانق,Saneg,قصر البخاري,Ksar El Boukhari,26,المدية,Médéa
+929,قصر البخاري,Ksar El Boukhari,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+934,مفاتحة,M'fatha,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+947,السانق,Saneg,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
 920,العزيزية,El Azizia,العزيزية,El Azizia,26,المدية,Médéa
 930,مغراوة,Maghraoua,العزيزية,El Azizia,26,المدية,Médéa
 935,ميهوب,Mihoub,العزيزية,El Azizia,26,المدية,Médéa
-909,بوعيش,Bouaiche,الشهبونية,Chahbounia,26,المدية,Médéa
-912,بوغزول,Boughzoul,الشهبونية,Chahbounia,26,المدية,Médéa
-914,الشهبونية,Chabounia,الشهبونية,Chahbounia,26,المدية,Médéa
+909,بوعيش,Bouaiche,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+912,بوغزول,Boughzoul,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+914,الشهبونية,Chabounia,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
 926,حناشة,Hannacha,عوامري,Ouamri,26,المدية,Médéa
 936,عوامري,Ouamri,عوامري,Ouamri,26,المدية,Médéa
 937,وادي حربيل,Oued Harbil,عوامري,Ouamri,26,المدية,Médéa
@@ -895,7 +895,7 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 923,الحوضان,El Haoudane,تابلاط,Tablat,26,المدية,Médéa
 933,مزغنة,Mezerana,تابلاط,Tablat,26,المدية,Médéa
 957,تابلاط,Tablat,تابلاط,Tablat,26,المدية,Médéa
-908,بوغار,Boghar,أولاد عنتر,Ouled Antar,26,المدية,Médéa
+908,بوغار,Boghar,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
 949,سغوان,Seghouane,سغوان,Seghouane,26,المدية,Médéa
 919,ذراع السمار,Draa Esmar,المدية,Medea,26,المدية,Médéa
 931,المدية,Medea,المدية,Medea,26,المدية,Médéa
@@ -904,31 +904,31 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 922,الحمدانية,El Hamdania,وزرة,Ouzera,26,المدية,Médéa
 945,وزرة,Ouzera,وزرة,Ouzera,26,المدية,Médéa
 960,تيزي مهدي,Tizi Mahdi,وزرة,Ouzera,26,المدية,Médéa
-899,عين بوسيف,Ain Boucif,عين بوسيف,Ain Boucif,26,المدية,Médéa
-925,العوينات,El Ouinet,عين بوسيف,Ain Boucif,26,المدية,Médéa
-927,الكاف الاخضر,Kef Lakhdar,عين بوسيف,Ain Boucif,26,المدية,Médéa
-942,أولاد امعرف,Ouled Emaaraf,عين بوسيف,Ain Boucif,26,المدية,Médéa
-951,سيدي دامد,Sidi Demed,عين بوسيف,Ain Boucif,26,المدية,Médéa
+899,عين بوسيف,Ain Boucif,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+925,العوينات,El Ouinet,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+927,الكاف الاخضر,Kef Lakhdar,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+942,أولاد امعرف,Ouled Emaaraf,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+951,سيدي دامد,Sidi Demed,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
 903,بعطة,Baata,العمارية,El Omaria,26,المدية,Médéa
 924,العمارية,El Omaria,العمارية,El Omaria,26,المدية,Médéa
 940,أولاد إبراهيم,Ouled Brahim,العمارية,El Omaria,26,المدية,Médéa
 907,بئر بن عابد,Bir Ben Laabed,القلب الكبير,Guelb El Kebir,26,المدية,Médéa
 921,القلب الكبير,El Guelbelkebir,القلب الكبير,Guelb El Kebir,26,المدية,Médéa
 948,سدراية,Sedraya,القلب الكبير,Guelb El Kebir,26,المدية,Médéa
-900,عين اقصير,Ain Ouksir,شلالة العذاورة,Chellalat El Adhaoura,26,المدية,Médéa
-915,شلالة العذاورة,Chelalet El Adhaoura,شلالة العذاورة,Chellalat El Adhaoura,26,المدية,Médéa
-916,شنيقل,Cheniguel,شلالة العذاورة,Chellalat El Adhaoura,26,المدية,Médéa
-958,تفراوت,Tafraout,شلالة العذاورة,Chellalat El Adhaoura,26,المدية,Médéa
+900,عين اقصير,Ain Ouksir,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+915,شلالة العذاورة,Chelalet El Adhaoura,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+916,شنيقل,Cheniguel,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+958,تفراوت,Tafraout,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
 911,بوشراحيل,Bouchrahil,سيدي نعمان,Sidi Naamane,26,المدية,Médéa
 928,خمس جوامع,Khams Djouamaa,سيدي نعمان,Sidi Naamane,26,المدية,Médéa
 952,سيدي نعمان,Sidi Naamane,سيدي نعمان,Sidi Naamane,26,المدية,Médéa
-902,عزيز,Aziz,عزيز,Aziz,26,المدية,Médéa
-917,دراق,Derrag,عزيز,Aziz,26,المدية,Médéa
-944,أم الجليل,Oum El Djellil,عزيز,Aziz,26,المدية,Médéa
+902,عزيز,Aziz,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+917,دراق,Derrag,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
+944,أم الجليل,Oum El Djellil,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
 918,جواب,Djouab,السواقي,Souaghi,26,المدية,Médéa
 954,سيدي زهار,Sidi Zahar,السواقي,Souaghi,26,المدية,Médéa
 955,سيدي زيان,Sidi Ziane,السواقي,Souaghi,26,المدية,Médéa
-938,أولاد عنتر,Ouled Antar,أولاد عنتر,Ouled Antar,26,المدية,Médéa
+938,أولاد عنتر,Ouled Antar,قصر البخاري,Ksar El Boukhari,65,قصر البخاري,Ksar El Boukhari
 970,فرناقة,Fornaka,عين نويسي,Ain Nouicy,27,مستغانم,Mostaganem
 981,وادي الخير,Oued El Kheir,عين تادلس,Ain Tedeles,27,مستغانم,Mostaganem
 973,الحسيان (بني ياحي,Hassiane,عين نويسي,Ain Nouicy,27,مستغانم,Mostaganem
@@ -973,14 +973,14 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 1033,سيدي عيسى,Sidi Aissa,سيدي عيسى,Sidi Aissa,28,المسيلة,M'Sila
 995,عين الحجل,Ain El Hadjel,عين الحجل,Ain El Hadjel,28,المسيلة,M'Sila
 1035,سيدي هجرس,Sidi Hadjeres,عين الحجل,Ain El Hadjel,28,المسيلة,M'Sila
-1006,بوسعادة,Bou Saada,بوسعادة,Bousaada,28,المسيلة,M'Sila
-1011,الهامل,El Hamel,بوسعادة,Bousaada,28,المسيلة,M'Sila
-1032,ولتام,Oulteme,بوسعادة,Bousaada,28,المسيلة,M'Sila
-1003,بن زوه,Benzouh,أولاد سيدي ابراهيم,Ouled Sidi Brahim,28,المسيلة,M'Sila
-1030,أولاد سيدي ابراهيم,Ouled Sidi Brahim,أولاد سيدي ابراهيم,Ouled Sidi Brahim,28,المسيلة,M'Sila
-1034,سيدي عامر,Sidi Ameur,سيدي عامر,Sidi Ameur,28,المسيلة,M'Sila
-1039,تامسة,Tamsa,سيدي عامر,Sidi Ameur,28,المسيلة,M'Sila
-1001,بن سرور,Ben Srour,بن سرور,Ben Srour,28,المسيلة,M'Sila
+1006,بوسعادة,Bou Saada,بوسعادة,Bousaada,66,بوسعادة,Bousaada
+1011,الهامل,El Hamel,بوسعادة,Bousaada,66,بوسعادة,Bousaada
+1032,ولتام,Oulteme,بوسعادة,Bousaada,66,بوسعادة,Bousaada
+1003,بن زوه,Benzouh,بوسعادة,Bousaada,66,بوسعادة,Bousaada
+1030,أولاد سيدي ابراهيم,Ouled Sidi Brahim,بوسعادة,Bousaada,66,بوسعادة,Bousaada
+1034,سيدي عامر,Sidi Ameur,بوسعادة,Bousaada,66,بوسعادة,Bousaada
+1039,تامسة,Tamsa,بوسعادة,Bousaada,66,بوسعادة,Bousaada
+1001,بن سرور,Ben Srour,بوسعادة,Bousaada,66,بوسعادة,Bousaada
 1022,محمد بوضياف,Mohamed Boudiaf,بن سرور,Ben Srour,28,المسيلة,M'Sila
 1031,أولاد سليمان,Ouled Slimane,بن سرور,Ben Srour,28,المسيلة,M'Sila
 1041,زرزور,Zarzour,بن سرور,Ben Srour,28,المسيلة,M'Sila
@@ -1003,9 +1003,9 @@ id,commune_name,commune_name_ascii,daira_name,daira_name_ascii,wilaya_code,wilay
 1017,معاريف,Maarif,شلال,Chellal,28,المسيلة,M'Sila
 1027,أولاد دراج,Ouled Derradj,أولاد دراج,Ouled Derradj,28,المسيلة,M'Sila
 1038,السوامع,Souamaa,أولاد دراج,Ouled Derradj,28,المسيلة,M'Sila
-1012,الحوامد,El Houamed,خبانة,Khoubana,28,المسيلة,M'Sila
-1015,خبانة,Khoubana,خبانة,Khoubana,28,المسيلة,M'Sila
-1019,مسيف,M'cif,خبانة,Khoubana,28,المسيلة,M'Sila
+1012,الحوامد,El Houamed,بوسعادة,Bousaada,66,بوسعادة,Bousaada
+1015,خبانة,Khoubana,بوسعادة,Bousaada,66,بوسعادة,Bousaada
+1019,مسيف,M'cif,بوسعادة,Bousaada,66,بوسعادة,Bousaada
 998,عين الخضراء,Ain Khadra,مقرة,Magra,28,المسيلة,M'Sila
 1026,أولاد عدي لقبالة,Ouled Addi Guebala,أولاد دراج,Ouled Derradj,28,المسيلة,M'Sila
 1075,وادي الأبطال,Oued El Abtal,وادي الأبطال,Oued El Abtal,29,معسكر,Mascara

@@ -8,6 +8,7 @@ interface MosqueInfoboxProps {
     src: string
     caption: string
   }
+  mosqueType?: string
   dateBuilt?: string
   wilaya?: string
   commune?: string
@@ -31,6 +32,7 @@ async function ImamLink({ imam }: { imam: ImamReference }) {
 export default async function MosqueInfobox({
   title,
   image,
+  mosqueType,
   dateBuilt,
   wilaya,
   commune,
@@ -57,6 +59,12 @@ export default async function MosqueInfobox({
       <div className="infobox-section-header">معلومات المسجد</div>
       <table className="w-full border-collapse text-sm">
         <tbody>
+          {mosqueType && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">النوع</td>
+              <td className="py-1.5 px-3">{mosqueType}</td>
+            </tr>
+          )}
           {dateBuilt && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">تاريخ البناء</td>

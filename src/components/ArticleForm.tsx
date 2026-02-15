@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2, Plus, Trash2, BookOpen, Landmark } from 'lucide-react'
 import LocationPicker from './LocationPicker'
@@ -12,6 +12,14 @@ interface MosqueRef {
   slug: string
   startDate: string
   endDate: string
+  wilaya: string
+  commune: string
+  wilayaCode: string
+}
+
+interface CustomField {
+  label: string
+  value: string
 }
 
 interface ImamRef {
@@ -19,6 +27,121 @@ interface ImamRef {
   slug: string
   startDate: string
   endDate: string
+}
+
+interface Wilaya {
+  code: string
+  name: string
+  nameAscii: string
+  communes: { id: string; name: string; nameAscii: string; daira: string }[]
+}
+
+function MosqueLocationPicker({
+  mosqueIndex,
+  wilaya,
+  commune,
+  wilayaCode,
+  onUpdate,
+}: {
+  mosqueIndex: number
+  wilaya: string
+  commune: string
+  wilayaCode: string
+  onUpdate: (idx: number, field: keyof MosqueRef, value: string) => void
+}) {
+  const [wilayas, setWilayas] = useState<Wilaya[]>([])
+  const [loading, setLoading] = useState(true)
+  const [customCommune, setCustomCommune] = useState(false)
+
+  useEffect(() => {
+    fetch('/api/locations')
+      .then(res => res.json())
+      .then(data => {
+        setWilayas(data.wilayas)
+        setLoading(false)
+        // Check if current commune is custom (not in the list)
+        if (commune && wilayaCode) {
+          const w = data.wilayas.find((w: Wilaya) => w.code === wilayaCode)
+          if (w && !w.communes.some((c: { name: string }) => c.name === commune)) {
+            setCustomCommune(true)
+          }
+        }
+      })
+      .catch(() => setLoading(false))
+  }, [])
+
+  const currentWilaya = wilayas.find(w => w.code === wilayaCode)
+
+  if (loading) {
+    return <p className="text-xs text-text-secondary">جاري تحميل المواقع...</p>
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      <div>
+        <label className="block text-xs text-text-secondary mb-0.5">ولاية المسجد</label>
+        <select
+          value={wilayaCode}
+          onChange={(e) => {
+            const code = e.target.value
+            const w = wilayas.find(w => w.code === code)
+            onUpdate(mosqueIndex, 'wilayaCode', code)
+            onUpdate(mosqueIndex, 'wilaya', w?.name || '')
+            onUpdate(mosqueIndex, 'commune', '')
+            setCustomCommune(false)
+          }}
+          className="w-full px-2 py-1.5 border border-border-light rounded text-sm bg-white"
+        >
+          <option value="">اختر الولاية</option>
+          {wilayas.map(w => (
+            <option key={w.code} value={w.code}>
+              {w.code} - {w.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <div className="flex items-center justify-between mb-0.5">
+          <label className="block text-xs text-text-secondary">بلدية المسجد</label>
+          {wilayaCode && (
+            <button
+              type="button"
+              onClick={() => {
+                setCustomCommune(!customCommune)
+                if (!customCommune) onUpdate(mosqueIndex, 'commune', '')
+              }}
+              className="text-xs text-primary hover:underline"
+            >
+              {customCommune ? 'اختيار من القائمة' : 'كتابة يدوية'}
+            </button>
+          )}
+        </div>
+        {customCommune ? (
+          <input
+            type="text"
+            value={commune}
+            onChange={(e) => onUpdate(mosqueIndex, 'commune', e.target.value)}
+            className="w-full px-2 py-1.5 border border-border-light rounded text-sm"
+            placeholder="اكتب اسم البلدية"
+          />
+        ) : (
+          <select
+            value={commune}
+            onChange={(e) => onUpdate(mosqueIndex, 'commune', e.target.value)}
+            disabled={!wilayaCode}
+            className="w-full px-2 py-1.5 border border-border-light rounded text-sm bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            <option value="">اختر البلدية</option>
+            {currentWilaya?.communes.map(c => (
+              <option key={c.id} value={c.name}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        )}
+      </div>
+    </div>
+  )
 }
 
 interface ArticleFormProps {
@@ -53,8 +176,10 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
   const [deathDate, setDeathDate] = useState('')
   const [isAlive, setIsAlive] = useState(true)
   const [mosquesServed, setMosquesServed] = useState<MosqueRef[]>([])
+  const [customFields, setCustomFields] = useState<CustomField[]>([])
 
   // Mosque fields
+  const [mosqueType, setMosqueType] = useState('')
   const [dateBuilt, setDateBuilt] = useState('')
   const [imamsServed, setImamsServed] = useState<ImamRef[]>([])
 
@@ -74,7 +199,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
   }
 
   const addMosqueRef = () => {
-    setMosquesServed([...mosquesServed, { name: '', slug: '', startDate: '', endDate: '' }])
+    setMosquesServed([...mosquesServed, { name: '', slug: '', startDate: '', endDate: '', wilaya: '', commune: '', wilayaCode: '' }])
   }
 
   const updateMosqueRef = (idx: number, field: keyof MosqueRef, value: string) => {
@@ -88,6 +213,20 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
   const removeMosqueRef = (idx: number) => {
     setMosquesServed(mosquesServed.filter((_, i) => i !== idx))
+  }
+
+  const addCustomField = () => {
+    setCustomFields([...customFields, { label: '', value: '' }])
+  }
+
+  const updateCustomField = (idx: number, field: keyof CustomField, value: string) => {
+    const updated = [...customFields]
+    updated[idx][field] = value
+    setCustomFields(updated)
+  }
+
+  const removeCustomField = (idx: number) => {
+    setCustomFields(customFields.filter((_, i) => i !== idx))
   }
 
   const addImamRef = () => {
@@ -133,7 +272,9 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
         articleData.deathDate = isAlive ? undefined : deathDate || undefined
         articleData.isAlive = isAlive
         articleData.mosquesServed = mosquesServed.filter(m => m.name.trim() !== '')
+        articleData.customFields = customFields.filter(f => f.label.trim() !== '' && f.value.trim() !== '')
       } else {
+        articleData.mosqueType = mosqueType || undefined
         articleData.dateBuilt = dateBuilt || undefined
         articleData.imamsServed = imamsServed.filter(i => i.name.trim() !== '')
       }
@@ -326,33 +467,42 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
           {/* Mosques served */}
           <div>
             <label className="block text-sm font-bold mb-2">المساجد التي عمل فيها</label>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {mosquesServed.map((m, idx) => (
-                <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
-                  <input
-                    type="text"
-                    value={m.name}
-                    onChange={(e) => updateMosqueRef(idx, 'name', e.target.value)}
-                    className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                    placeholder="اسم المسجد"
+                <div key={idx} className="bg-white p-3 rounded border border-border-light space-y-2">
+                  <div className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={m.name}
+                      onChange={(e) => updateMosqueRef(idx, 'name', e.target.value)}
+                      className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                      placeholder="اسم المسجد"
+                    />
+                    <input
+                      type="text"
+                      value={m.startDate}
+                      onChange={(e) => updateMosqueRef(idx, 'startDate', e.target.value)}
+                      className="w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                      placeholder="من"
+                    />
+                    <input
+                      type="text"
+                      value={m.endDate}
+                      onChange={(e) => updateMosqueRef(idx, 'endDate', e.target.value)}
+                      className="w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                      placeholder="إلى"
+                    />
+                    <button type="button" onClick={() => removeMosqueRef(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                  <MosqueLocationPicker
+                    mosqueIndex={idx}
+                    wilaya={m.wilaya}
+                    commune={m.commune}
+                    wilayaCode={m.wilayaCode}
+                    onUpdate={updateMosqueRef}
                   />
-                  <input
-                    type="text"
-                    value={m.startDate}
-                    onChange={(e) => updateMosqueRef(idx, 'startDate', e.target.value)}
-                    className="w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                    placeholder="من"
-                  />
-                  <input
-                    type="text"
-                    value={m.endDate}
-                    onChange={(e) => updateMosqueRef(idx, 'endDate', e.target.value)}
-                    className="w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                    placeholder="إلى"
-                  />
-                  <button type="button" onClick={() => removeMosqueRef(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded">
-                    <Trash2 size={16} />
-                  </button>
                 </div>
               ))}
               <button
@@ -365,10 +515,63 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
               </button>
             </div>
           </div>
+
+          {/* Custom fields */}
+          <div>
+            <label className="block text-sm font-bold mb-2">معلومات إضافية</label>
+            <div className="space-y-2">
+              {customFields.map((f, idx) => (
+                <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
+                  <input
+                    type="text"
+                    value={f.label}
+                    onChange={(e) => updateCustomField(idx, 'label', e.target.value)}
+                    className="w-1/3 px-3 py-1.5 border border-border-light rounded text-sm"
+                    placeholder="العنوان (مثال: الطريقة، المذهب...)"
+                  />
+                  <input
+                    type="text"
+                    value={f.value}
+                    onChange={(e) => updateCustomField(idx, 'value', e.target.value)}
+                    className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                    placeholder="القيمة"
+                  />
+                  <button type="button" onClick={() => removeCustomField(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded">
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addCustomField}
+                className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
+              >
+                <Plus size={16} />
+                إضافة معلومة
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="bg-bg-sidebar rounded-lg p-4 border border-border-light space-y-4">
           <h3 className="font-bold text-lg font-heading text-primary">معلومات المسجد</h3>
+
+          <div>
+            <label className="block text-sm font-bold mb-2">نوع المسجد</label>
+            <select
+              value={mosqueType}
+              onChange={(e) => setMosqueType(e.target.value)}
+              className="w-full px-4 py-2 border border-border-light rounded bg-white"
+            >
+              <option value="">اختر نوع المسجد</option>
+              <option value="جامع الجزائر">جامع الجزائر</option>
+              <option value="مسجد تاريخي">مسجد تاريخي</option>
+              <option value="مسجد رئيسي">مسجد رئيسي</option>
+              <option value="مسجد وطني">مسجد وطني</option>
+              <option value="مسجد محلي">مسجد محلي</option>
+              <option value="مسجد حي">مسجد حي</option>
+            </select>
+          </div>
 
           <div>
             <label className="block text-sm font-bold mb-2">تاريخ البناء</label>

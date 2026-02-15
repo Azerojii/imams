@@ -38,8 +38,8 @@ export async function POST(request: Request) {
     const {
       title, description, category, content, submitterName, submitterEmail,
       articleType, wilaya, commune, wilayaCode, image, youtubeVideos,
-      birthDate, deathDate, isAlive, mosquesServed,
-      dateBuilt, imamsServed,
+      birthDate, deathDate, isAlive, mosquesServed, customFields,
+      mosqueType, dateBuilt, imamsServed,
     } = body
 
     if (!title || !content || !submitterName || !submitterEmail) {
@@ -77,9 +77,11 @@ export async function POST(request: Request) {
       if (deathDate) row.death_date = deathDate
       if (isAlive !== undefined) row.is_alive = isAlive
       if (mosquesServed?.length) row.mosques_served = mosquesServed
+      if (customFields?.length) row.custom_fields = customFields
     }
 
     if (articleType === 'mosque') {
+      if (mosqueType) row.mosque_type = mosqueType
       if (dateBuilt) row.date_built = dateBuilt
       if (imamsServed?.length) row.imams_served = imamsServed
     }

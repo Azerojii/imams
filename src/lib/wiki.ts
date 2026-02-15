@@ -5,6 +5,14 @@ export interface MosqueReference {
   slug?: string
   startDate?: string
   endDate?: string
+  wilaya?: string
+  commune?: string
+  wilayaCode?: string
+}
+
+export interface CustomField {
+  label: string
+  value: string
 }
 
 export interface ImamReference {
@@ -37,7 +45,9 @@ export interface WikiArticle {
   deathDate?: string
   isAlive?: boolean
   mosquesServed?: MosqueReference[]
+  customFields?: CustomField[]
   // Mosque-specific
+  mosqueType?: string
   dateBuilt?: string
   imamsServed?: ImamReference[]
 }
@@ -110,6 +120,8 @@ function rowToArticle(row: any): WikiArticle {
     deathDate: row.death_date || undefined,
     isAlive: row.is_alive ?? undefined,
     mosquesServed: row.mosques_served?.length ? row.mosques_served : undefined,
+    customFields: row.custom_fields?.length ? row.custom_fields : undefined,
+    mosqueType: row.mosque_type || undefined,
     dateBuilt: row.date_built || undefined,
     imamsServed: row.imams_served?.length ? row.imams_served : undefined,
   }
