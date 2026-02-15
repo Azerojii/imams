@@ -9,7 +9,7 @@ import MosqueInfobox from '@/components/MosqueInfobox'
 import EditButton from '@/components/EditButton'
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import YouTubeVideos from '@/components/YouTubeVideos'
-import { BookOpen, Landmark } from 'lucide-react'
+import { UserCircle, Landmark } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -62,7 +62,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
               href={isImam ? '/imams' : '/mosques'}
               className="text-primary hover:underline flex items-center gap-1"
             >
-              {isImam ? <BookOpen size={12} /> : <Landmark size={12} />}
+              {isImam ? <UserCircle size={12} /> : <Landmark size={12} />}
               {isImam ? 'الأئمة' : 'المساجد'}
             </Link>
             {article.wilaya && (
@@ -91,7 +91,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
           {/* Type badge */}
           <div className="flex items-center gap-2 mb-4">
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-primary/10 text-primary text-xs font-semibold rounded">
-              {isImam ? <BookOpen size={12} /> : <Landmark size={12} />}
+              {isImam ? <UserCircle size={12} /> : <Landmark size={12} />}
               {isImam ? 'إمام' : 'مسجد'}
             </span>
             {article.wilaya && (

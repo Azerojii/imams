@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2, Plus, Trash2, BookOpen, Landmark } from 'lucide-react'
+import { Loader2, Plus, Trash2, UserCircle, Landmark } from 'lucide-react'
 import LocationPicker from './LocationPicker'
 import ImageUploader from './ImageUploader'
 import RichTextEditor from './RichTextEditor'
@@ -351,7 +351,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
       {/* Article Type Selector */}
       <div>
-        <label className="block text-sm font-bold mb-3">نوع المقال <span className="text-destructive">*</span></label>
+        <label className="block text-sm font-bold mb-3 text-black">نوع المقال <span className="text-destructive">*</span></label>
         <div className="grid grid-cols-2 gap-3">
           <button
             type="button"
@@ -362,7 +362,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
                 : 'border-border-light hover:border-border text-text-secondary'
             }`}
           >
-            <BookOpen size={24} />
+            <UserCircle size={24} />
             <span className="font-heading text-lg font-bold">إمام</span>
           </button>
           <button
@@ -386,7 +386,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
           <h3 className="font-bold text-lg font-heading text-primary">معلوماتك</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-bold mb-2">الاسم <span className="text-destructive">*</span></label>
+              <label className="block text-sm font-bold mb-2 text-black">الاسم <span className="text-destructive">*</span></label>
               <input
                 type="text"
                 value={submitterName}
@@ -397,7 +397,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
               />
             </div>
             <div>
-              <label className="block text-sm font-bold mb-2">البريد الإلكتروني <span className="text-destructive">*</span></label>
+              <label className="block text-sm font-bold mb-2 text-black">البريد الإلكتروني <span className="text-destructive">*</span></label>
               <input
                 type="email"
                 value={submitterEmail}
@@ -413,7 +413,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
       {/* Title */}
       <div>
-        <label className="block text-sm font-bold mb-2">
+        <label className="block text-sm font-bold mb-2 text-black">
           {articleType === 'imam' ? 'اسم الإمام' : 'اسم المسجد'} <span className="text-destructive">*</span>
         </label>
         <input
@@ -428,7 +428,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
       {/* Description */}
       <div>
-        <label className="block text-sm font-bold mb-2">وصف مختصر</label>
+        <label className="block text-sm font-bold mb-2 text-black">وصف مختصر</label>
         <input
           type="text"
           value={description}
@@ -455,7 +455,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-bold mb-2">تاريخ الميلاد</label>
+              <label className="block text-sm font-bold mb-2 text-black">تاريخ الميلاد</label>
               <input
                 type="text"
                 value={birthDate}
@@ -466,8 +466,8 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
             </div>
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-bold">تاريخ الوفاة</label>
-                <label className="flex items-center gap-2 text-sm">
+                <label className="block text-sm font-bold text-black">تاريخ الوفاة</label>
+                <label className="flex items-center gap-2 text-sm text-black">
                   <input
                     type="checkbox"
                     checked={isAlive}
@@ -490,7 +490,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
           {/* Rank */}
           <div>
-            <label className="block text-sm font-bold mb-2">الرتبة</label>
+            <label className="block text-sm font-bold mb-2 text-black">الرتبة</label>
             <input
               type="text"
               value={rank}
@@ -502,7 +502,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
           {/* Mosques served */}
           <div>
-            <label className="block text-sm font-bold mb-2">المساجد التي عمل فيها</label>
+            <label className="block text-sm font-bold mb-2 text-black">المساجد التي عمل فيها</label>
             <div className="space-y-3">
               {mosquesServed.map((m, idx) => (
                 <div key={idx} className="bg-white p-3 rounded border border-border-light space-y-2">
@@ -554,7 +554,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
           {/* Custom fields */}
           <div>
-            <label className="block text-sm font-bold mb-2">معلومات إضافية</label>
+            <label className="block text-sm font-bold mb-2 text-black">معلومات إضافية</label>
             <div className="space-y-2">
               {customFields.map((f, idx) => (
                 <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
@@ -593,7 +593,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
           <h3 className="font-bold text-lg font-heading text-primary">معلومات المسجد</h3>
 
           <div>
-            <label className="block text-sm font-bold mb-2">نوع المسجد</label>
+            <label className="block text-sm font-bold mb-2 text-black">نوع المسجد</label>
             <select
               value={mosqueType}
               onChange={(e) => setMosqueType(e.target.value)}
@@ -610,7 +610,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
           </div>
 
           <div>
-            <label className="block text-sm font-bold mb-2">تاريخ البناء</label>
+            <label className="block text-sm font-bold mb-2 text-black">تاريخ البناء</label>
             <input
               type="text"
               value={dateBuilt}
@@ -622,7 +622,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
           {/* Founders */}
           <div>
-            <label className="block text-sm font-bold mb-2">المؤسسون</label>
+            <label className="block text-sm font-bold mb-2 text-black">المؤسسون</label>
             <div className="space-y-2">
               {founders.map((f, idx) => (
                 <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
@@ -658,7 +658,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
           {/* Imams served */}
           <div>
-            <label className="block text-sm font-bold mb-2">الأئمة الذين عملو فيه</label>
+            <label className="block text-sm font-bold mb-2 text-black">الأئمة الذين عملو فيه</label>
             <div className="space-y-2">
               {imamsServed.map((im, idx) => (
                 <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
@@ -710,7 +710,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
       {/* Image */}
       <div className="bg-bg-sidebar rounded-lg p-4 border border-border-light">
-        <label className="block text-sm font-bold mb-2">الصورة</label>
+        <label className="block text-sm font-bold mb-2 text-black">الصورة</label>
         <ImageUploader
           onImageInsert={() => {}}
           onImageSelected={handleImageSelected}
@@ -733,7 +733,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
 
       {/* YouTube Videos */}
       <div>
-        <label className="block text-sm font-bold mb-2">فيديوهات يوتيوب (اختياري)</label>
+        <label className="block text-sm font-bold mb-2 text-black">فيديوهات يوتيوب (اختياري)</label>
         <div className="space-y-2">
           {youtubeVideos.map((video, index) => (
             <div key={index} className="flex gap-2">
@@ -771,10 +771,10 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
       {/* Content */}
       <div>
         <div className="flex justify-between items-center mb-2">
-          <label className="block text-sm font-bold">
+          <label className="block text-sm font-bold text-black">
             محتوى المقال <span className="text-destructive">*</span>
           </label>
-          <label className="flex items-center gap-2 text-sm">
+          <label className="flex items-center gap-2 text-sm text-black">
             <input
               type="checkbox"
               checked={useRichText}

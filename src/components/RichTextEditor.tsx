@@ -51,16 +51,16 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
   }
 
   const toolbarButtons = [
-    { icon: Bold, label: 'Gras', action: () => insertMarkdown('**', '**') },
-    { icon: Italic, label: 'Italique', action: () => insertMarkdown('*', '*') },
-    { icon: Underline, label: 'Souligné', action: () => insertMarkdown('<u>', '</u>') },
-    { icon: Heading1, label: 'Grand titre', action: () => insertLineStart('# ') },
-    { icon: Heading2, label: 'Petit titre', action: () => insertLineStart('## ') },
-    { icon: List, label: 'Liste à puces', action: () => insertLineStart('- ') },
-    { icon: ListOrdered, label: 'Liste numérotée', action: () => insertLineStart('1. ') },
-    { icon: Quote, label: 'Citation', action: () => insertLineStart('> ') },
-    { icon: LinkIcon, label: 'Lien', action: () => insertMarkdown('[', '](url)') },
-    { icon: Code, label: 'Code', action: () => insertMarkdown('`', '`') },
+    { icon: Bold, label: 'عريض', action: () => insertMarkdown('**', '**') },
+    { icon: Italic, label: 'مائل', action: () => insertMarkdown('*', '*') },
+    { icon: Underline, label: 'تحته خط', action: () => insertMarkdown('<u>', '</u>') },
+    { icon: Heading1, label: 'عنوان كبير', action: () => insertLineStart('# ') },
+    { icon: Heading2, label: 'عنوان صغير', action: () => insertLineStart('## ') },
+    { icon: List, label: 'قائمة نقطية', action: () => insertLineStart('- ') },
+    { icon: ListOrdered, label: 'قائمة مرقمة', action: () => insertLineStart('1. ') },
+    { icon: Quote, label: 'اقتباس', action: () => insertLineStart('> ') },
+    { icon: LinkIcon, label: 'رابط', action: () => insertMarkdown('[', '](url)') },
+    { icon: Code, label: 'كود', action: () => insertMarkdown('`', '`') },
   ]
 
   return (
@@ -94,8 +94,8 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
       {/* Helper Text */}
       <div className="bg-gray-50 border-t border-gray-300 px-4 py-2 text-xs text-gray-600">
         <p className="flex items-center gap-2">
-          <span className="font-semibold">Astuce :</span>
-          <span>Utilisez les boutons ci-dessus pour formater votre texte facilement</span>
+          <span className="font-semibold">نصيحة:</span>
+          <span>استخدم الأزرار أعلاه لتنسيق النص بسهولة</span>
         </p>
       </div>
     </div>

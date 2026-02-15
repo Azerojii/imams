@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
-import { Edit, Trash2, Plus, BookOpen, Landmark, FileText } from 'lucide-react'
+import { Edit, Trash2, Plus, UserCircle, Landmark, FileText } from 'lucide-react'
 
 interface Article {
   slug: string
@@ -93,7 +93,7 @@ export default function AdminPage() {
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
                   <span className="flex items-center gap-1 text-text-secondary">
-                    <BookOpen size={14} /> أئمة
+                    <UserCircle size={14} /> أئمة
                   </span>
                   <span className="font-bold text-primary">{imamCount}</span>
                 </div>
@@ -145,7 +145,7 @@ export default function AdminPage() {
                       <p className="text-text-secondary text-sm mt-1">{article.description}</p>
                       <div className="flex gap-4 mt-2 text-xs text-text-secondary">
                         <span className="flex items-center gap-1">
-                          {article.category === 'أئمة' ? <BookOpen size={12} /> : <Landmark size={12} />}
+                          {article.category === 'أئمة' ? <UserCircle size={12} /> : <Landmark size={12} />}
                           {article.category}
                         </span>
                         <span>آخر تحديث: {article.lastUpdated}</span>

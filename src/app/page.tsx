@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BookOpen, Landmark, MapPin, ArrowLeft } from 'lucide-react'
+import { UserCircle, Landmark, MapPin, ArrowLeft } from 'lucide-react'
 import SearchBar from '@/components/SearchBar'
 import WikiHeader from '@/components/WikiHeader'
 import { getAllWikiMetadata } from '@/lib/wiki'
@@ -66,7 +66,7 @@ export default async function Home() {
           <Link href="/imams" className="card-islamic rounded-lg p-8 group hover:no-underline">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <BookOpen size={28} className="text-primary" />
+                <UserCircle size={28} className="text-primary" />
               </div>
               <div>
                 <h2 className="text-2xl font-heading font-bold text-primary">الأئمة</h2>
@@ -147,7 +147,7 @@ export default async function Home() {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         {article.articleType === 'imam' ? (
-                          <BookOpen size={14} className="text-accent-dark" />
+                          <UserCircle size={14} className="text-accent-dark" />
                         ) : (
                           <Landmark size={14} className="text-accent-dark" />
                         )}

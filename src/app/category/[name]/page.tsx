@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BookOpen, Landmark } from 'lucide-react'
+import { UserCircle, Landmark } from 'lucide-react'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
 import { getAllWikiMetadata } from '@/lib/wiki'
@@ -30,7 +30,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ name:
           </div>
 
           <h1 className="text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-2 flex items-center gap-3">
-            {isImamCategory ? <BookOpen size={32} /> : <Landmark size={32} />}
+            {isImamCategory ? <UserCircle size={32} /> : <Landmark size={32} />}
             {categoryName}
           </h1>
           <p className="text-text-secondary mb-6">{categoryArticles.length} مقال في هذا التصنيف</p>

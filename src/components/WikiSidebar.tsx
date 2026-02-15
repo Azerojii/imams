@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { BookOpen, Landmark, Home, MapPin, PenSquare, Settings, FileText } from 'lucide-react'
+import { UserCircle, Landmark, Home, MapPin, PenSquare, Settings, FileText } from 'lucide-react'
 
 export default function WikiSidebar() {
   return (
@@ -19,7 +19,7 @@ export default function WikiSidebar() {
             </li>
             <li>
               <Link href="/imams" className="flex items-center gap-2 text-primary hover:text-primary-light transition-colors">
-                <BookOpen size={15} />
+                <UserCircle size={15} />
                 الأئمة
               </Link>
             </li>

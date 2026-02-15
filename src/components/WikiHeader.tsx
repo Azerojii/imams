@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import SearchBar from './SearchBar'
 import UserMenu from './UserMenu'
-import { BookOpen, Landmark } from 'lucide-react'
+import { UserCircle, Landmark } from 'lucide-react'
 
 export default function WikiHeader() {
   return (
@@ -25,7 +25,7 @@ export default function WikiHeader() {
                 الرئيسية
               </Link>
               <Link href="/imams" className="text-white/80 hover:text-accent transition-colors hover:no-underline flex items-center gap-1">
-                <BookOpen size={14} />
+                <UserCircle size={14} />
                 الأئمة
               </Link>
               <Link href="/mosques" className="text-white/80 hover:text-accent transition-colors hover:no-underline flex items-center gap-1">

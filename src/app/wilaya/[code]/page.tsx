@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { MapPin, BookOpen, Landmark } from 'lucide-react'
+import { MapPin, UserCircle, Landmark } from 'lucide-react'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
 import { getArticlesByWilaya } from '@/lib/wiki'
@@ -58,7 +58,7 @@ export default async function WilayaPage({ params }: { params: Promise<{ code: s
               {imams.length > 0 && (
                 <section>
                   <h2 className="text-xl font-heading font-bold text-primary-dark mb-3 flex items-center gap-2">
-                    <BookOpen size={20} />
+                    <UserCircle size={20} />
                     الأئمة
                     <span className="text-sm text-text-secondary font-normal">({imams.length})</span>
                   </h2>

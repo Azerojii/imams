@@ -22,8 +22,8 @@ module.exports = {
         'bg-main': '#F0F4F6',
         'bg-card': '#FFFFFF',
         'bg-sidebar': '#E6ECF0',
-        'text-primary': '#F8F9FA',
-        'text-secondary': '#CBD5E0',
+        'text-primary': '#1A1F24',
+        'text-secondary': '#4A5568',
         border: '#B0C4CE',
         'border-light': '#D1DEE5',
       },
@@ -35,7 +35,7 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
-            color: '#F8F9FA',
+            color: '#1A1F24',
             maxWidth: 'none',
             direction: 'rtl',
             textAlign: 'right',
