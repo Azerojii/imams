@@ -4,7 +4,6 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import Link from 'next/link'
-import Image from 'next/image'
 
 interface MarkdownRendererProps {
   content: string
@@ -36,16 +35,15 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
           if (!src) return null
           return (
             // eslint-disable-next-line @next/next/no-img-element
-            <img 
-              src={src} 
-              alt={alt || 'Image'} 
+            <img
+              src={src}
+              alt={alt || 'Image'}
               className="rounded-lg shadow-md mx-auto my-6 max-w-full"
               {...props}
             />
           )
         },
         a: ({ node, href, children, ...props }) => {
-          // Handle WikiLinks that have been converted to /wiki/... format
           if (href?.startsWith('/wiki/')) {
             return (
               <Link href={href} className="text-primary no-underline hover:underline">
@@ -53,7 +51,14 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
               </Link>
             )
           }
-          // External links
+          // Footnote back-references
+          if (href?.startsWith('#')) {
+            return (
+              <a href={href} className="text-primary no-underline hover:underline" {...props}>
+                {children}
+              </a>
+            )
+          }
           return (
             <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
               {children}
@@ -76,6 +81,19 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
             .replace(/\s+/g, '-')
           return <h3 id={id} {...props}>{children}</h3>
         },
+        // Style the footnotes section
+        section: ({ node, children, ...props }) => {
+          const className = (props as any).className || ''
+          if (className.includes('footnotes')) {
+            return (
+              <section className="footnotes border-t border-border-light mt-8 pt-4 text-sm" {...props}>
+                <h2 className="text-lg font-heading font-bold text-primary mb-2 border-b-0">الهوامش</h2>
+                {children}
+              </section>
+            )
+          }
+          return <section {...props}>{children}</section>
+        },
       }}
       >
         {content}
@@ -83,4 +101,3 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
     </div>
   )
 }
-

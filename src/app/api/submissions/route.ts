@@ -38,8 +38,10 @@ export async function POST(request: Request) {
     const {
       title, description, category, content, submitterName, submitterEmail,
       articleType, wilaya, commune, wilayaCode, image, youtubeVideos,
-      birthDate, deathDate, isAlive, rank, mosquesServed, customFields,
+      birthDate, deathDate, isAlive, rank, ranks, mosquesServed, customFields,
       mosqueType, dateBuilt, founders, imamsServed,
+      prayerHallArea, prayerHallCapacity, minaretHeight, totalArea, otherFacilities, customMosqueFields,
+      phone, email, whatsapp, facebook, youtubeChannel,
     } = body
 
     if (!title || !content || !submitterName || !submitterEmail) {
@@ -56,7 +58,7 @@ export async function POST(request: Request) {
       title,
       description: description || '',
       content,
-      category: category || (articleType === 'imam' ? 'أئمة' : 'مساجد'),
+      category: category || 'أئمة',
       article_type: articleType || 'imam',
       submitter_name: submitterName,
       submitter_email: submitterEmail,
@@ -72,11 +74,19 @@ export async function POST(request: Request) {
     }
     if (youtubeVideos?.length) row.youtube_videos = youtubeVideos
 
-    if (articleType === 'imam') {
+    // Contact info
+    if (phone) row.phone = phone
+    if (email) row.email = email
+    if (whatsapp) row.whatsapp = whatsapp
+    if (facebook) row.facebook = facebook
+    if (youtubeChannel) row.youtube_channel = youtubeChannel
+
+    if (articleType === 'imam' || articleType === 'quran_teacher' || articleType === 'mourshida') {
       if (birthDate) row.birth_date = birthDate
       if (deathDate) row.death_date = deathDate
       if (isAlive !== undefined) row.is_alive = isAlive
       if (rank) row.rank = rank
+      if (ranks?.length) row.ranks = ranks
       if (mosquesServed?.length) row.mosques_served = mosquesServed
       if (customFields?.length) row.custom_fields = customFields
     }
@@ -86,6 +96,12 @@ export async function POST(request: Request) {
       if (dateBuilt) row.date_built = dateBuilt
       if (founders?.length) row.founders = founders
       if (imamsServed?.length) row.imams_served = imamsServed
+      if (prayerHallArea) row.prayer_hall_area = prayerHallArea
+      if (prayerHallCapacity) row.prayer_hall_capacity = prayerHallCapacity
+      if (minaretHeight) row.minaret_height = minaretHeight
+      if (totalArea) row.total_area = totalArea
+      if (otherFacilities) row.other_facilities = otherFacilities
+      if (customMosqueFields?.length) row.custom_mosque_fields = customMosqueFields
     }
 
     const { data, error } = await supabase

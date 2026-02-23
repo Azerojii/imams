@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { checkArticleExists } from '@/lib/wiki'
-import type { ImamReference, Founder } from '@/lib/wiki'
+import type { ImamReference, Founder, CustomField } from '@/lib/wiki'
+import { Phone, Mail, MessageCircle, Facebook, Youtube } from 'lucide-react'
 
 interface MosqueInfoboxProps {
   title: string
@@ -14,6 +15,17 @@ interface MosqueInfoboxProps {
   commune?: string
   founders?: Founder[]
   imamsServed?: ImamReference[]
+  prayerHallArea?: string
+  prayerHallCapacity?: string
+  minaretHeight?: string
+  totalArea?: string
+  otherFacilities?: string
+  customMosqueFields?: CustomField[]
+  phone?: string
+  email?: string
+  whatsapp?: string
+  facebook?: string
+  youtubeChannel?: string
 }
 
 async function ImamLink({ imam }: { imam: ImamReference }) {
@@ -39,6 +51,17 @@ export default async function MosqueInfobox({
   commune,
   founders,
   imamsServed,
+  prayerHallArea,
+  prayerHallCapacity,
+  minaretHeight,
+  totalArea,
+  otherFacilities,
+  customMosqueFields,
+  phone,
+  email,
+  whatsapp,
+  facebook,
+  youtubeChannel,
 }: MosqueInfoboxProps) {
   return (
     <div className="infobox w-full">
@@ -85,8 +108,55 @@ export default async function MosqueInfobox({
               <td className="py-1.5 px-3">{commune}</td>
             </tr>
           )}
+          {prayerHallArea && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium">مساحة قاعة الصلاة</td>
+              <td className="py-1.5 px-3">{prayerHallArea}</td>
+            </tr>
+          )}
+          {prayerHallCapacity && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium">عدد المصلين</td>
+              <td className="py-1.5 px-3">{prayerHallCapacity}</td>
+            </tr>
+          )}
+          {minaretHeight && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium">طول المئذنة</td>
+              <td className="py-1.5 px-3">{minaretHeight}</td>
+            </tr>
+          )}
+          {totalArea && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium">المساحة الكلية</td>
+              <td className="py-1.5 px-3">{totalArea}</td>
+            </tr>
+          )}
+          {otherFacilities && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium">مرافق أخرى</td>
+              <td className="py-1.5 px-3">{otherFacilities}</td>
+            </tr>
+          )}
         </tbody>
       </table>
+
+      {/* Custom Mosque Fields */}
+      {customMosqueFields && customMosqueFields.length > 0 && (
+        <>
+          <div className="infobox-section-header">معلومات إضافية</div>
+          <table className="w-full border-collapse text-sm">
+            <tbody>
+              {customMosqueFields.map((field, idx) => (
+                <tr key={idx} className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">{field.label}</td>
+                  <td className="py-1.5 px-3">{field.value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
 
       {/* Founders */}
       {founders && founders.length > 0 && (
@@ -134,6 +204,61 @@ export default async function MosqueInfobox({
                   </td>
                 </tr>
               ))}
+            </tbody>
+          </table>
+        </>
+      )}
+
+      {/* Contact Info */}
+      {(phone || email || whatsapp || facebook || youtubeChannel) && (
+        <>
+          <div className="infobox-section-header">معلومات الاتصال</div>
+          <table className="w-full border-collapse text-sm">
+            <tbody>
+              {phone && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                    <span className="flex items-center gap-1"><Phone size={12} /> الهاتف</span>
+                  </td>
+                  <td className="py-1.5 px-3" dir="ltr">{phone}</td>
+                </tr>
+              )}
+              {whatsapp && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium">
+                    <span className="flex items-center gap-1"><MessageCircle size={12} /> واتساب</span>
+                  </td>
+                  <td className="py-1.5 px-3" dir="ltr">{whatsapp}</td>
+                </tr>
+              )}
+              {email && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium">
+                    <span className="flex items-center gap-1"><Mail size={12} /> إيميل</span>
+                  </td>
+                  <td className="py-1.5 px-3" dir="ltr">{email}</td>
+                </tr>
+              )}
+              {facebook && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium">
+                    <span className="flex items-center gap-1"><Facebook size={12} /> فيسبوك</span>
+                  </td>
+                  <td className="py-1.5 px-3">
+                    <a href={facebook} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs">رابط</a>
+                  </td>
+                </tr>
+              )}
+              {youtubeChannel && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium">
+                    <span className="flex items-center gap-1"><Youtube size={12} /> يوتيوب</span>
+                  </td>
+                  <td className="py-1.5 px-3">
+                    <a href={youtubeChannel} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs">رابط</a>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </>

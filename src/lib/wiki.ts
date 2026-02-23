@@ -28,13 +28,19 @@ export interface Founder {
   rutba?: string
 }
 
+export interface RankEntry {
+  rank: string
+  fromDate?: string
+  toDate?: string
+}
+
 export interface WikiArticle {
   slug: string
   title: string
   description: string
   lastUpdated: string
   category: string
-  articleType: 'imam' | 'mosque'
+  articleType: 'imam' | 'mosque' | 'quran_teacher' | 'mourshida'
   content: string
   rawContent: string
   // Shared
@@ -46,11 +52,21 @@ export interface WikiArticle {
     caption: string
   }
   youtubeVideos?: string[]
-  // Imam-specific
+  // Contact info (all types)
+  phone?: string
+  email?: string
+  whatsapp?: string
+  facebook?: string
+  youtubeChannel?: string
+  // Author
+  authorName?: string
+  authorEmail?: string
+  // Imam-specific (also used by quran_teacher & mourshida)
   birthDate?: string
   deathDate?: string
   isAlive?: boolean
   rank?: string
+  ranks?: RankEntry[]
   mosquesServed?: MosqueReference[]
   customFields?: CustomField[]
   // Mosque-specific
@@ -58,6 +74,12 @@ export interface WikiArticle {
   dateBuilt?: string
   founders?: Founder[]
   imamsServed?: ImamReference[]
+  prayerHallArea?: string
+  prayerHallCapacity?: string
+  minaretHeight?: string
+  totalArea?: string
+  otherFacilities?: string
+  customMosqueFields?: CustomField[]
 }
 
 export interface WikiMetadata {
@@ -66,9 +88,11 @@ export interface WikiMetadata {
   description: string
   category: string
   lastUpdated: string
-  articleType: 'imam' | 'mosque'
+  articleType: 'imam' | 'mosque' | 'quran_teacher' | 'mourshida'
   wilaya?: string
   commune?: string
+  authorName?: string
+  imageSrc?: string
 }
 
 /**
@@ -116,7 +140,7 @@ function rowToArticle(row: any): WikiArticle {
     description: row.description || '',
     lastUpdated: row.last_updated || '',
     category: row.category || '',
-    articleType: row.article_type as 'imam' | 'mosque',
+    articleType: row.article_type as WikiArticle['articleType'],
     content: parseWikiLinks(row.content || ''),
     rawContent: row.content || '',
     wilaya: row.wilaya || undefined,
@@ -124,16 +148,34 @@ function rowToArticle(row: any): WikiArticle {
     wilayaCode: row.wilaya_code || undefined,
     image: row.image_src ? { src: row.image_src, caption: row.image_caption || '' } : undefined,
     youtubeVideos: row.youtube_videos?.length ? row.youtube_videos : undefined,
+    // Contact info
+    phone: row.phone || undefined,
+    email: row.email || undefined,
+    whatsapp: row.whatsapp || undefined,
+    facebook: row.facebook || undefined,
+    youtubeChannel: row.youtube_channel || undefined,
+    // Author
+    authorName: row.author_name || undefined,
+    authorEmail: row.author_email || undefined,
+    // Imam fields
     birthDate: row.birth_date || undefined,
     deathDate: row.death_date || undefined,
     isAlive: row.is_alive ?? undefined,
     rank: row.rank || undefined,
+    ranks: row.ranks?.length ? row.ranks : undefined,
     mosquesServed: row.mosques_served?.length ? row.mosques_served : undefined,
     customFields: row.custom_fields?.length ? row.custom_fields : undefined,
+    // Mosque fields
     mosqueType: row.mosque_type || undefined,
     dateBuilt: row.date_built || undefined,
     founders: row.founders?.length ? row.founders : undefined,
     imamsServed: row.imams_served?.length ? row.imams_served : undefined,
+    prayerHallArea: row.prayer_hall_area || undefined,
+    prayerHallCapacity: row.prayer_hall_capacity || undefined,
+    minaretHeight: row.minaret_height || undefined,
+    totalArea: row.total_area || undefined,
+    otherFacilities: row.other_facilities || undefined,
+    customMosqueFields: row.custom_mosque_fields?.length ? row.custom_mosque_fields : undefined,
   }
 }
 
@@ -144,12 +186,16 @@ function rowToMetadata(row: any): WikiMetadata {
     title: row.title,
     description: row.description || '',
     category: row.category || '',
-    articleType: row.article_type as 'imam' | 'mosque',
+    articleType: row.article_type as WikiMetadata['articleType'],
     wilaya: row.wilaya || undefined,
     commune: row.commune || undefined,
     lastUpdated: row.last_updated || '',
+    authorName: row.author_name || undefined,
+    imageSrc: row.image_src || undefined,
   }
 }
+
+const METADATA_COLUMNS = 'slug, title, description, category, article_type, wilaya, commune, last_updated, author_name, image_src'
 
 /**
  * Check if an article exists by slug
@@ -188,7 +234,7 @@ export async function getAllWikiSlugs(): Promise<string[]> {
 export async function getAllWikiMetadata(): Promise<WikiMetadata[]> {
   const { data, error } = await supabase
     .from('articles')
-    .select('slug, title, description, category, article_type, wilaya, commune, last_updated')
+    .select(METADATA_COLUMNS)
 
   if (error || !data) return []
   return data.map(rowToMetadata)
@@ -200,7 +246,7 @@ export async function getAllWikiMetadata(): Promise<WikiMetadata[]> {
 export async function getImams(): Promise<WikiMetadata[]> {
   const { data, error } = await supabase
     .from('articles')
-    .select('slug, title, description, category, article_type, wilaya, commune, last_updated')
+    .select(METADATA_COLUMNS)
     .eq('article_type', 'imam')
 
   if (error || !data) return []
@@ -213,8 +259,34 @@ export async function getImams(): Promise<WikiMetadata[]> {
 export async function getMosques(): Promise<WikiMetadata[]> {
   const { data, error } = await supabase
     .from('articles')
-    .select('slug, title, description, category, article_type, wilaya, commune, last_updated')
+    .select(METADATA_COLUMNS)
     .eq('article_type', 'mosque')
+
+  if (error || !data) return []
+  return data.map(rowToMetadata)
+}
+
+/**
+ * Get all quran teacher articles
+ */
+export async function getQuranTeachers(): Promise<WikiMetadata[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select(METADATA_COLUMNS)
+    .eq('article_type', 'quran_teacher')
+
+  if (error || !data) return []
+  return data.map(rowToMetadata)
+}
+
+/**
+ * Get all mourshida articles
+ */
+export async function getMourshibat(): Promise<WikiMetadata[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select(METADATA_COLUMNS)
+    .eq('article_type', 'mourshida')
 
   if (error || !data) return []
   return data.map(rowToMetadata)
@@ -226,7 +298,7 @@ export async function getMosques(): Promise<WikiMetadata[]> {
 export async function getArticlesByWilaya(wilaya: string): Promise<WikiMetadata[]> {
   const { data, error } = await supabase
     .from('articles')
-    .select('slug, title, description, category, article_type, wilaya, commune, last_updated')
+    .select(METADATA_COLUMNS)
     .eq('wilaya', wilaya)
 
   if (error || !data) return []
@@ -276,7 +348,7 @@ export async function getWikiArticle(slug: string): Promise<WikiArticle | null> 
 export async function searchArticles(query: string): Promise<WikiMetadata[]> {
   const { data, error } = await supabase
     .from('articles')
-    .select('slug, title, description, category, article_type, wilaya, commune, last_updated')
+    .select(METADATA_COLUMNS)
     .or(`title.ilike.%${query}%,description.ilike.%${query}%,wilaya.ilike.%${query}%`)
 
   if (error || !data) return []

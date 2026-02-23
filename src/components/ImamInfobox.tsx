@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { checkArticleExists } from '@/lib/wiki'
-import type { MosqueReference, CustomField } from '@/lib/wiki'
+import type { MosqueReference, CustomField, RankEntry } from '@/lib/wiki'
+import { Phone, Mail, MessageCircle, Facebook, Youtube } from 'lucide-react'
 
 interface ImamInfoboxProps {
   title: string
@@ -12,10 +13,16 @@ interface ImamInfoboxProps {
   deathDate?: string
   isAlive?: boolean
   rank?: string
+  ranks?: RankEntry[]
   wilaya?: string
   commune?: string
   mosquesServed?: MosqueReference[]
   customFields?: CustomField[]
+  phone?: string
+  email?: string
+  whatsapp?: string
+  facebook?: string
+  youtubeChannel?: string
 }
 
 async function MosqueLink({ mosque }: { mosque: MosqueReference }) {
@@ -23,12 +30,12 @@ async function MosqueLink({ mosque }: { mosque: MosqueReference }) {
   return exists && mosque.slug ? (
     <Link
       href={`/wiki/${mosque.slug}`}
-      className="text-primary hover:underline font-medium"
+      className="text-primary hover:underline font-bold text-base"
     >
       {mosque.name}
     </Link>
   ) : (
-    <span className="text-text-secondary">{mosque.name}</span>
+    <span className="font-bold text-base text-text-primary">{mosque.name}</span>
   )
 }
 
@@ -39,10 +46,16 @@ export default async function ImamInfobox({
   deathDate,
   isAlive,
   rank,
+  ranks,
   wilaya,
   commune,
   mosquesServed,
   customFields,
+  phone,
+  email,
+  whatsapp,
+  facebook,
+  youtubeChannel,
 }: ImamInfoboxProps) {
   return (
     <div className="infobox w-full">
@@ -65,12 +78,29 @@ export default async function ImamInfobox({
       <div className="infobox-section-header">معلومات شخصية</div>
       <table className="w-full border-collapse text-sm">
         <tbody>
-          {rank && (
+          {/* Ranks display */}
+          {ranks && ranks.length > 0 ? (
+            ranks.map((r, idx) => (
+              <tr key={idx} className="border-t border-border-light">
+                <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                  {idx === 0 ? 'الرتبة' : ''}
+                </td>
+                <td className="py-1.5 px-3">
+                  <span className="font-semibold">{r.rank}</span>
+                  {(r.fromDate || r.toDate) && (
+                    <span className="text-xs text-text-secondary mr-1">
+                      ({r.fromDate}{r.fromDate && r.toDate ? ' - ' : ''}{r.toDate})
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))
+          ) : rank ? (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">الرتبة</td>
               <td className="py-1.5 px-3">{rank}</td>
             </tr>
-          )}
+          ) : null}
           {birthDate && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">الميلاد</td>
@@ -128,7 +158,7 @@ export default async function ImamInfobox({
             <tbody>
               {mosquesServed.map((mosque, idx) => (
                 <tr key={idx} className="border-t border-border-light">
-                  <td className="py-1.5 px-3">
+                  <td className="py-2 px-3">
                     <div>
                       <MosqueLink mosque={mosque} />
                       {(mosque.wilaya || mosque.commune) && (
@@ -138,7 +168,7 @@ export default async function ImamInfobox({
                       )}
                     </div>
                   </td>
-                  <td className="py-1.5 px-3 text-xs text-text-secondary text-left whitespace-nowrap align-top">
+                  <td className="py-2 px-3 text-xs text-text-secondary text-left whitespace-nowrap align-top">
                     {mosque.startDate && mosque.endDate
                       ? `${mosque.startDate} - ${mosque.endDate}`
                       : mosque.startDate
@@ -147,6 +177,61 @@ export default async function ImamInfobox({
                   </td>
                 </tr>
               ))}
+            </tbody>
+          </table>
+        </>
+      )}
+
+      {/* Contact Info */}
+      {(phone || email || whatsapp || facebook || youtubeChannel) && (
+        <>
+          <div className="infobox-section-header">معلومات الاتصال</div>
+          <table className="w-full border-collapse text-sm">
+            <tbody>
+              {phone && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                    <span className="flex items-center gap-1"><Phone size={12} /> الهاتف</span>
+                  </td>
+                  <td className="py-1.5 px-3" dir="ltr">{phone}</td>
+                </tr>
+              )}
+              {whatsapp && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium">
+                    <span className="flex items-center gap-1"><MessageCircle size={12} /> واتساب</span>
+                  </td>
+                  <td className="py-1.5 px-3" dir="ltr">{whatsapp}</td>
+                </tr>
+              )}
+              {email && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium">
+                    <span className="flex items-center gap-1"><Mail size={12} /> إيميل</span>
+                  </td>
+                  <td className="py-1.5 px-3" dir="ltr">{email}</td>
+                </tr>
+              )}
+              {facebook && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium">
+                    <span className="flex items-center gap-1"><Facebook size={12} /> فيسبوك</span>
+                  </td>
+                  <td className="py-1.5 px-3">
+                    <a href={facebook} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs">رابط</a>
+                  </td>
+                </tr>
+              )}
+              {youtubeChannel && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium">
+                    <span className="flex items-center gap-1"><Youtube size={12} /> يوتيوب</span>
+                  </td>
+                  <td className="py-1.5 px-3">
+                    <a href={youtubeChannel} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs">رابط</a>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </>

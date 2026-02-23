@@ -40,9 +40,25 @@ export async function GET(
       birthDate: data.birth_date,
       deathDate: data.death_date,
       isAlive: data.is_alive,
+      rank: data.rank,
+      ranks: data.ranks,
       mosquesServed: data.mosques_served,
+      customFields: data.custom_fields,
+      mosqueType: data.mosque_type,
       dateBuilt: data.date_built,
+      founders: data.founders,
       imamsServed: data.imams_served,
+      prayerHallArea: data.prayer_hall_area,
+      prayerHallCapacity: data.prayer_hall_capacity,
+      minaretHeight: data.minaret_height,
+      totalArea: data.total_area,
+      otherFacilities: data.other_facilities,
+      customMosqueFields: data.custom_mosque_fields,
+      phone: data.phone,
+      email: data.email,
+      whatsapp: data.whatsapp,
+      facebook: data.facebook,
+      youtubeChannel: data.youtube_channel,
       submitterName: data.submitter_name,
       submitterEmail: data.submitter_email,
       submittedAt: data.submitted_at,
@@ -72,7 +88,6 @@ export async function PUT(
 
     const { id } = await params
 
-    // Fetch the submission
     const { data: submission, error: fetchError } = await supabase
       .from('submissions')
       .select('*')
@@ -86,7 +101,6 @@ export async function PUT(
     if (action === 'approve') {
       const slug = submission.title.trim().replace(/\s+/g, '_')
 
-      // Insert into articles table
       const articleRow: Record<string, unknown> = {
         slug,
         title: submission.title,
@@ -103,9 +117,28 @@ export async function PUT(
         birth_date: submission.birth_date,
         death_date: submission.death_date,
         is_alive: submission.is_alive,
+        rank: submission.rank,
+        ranks: submission.ranks || [],
         mosques_served: submission.mosques_served || [],
+        custom_fields: submission.custom_fields || [],
+        mosque_type: submission.mosque_type,
         date_built: submission.date_built,
+        founders: submission.founders || [],
         imams_served: submission.imams_served || [],
+        prayer_hall_area: submission.prayer_hall_area,
+        prayer_hall_capacity: submission.prayer_hall_capacity,
+        minaret_height: submission.minaret_height,
+        total_area: submission.total_area,
+        other_facilities: submission.other_facilities,
+        custom_mosque_fields: submission.custom_mosque_fields || [],
+        phone: submission.phone,
+        email: submission.email,
+        whatsapp: submission.whatsapp,
+        facebook: submission.facebook,
+        youtube_channel: submission.youtube_channel,
+        // Copy submitter as author
+        author_name: submission.submitter_name,
+        author_email: submission.submitter_email,
         last_updated: new Date().toISOString().split('T')[0],
       }
 
@@ -119,7 +152,6 @@ export async function PUT(
         )
       }
 
-      // Mark submission as approved
       await supabase
         .from('submissions')
         .update({ status: 'approved' })

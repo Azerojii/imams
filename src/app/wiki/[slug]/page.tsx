@@ -9,10 +9,52 @@ import MosqueInfobox from '@/components/MosqueInfobox'
 import EditButton from '@/components/EditButton'
 import MarkdownRenderer from '@/components/MarkdownRenderer'
 import YouTubeVideos from '@/components/YouTubeVideos'
-import { UserCircle, Landmark } from 'lucide-react'
+import PrintButton from '@/components/PrintButton'
+import SuggestEditButton from '@/components/SuggestEditButton'
+import { UserCircle, Landmark, BookOpen, Heart } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+
+function getTypeIcon(type: string) {
+  switch (type) {
+    case 'imam': return <UserCircle size={12} />
+    case 'mosque': return <Landmark size={12} />
+    case 'quran_teacher': return <BookOpen size={12} />
+    case 'mourshida': return <Heart size={12} />
+    default: return <UserCircle size={12} />
+  }
+}
+
+function getTypeLabel(type: string) {
+  switch (type) {
+    case 'imam': return 'إمام'
+    case 'mosque': return 'مسجد'
+    case 'quran_teacher': return 'معلم قرآن'
+    case 'mourshida': return 'مرشدة دينية'
+    default: return type
+  }
+}
+
+function getTypeListPath(type: string) {
+  switch (type) {
+    case 'imam': return '/imams'
+    case 'mosque': return '/mosques'
+    case 'quran_teacher': return '/quran-teachers'
+    case 'mourshida': return '/mourshidat'
+    default: return '/imams'
+  }
+}
+
+function getTypeCategoryLabel(type: string) {
+  switch (type) {
+    case 'imam': return 'الأئمة'
+    case 'mosque': return 'المساجد'
+    case 'quran_teacher': return 'معلمو القرآن'
+    case 'mourshida': return 'المرشدات'
+    default: return 'الأئمة'
+  }
+}
 
 export async function generateStaticParams() {
   const slugs = await getAllWikiSlugs()
@@ -42,7 +84,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
   }
 
   const toc = generateTableOfContents(article.rawContent)
-  const isImam = article.articleType === 'imam'
+  const isImamLike = article.articleType === 'imam' || article.articleType === 'quran_teacher' || article.articleType === 'mourshida'
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -53,17 +95,17 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
 
         <main className="flex-1 px-6 py-4 max-w-[860px]">
           {/* Breadcrumbs */}
-          <div className="text-sm text-text-secondary mb-4 flex items-center gap-2">
+          <div className="text-sm text-text-secondary mb-4 flex items-center gap-2 print:hidden">
             <Link href="/" className="text-primary hover:underline">
               الرئيسية
             </Link>
             <span className="text-border">‹</span>
             <Link
-              href={isImam ? '/imams' : '/mosques'}
+              href={getTypeListPath(article.articleType)}
               className="text-primary hover:underline flex items-center gap-1"
             >
-              {isImam ? <UserCircle size={12} /> : <Landmark size={12} />}
-              {isImam ? 'الأئمة' : 'المساجد'}
+              {getTypeIcon(article.articleType)}
+              {getTypeCategoryLabel(article.articleType)}
             </Link>
             {article.wilaya && (
               <>
@@ -80,8 +122,12 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             <span className="text-text-primary">{article.title}</span>
           </div>
 
-          {/* Edit Button */}
-          <EditButton slug={slug} />
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2 print:hidden">
+            <EditButton slug={slug} />
+            <PrintButton />
+            <SuggestEditButton slug={slug} articleTitle={article.title} />
+          </div>
 
           {/* Article Title */}
           <h1 className="text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-4">
@@ -91,8 +137,8 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
           {/* Type badge */}
           <div className="flex items-center gap-2 mb-4">
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-primary/10 text-primary text-xs font-semibold rounded">
-              {isImam ? <UserCircle size={12} /> : <Landmark size={12} />}
-              {isImam ? 'إمام' : 'مسجد'}
+              {getTypeIcon(article.articleType)}
+              {getTypeLabel(article.articleType)}
             </span>
             {article.wilaya && (
               <span className="text-xs text-text-secondary">
@@ -100,6 +146,13 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
               </span>
             )}
           </div>
+
+          {/* Description as introductory sentence */}
+          {article.description && (
+            <p className="text-text-secondary text-base mb-6 leading-relaxed border-r-4 border-accent pr-4">
+              {article.description}
+            </p>
+          )}
 
           <div className="flex gap-6">
             <div className="flex-1">
@@ -125,13 +178,21 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                       {article.category}
                     </Link>
                   </p>
+                  {article.authorName && (
+                    <p className="mt-2">
+                      <strong>الكاتب:</strong> {article.authorName}
+                      {article.authorEmail && (
+                        <span className="text-text-secondary"> ({article.authorEmail})</span>
+                      )}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Right Sidebar */}
             <aside className="w-72 flex-shrink-0">
-              {isImam ? (
+              {isImamLike ? (
                 <ImamInfobox
                   title={article.title}
                   image={article.image}
@@ -139,10 +200,16 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   deathDate={article.deathDate}
                   isAlive={article.isAlive}
                   rank={article.rank}
+                  ranks={article.ranks}
                   wilaya={article.wilaya}
                   commune={article.commune}
                   mosquesServed={article.mosquesServed}
                   customFields={article.customFields}
+                  phone={article.phone}
+                  email={article.email}
+                  whatsapp={article.whatsapp}
+                  facebook={article.facebook}
+                  youtubeChannel={article.youtubeChannel}
                 />
               ) : (
                 <MosqueInfobox
@@ -154,6 +221,17 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   commune={article.commune}
                   founders={article.founders}
                   imamsServed={article.imamsServed}
+                  prayerHallArea={article.prayerHallArea}
+                  prayerHallCapacity={article.prayerHallCapacity}
+                  minaretHeight={article.minaretHeight}
+                  totalArea={article.totalArea}
+                  otherFacilities={article.otherFacilities}
+                  customMosqueFields={article.customMosqueFields}
+                  phone={article.phone}
+                  email={article.email}
+                  whatsapp={article.whatsapp}
+                  facebook={article.facebook}
+                  youtubeChannel={article.youtubeChannel}
                 />
               )}
               {toc.length > 0 && <TableOfContents items={toc} />}
