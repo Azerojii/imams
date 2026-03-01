@@ -37,8 +37,12 @@ export async function PUT(
     const {
       title, description, category, content, articleType,
       wilaya, commune, wilayaCode, image, youtubeVideos,
-      birthDate, deathDate, isAlive, rank, mosquesServed,
-      dateBuilt, founders, imamsServed,
+      birthDate, deathDate, isAlive, rank, ranks, mosquesServed, customFields,
+      mosqueType, dateBuilt, founders, imamsServed,
+      prayerHallArea, prayerHallCapacity, minaretHeight, totalArea, otherFacilities, customMosqueFields,
+      phone, email, whatsapp, facebook, youtubeChannel, website,
+      dateInauguration, mosqueGallery,
+      authorName,
     } = body
 
     if (!title || !content) {
@@ -83,14 +87,39 @@ export async function PUT(
     }
     if (youtubeVideos !== undefined) updates.youtube_videos = youtubeVideos || []
 
+    // Contact info
+    if (phone !== undefined) updates.phone = phone || null
+    if (email !== undefined) updates.email = email || null
+    if (whatsapp !== undefined) updates.whatsapp = whatsapp || null
+    if (facebook !== undefined) updates.facebook = facebook || null
+    if (youtubeChannel !== undefined) updates.youtube_channel = youtubeChannel || null
+    if (website !== undefined) updates.website = website || null
+
+    // Imam-like fields
     if (birthDate !== undefined) updates.birth_date = birthDate || null
     if (deathDate !== undefined) updates.death_date = deathDate || null
     if (isAlive !== undefined) updates.is_alive = isAlive
     if (rank !== undefined) updates.rank = rank || null
+    if (ranks !== undefined) updates.ranks = ranks || []
     if (mosquesServed !== undefined) updates.mosques_served = mosquesServed || []
+    if (customFields !== undefined) updates.custom_fields = customFields || []
+
+    // Mosque fields
+    if (mosqueType !== undefined) updates.mosque_type = mosqueType || null
     if (dateBuilt !== undefined) updates.date_built = dateBuilt || null
     if (founders !== undefined) updates.founders = founders || []
     if (imamsServed !== undefined) updates.imams_served = imamsServed || []
+    if (prayerHallArea !== undefined) updates.prayer_hall_area = prayerHallArea || null
+    if (prayerHallCapacity !== undefined) updates.prayer_hall_capacity = prayerHallCapacity || null
+    if (minaretHeight !== undefined) updates.minaret_height = minaretHeight || null
+    if (totalArea !== undefined) updates.total_area = totalArea || null
+    if (otherFacilities !== undefined) updates.other_facilities = otherFacilities || null
+    if (customMosqueFields !== undefined) updates.custom_mosque_fields = customMosqueFields || []
+    if (dateInauguration !== undefined) updates.date_inauguration = dateInauguration || null
+    if (mosqueGallery !== undefined) updates.mosque_gallery = mosqueGallery || []
+
+    // Author (editor name for last modification)
+    if (authorName !== undefined) updates.author_name = authorName || null
 
     const { error } = await supabase
       .from('articles')

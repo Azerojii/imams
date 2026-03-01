@@ -9,7 +9,10 @@
       "Bash(git push:*)",
       "Bash(npx tsc:*)",
       "Bash(npm ls:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(cd /c/Users/dalil/Desktop/GMP/Prog/imams && vercel whoami 2>&1)",
+      "Bash(head:*)",
+      "Bash(find:*)"
     ]
   }
 }

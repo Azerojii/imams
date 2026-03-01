@@ -6,6 +6,7 @@ import { Loader2, Plus, Trash2, UserCircle, Landmark, BookOpen, Heart } from 'lu
 import LocationPicker from './LocationPicker'
 import ImageUploader from './ImageUploader'
 import RichTextEditor from './RichTextEditor'
+import type { WikiArticle } from '@/lib/wiki'
 
 interface MosqueRef {
   name: string
@@ -70,7 +71,7 @@ function getCategoryLabel(type: ArticleType): string {
   switch (type) {
     case 'imam': return 'أئمة'
     case 'mosque': return 'مساجد'
-    case 'quran_teacher': return 'معلمو قرآن'
+    case 'quran_teacher': return 'معلمو القرآن الكريم'
     case 'mourshida': return 'مرشدات دينيات'
   }
 }
@@ -201,11 +202,13 @@ function MosqueLocationPicker({
 }
 
 interface ArticleFormProps {
-  mode: 'submit' | 'create'
+  mode: 'submit' | 'create' | 'edit'
   initialTitle?: string
+  initialData?: WikiArticle
+  slug?: string
 }
 
-export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProps) {
+export default function ArticleForm({ mode, initialTitle = '', initialData, slug }: ArticleFormProps) {
   const router = useRouter()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -254,9 +257,69 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
   const [otherFacilities, setOtherFacilities] = useState('')
   const [customMosqueFields, setCustomMosqueFields] = useState<CustomField[]>([])
 
+  // New fields
+  const [website, setWebsite] = useState('')
+  const [dateInauguration, setDateInauguration] = useState('')
+  const [mosqueGallery, setMosqueGallery] = useState<string[]>([])
+  const [mosqueTypeCustom, setMosqueTypeCustom] = useState(false)
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+
+  // Pre-fill form from initialData (edit mode)
+  useEffect(() => {
+    if (!initialData) return
+    setArticleType(initialData.articleType)
+    setTitle(initialData.title)
+    setDescription(initialData.description || '')
+    setContent(initialData.rawContent || '')
+    setWilaya(initialData.wilaya || '')
+    setCommune(initialData.commune || '')
+    setWilayaCode(initialData.wilayaCode || '')
+    setImage(initialData.image?.src || '')
+    setImageCaption(initialData.image?.caption || '')
+    setYoutubeVideos(initialData.youtubeVideos || [])
+    setPhone(initialData.phone || '')
+    setEmail(initialData.email || '')
+    setWhatsapp(initialData.whatsapp || '')
+    setFacebook(initialData.facebook || '')
+    setYoutubeChannel(initialData.youtubeChannel || '')
+    setWebsite(initialData.website || '')
+    // Imam-like
+    setBirthDate(initialData.birthDate || '')
+    setDeathDate(initialData.deathDate || '')
+    setIsAlive(initialData.isAlive !== false)
+    setRanks(initialData.ranks?.map(r => ({ rank: r.rank, fromDate: r.fromDate || '', toDate: r.toDate || '' })) || [])
+    setMosquesServed(initialData.mosquesServed?.map(m => ({
+      name: m.name, slug: m.slug || '', startDate: m.startDate || '', endDate: m.endDate || '',
+      wilaya: m.wilaya || '', commune: m.commune || '', wilayaCode: m.wilayaCode || ''
+    })) || [])
+    setCustomFields(initialData.customFields || [])
+    // Mosque
+    const mt = initialData.mosqueType || ''
+    const knownTypes = ['جامع الجزائر','مسجد تاريخي','مسجد رئيسي','مسجد وطني','مسجد محلي','مسجد حي','مسجد قطب','زاوية علمية']
+    if (mt && !knownTypes.includes(mt)) {
+      setMosqueType(mt)
+      setMosqueTypeCustom(true)
+    } else {
+      setMosqueType(mt)
+      setMosqueTypeCustom(false)
+    }
+    setDateBuilt(initialData.dateBuilt || '')
+    setDateInauguration(initialData.dateInauguration || '')
+    setFounders(initialData.founders?.map(f => ({ name: f.name, rutba: f.rutba || '' })) || [])
+    setImamsServed(initialData.imamsServed?.map(i => ({
+      name: i.name, slug: i.slug || '', startDate: i.startDate || '', endDate: i.endDate || '', rutba: i.rutba || ''
+    })) || [])
+    setPrayerHallArea(initialData.prayerHallArea || '')
+    setPrayerHallCapacity(initialData.prayerHallCapacity || '')
+    setMinaretHeight(initialData.minaretHeight || '')
+    setTotalArea(initialData.totalArea || '')
+    setOtherFacilities(initialData.otherFacilities || '')
+    setCustomMosqueFields(initialData.customMosqueFields || [])
+    setMosqueGallery(initialData.mosqueGallery || [])
+  }, [initialData])
 
   const handleLocationChange = (loc: { wilaya: string; commune: string; wilayaCode: string }) => {
     setWilaya(loc.wilaya)
@@ -352,6 +415,7 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
         whatsapp: whatsapp || undefined,
         facebook: facebook || undefined,
         youtubeChannel: youtubeChannel || undefined,
+        website: website || undefined,
       }
 
       if (isImamLike(articleType)) {
@@ -372,6 +436,8 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
         articleData.totalArea = totalArea || undefined
         articleData.otherFacilities = otherFacilities || undefined
         articleData.customMosqueFields = customMosqueFields.filter(f => f.label.trim() !== '' && f.value.trim() !== '')
+        articleData.dateInauguration = dateInauguration || undefined
+        articleData.mosqueGallery = mosqueGallery.filter(g => g.trim() !== '')
       }
 
       if (mode === 'submit') {
@@ -379,12 +445,21 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
         articleData.submitterEmail = submitterEmail
       }
 
-      const endpoint = mode === 'submit' ? '/api/submissions' : '/api/articles'
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(articleData),
-      })
+      let response: Response
+      if (mode === 'edit') {
+        response = await fetch(`/api/articles/${slug}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(articleData),
+        })
+      } else {
+        const endpoint = mode === 'submit' ? '/api/submissions' : '/api/articles'
+        response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(articleData),
+        })
+      }
 
       const data = await response.json()
       if (!response.ok) throw new Error(data.error || 'فشل في إرسال المقال')
@@ -392,6 +467,8 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
       if (mode === 'submit') {
         setSuccess(true)
         setTimeout(() => router.push('/'), 3000)
+      } else if (mode === 'edit') {
+        router.push(`/wiki/${slug}`)
       } else {
         router.push(`/wiki/${data.slug}`)
       }
@@ -717,8 +794,16 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
           <div>
             <label className="block text-sm font-bold mb-2 text-black">نوع المسجد</label>
             <select
-              value={mosqueType}
-              onChange={(e) => setMosqueType(e.target.value)}
+              value={mosqueTypeCustom ? '__custom__' : mosqueType}
+              onChange={(e) => {
+                if (e.target.value === '__custom__') {
+                  setMosqueTypeCustom(true)
+                  setMosqueType('')
+                } else {
+                  setMosqueTypeCustom(false)
+                  setMosqueType(e.target.value)
+                }
+              }}
               className="w-full px-4 py-2 border border-border-light rounded bg-white"
             >
               <option value="">اختر نوع المسجد</option>
@@ -730,18 +815,40 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
               <option value="مسجد حي">مسجد حي</option>
               <option value="مسجد قطب">مسجد قطب</option>
               <option value="زاوية علمية">زاوية علمية</option>
+              <option value="__custom__">أخرى (كتابة يدوية)</option>
             </select>
+            {mosqueTypeCustom && (
+              <input
+                type="text"
+                value={mosqueType}
+                onChange={(e) => setMosqueType(e.target.value)}
+                className="w-full mt-2 px-4 py-2 border border-border-light rounded"
+                placeholder="اكتب نوع المسجد"
+              />
+            )}
           </div>
 
-          <div>
-            <label className="block text-sm font-bold mb-2 text-black">تاريخ البناء</label>
-            <input
-              type="text"
-              value={dateBuilt}
-              onChange={(e) => setDateBuilt(e.target.value)}
-              className="w-full px-4 py-2 border border-border-light rounded"
-              placeholder="مثال: 1730 أو القرن 18"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-bold mb-2 text-black">تاريخ البناء</label>
+              <input
+                type="text"
+                value={dateBuilt}
+                onChange={(e) => setDateBuilt(e.target.value)}
+                className="w-full px-4 py-2 border border-border-light rounded"
+                placeholder="مثال: 1730 أو القرن 18"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold mb-2 text-black">تاريخ الافتتاح</label>
+              <input
+                type="text"
+                value={dateInauguration}
+                onChange={(e) => setDateInauguration(e.target.value)}
+                className="w-full px-4 py-2 border border-border-light rounded"
+                placeholder="مثال: 1735"
+              />
+            </div>
           </div>
 
           {/* Mosque detail fields */}
@@ -885,6 +992,43 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
             </div>
           </div>
 
+          {/* Mosque Gallery */}
+          <div>
+            <label className="block text-sm font-bold mb-2 text-black">معرض صور المسجد</label>
+            <div className="space-y-3">
+              {mosqueGallery.map((imgUrl, idx) => (
+                <div key={idx} className="bg-white p-3 rounded border border-border-light">
+                  <div className="flex gap-2 items-start">
+                    <div className="flex-1">
+                      <ImageUploader
+                        onImageInsert={() => {}}
+                        onImageSelected={({ src }) => {
+                          const updated = [...mosqueGallery]
+                          updated[idx] = src
+                          setMosqueGallery(updated)
+                        }}
+                      />
+                      {imgUrl && (
+                        <img src={imgUrl} alt={`صورة ${idx + 1}`} className="w-24 h-24 object-cover rounded mt-2" />
+                      )}
+                    </div>
+                    <button type="button" onClick={() => setMosqueGallery(mosqueGallery.filter((_, i) => i !== idx))} className="p-1.5 text-destructive hover:bg-red-50 rounded">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() => setMosqueGallery([...mosqueGallery, ''])}
+                className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
+              >
+                <Plus size={16} />
+                إضافة صورة
+              </button>
+            </div>
+          </div>
+
           {/* Custom mosque fields */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">معلومات إضافية عن المسجد</label>
@@ -975,6 +1119,16 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
               onChange={(e) => setYoutubeChannel(e.target.value)}
               className="w-full px-4 py-2 border border-border-light rounded"
               placeholder="رابط قناة اليوتيوب"
+            />
+          </div>
+          <div className="col-span-2">
+            <label className="block text-sm font-bold mb-2 text-black">الموقع الإلكتروني</label>
+            <input
+              type="text"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+              className="w-full px-4 py-2 border border-border-light rounded"
+              placeholder="https://example.com"
             />
           </div>
         </div>
@@ -1095,6 +1249,8 @@ export default function ArticleForm({ mode, initialTitle = '' }: ArticleFormProp
             </>
           ) : mode === 'submit' ? (
             'تقديم المقال'
+          ) : mode === 'edit' ? (
+            'حفظ التعديلات'
           ) : (
             'إنشاء المقال'
           )}

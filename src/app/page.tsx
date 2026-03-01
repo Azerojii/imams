@@ -55,7 +55,7 @@ export default async function Home() {
             موسوعة أئمة ومساجد الجزائر
           </h1>
           <p className="text-white/80 text-lg mb-2">
-            الموسوعة الحرة للأئمة والمساجد الجزائرية
+            موسوعة الأئمة والمساجد الجزائرية
           </p>
 
           {/* Introductory paragraph */}
@@ -159,7 +159,8 @@ export default async function Home() {
                 <BookOpen size={28} className="text-primary" />
               </div>
               <div>
-                <h2 className="text-2xl font-heading font-bold text-primary">معلمو القرآن</h2>
+                <h2 className="text-2xl font-heading font-bold text-primary">معلمو القرآن الكريم</h2>
+                <p className="text-xs text-text-secondary">كتاب الله تعالى</p>
                 <p className="text-sm text-text-secondary">{quranTeachers.length} مقال</p>
               </div>
             </div>

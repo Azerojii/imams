@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { checkArticleExists } from '@/lib/wiki'
 import type { ImamReference, Founder, CustomField } from '@/lib/wiki'
-import { Phone, Mail, MessageCircle, Facebook, Youtube } from 'lucide-react'
+import { Phone, Mail, MessageCircle, Facebook, Youtube, Globe } from 'lucide-react'
 
 interface MosqueInfoboxProps {
   title: string
@@ -26,6 +26,9 @@ interface MosqueInfoboxProps {
   whatsapp?: string
   facebook?: string
   youtubeChannel?: string
+  website?: string
+  dateInauguration?: string
+  mosqueGallery?: string[]
 }
 
 async function ImamLink({ imam }: { imam: ImamReference }) {
@@ -62,6 +65,9 @@ export default async function MosqueInfobox({
   whatsapp,
   facebook,
   youtubeChannel,
+  website,
+  dateInauguration,
+  mosqueGallery,
 }: MosqueInfoboxProps) {
   return (
     <div className="infobox w-full">
@@ -94,6 +100,12 @@ export default async function MosqueInfobox({
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">تاريخ البناء</td>
               <td className="py-1.5 px-3">{dateBuilt}</td>
+            </tr>
+          )}
+          {dateInauguration && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">تاريخ الافتتاح</td>
+              <td className="py-1.5 px-3">{dateInauguration}</td>
             </tr>
           )}
           {wilaya && (
@@ -210,7 +222,7 @@ export default async function MosqueInfobox({
       )}
 
       {/* Contact Info */}
-      {(phone || email || whatsapp || facebook || youtubeChannel) && (
+      {(phone || email || whatsapp || facebook || youtubeChannel || website) && (
         <>
           <div className="infobox-section-header">معلومات الاتصال</div>
           <table className="w-full border-collapse text-sm">
@@ -259,8 +271,30 @@ export default async function MosqueInfobox({
                   </td>
                 </tr>
               )}
+              {website && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium">
+                    <span className="flex items-center gap-1"><Globe size={12} /> الموقع</span>
+                  </td>
+                  <td className="py-1.5 px-3">
+                    <a href={website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs">رابط</a>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
+        </>
+      )}
+
+      {/* Mosque Gallery */}
+      {mosqueGallery && mosqueGallery.length > 0 && (
+        <>
+          <div className="infobox-section-header">معرض الصور</div>
+          <div className="p-2 grid grid-cols-2 gap-1">
+            {mosqueGallery.map((src, idx) => (
+              <img key={idx} src={src} alt={`صورة ${idx + 1}`} className="w-full h-24 object-cover rounded" />
+            ))}
+          </div>
         </>
       )}
     </div>

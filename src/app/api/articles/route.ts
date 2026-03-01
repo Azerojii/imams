@@ -10,7 +10,8 @@ export async function POST(request: Request) {
       birthDate, deathDate, isAlive, rank, ranks, mosquesServed, customFields,
       mosqueType, dateBuilt, founders, imamsServed,
       prayerHallArea, prayerHallCapacity, minaretHeight, totalArea, otherFacilities, customMosqueFields,
-      phone, email, whatsapp, facebook, youtubeChannel,
+      phone, email, whatsapp, facebook, youtubeChannel, website,
+      dateInauguration, mosqueGallery,
     } = body
 
     if (!title || !content) {
@@ -60,6 +61,7 @@ export async function POST(request: Request) {
     if (whatsapp) row.whatsapp = whatsapp
     if (facebook) row.facebook = facebook
     if (youtubeChannel) row.youtube_channel = youtubeChannel
+    if (website) row.website = website
 
     // Imam-like types
     if (articleType === 'imam' || articleType === 'quran_teacher' || articleType === 'mourshida') {
@@ -83,6 +85,8 @@ export async function POST(request: Request) {
       if (totalArea) row.total_area = totalArea
       if (otherFacilities) row.other_facilities = otherFacilities
       if (customMosqueFields?.length) row.custom_mosque_fields = customMosqueFields
+      if (dateInauguration) row.date_inauguration = dateInauguration
+      if (mosqueGallery?.length) row.mosque_gallery = mosqueGallery
     }
 
     const { error } = await supabase.from('articles').insert(row)

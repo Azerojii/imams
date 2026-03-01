@@ -134,6 +134,20 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             {article.title}
           </h1>
 
+          {/* Last modification status */}
+          {(article.lastUpdated || article.authorName) && (
+            <div className="text-xs text-text-secondary mb-3 flex items-center gap-1">
+              <span>آخر تعديل:</span>
+              {article.lastUpdated && <span className="font-medium">{article.lastUpdated}</span>}
+              {article.authorName && (
+                <>
+                  <span>بواسطة</span>
+                  <span className="font-medium">{article.authorName}</span>
+                </>
+              )}
+            </div>
+          )}
+
           {/* Type badge */}
           <div className="flex items-center gap-2 mb-4">
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-primary/10 text-primary text-xs font-semibold rounded">
@@ -210,6 +224,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   whatsapp={article.whatsapp}
                   facebook={article.facebook}
                   youtubeChannel={article.youtubeChannel}
+                  website={article.website}
                 />
               ) : (
                 <MosqueInfobox
@@ -217,6 +232,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   image={article.image}
                   mosqueType={article.mosqueType}
                   dateBuilt={article.dateBuilt}
+                  dateInauguration={article.dateInauguration}
                   wilaya={article.wilaya}
                   commune={article.commune}
                   founders={article.founders}
@@ -232,6 +248,8 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   whatsapp={article.whatsapp}
                   facebook={article.facebook}
                   youtubeChannel={article.youtubeChannel}
+                  website={article.website}
+                  mosqueGallery={article.mosqueGallery}
                 />
               )}
               {toc.length > 0 && <TableOfContents items={toc} />}

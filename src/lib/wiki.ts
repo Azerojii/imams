@@ -80,6 +80,10 @@ export interface WikiArticle {
   totalArea?: string
   otherFacilities?: string
   customMosqueFields?: CustomField[]
+  // New mosque fields
+  website?: string
+  dateInauguration?: string
+  mosqueGallery?: string[]
 }
 
 export interface WikiMetadata {
@@ -176,6 +180,10 @@ function rowToArticle(row: any): WikiArticle {
     totalArea: row.total_area || undefined,
     otherFacilities: row.other_facilities || undefined,
     customMosqueFields: row.custom_mosque_fields?.length ? row.custom_mosque_fields : undefined,
+    // New fields
+    website: row.website || undefined,
+    dateInauguration: row.date_inauguration || undefined,
+    mosqueGallery: row.mosque_gallery?.length ? row.mosque_gallery : undefined,
   }
 }
 

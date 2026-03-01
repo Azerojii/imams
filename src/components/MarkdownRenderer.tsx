@@ -28,7 +28,7 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
       prose-img:rounded-lg prose-img:shadow-md prose-img:mx-auto prose-img:my-6 prose-img:max-w-full
       prose-em:text-center prose-em:block prose-em:text-sm prose-em:text-gray-600 prose-em:mt-2">
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
         rehypePlugins={[rehypeRaw]}
         components={{
         img: ({ node, src, alt, ...props }) => {

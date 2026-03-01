@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { checkArticleExists } from '@/lib/wiki'
 import type { MosqueReference, CustomField, RankEntry } from '@/lib/wiki'
-import { Phone, Mail, MessageCircle, Facebook, Youtube } from 'lucide-react'
+import { Phone, Mail, MessageCircle, Facebook, Youtube, Globe } from 'lucide-react'
 
 interface ImamInfoboxProps {
   title: string
@@ -23,6 +23,7 @@ interface ImamInfoboxProps {
   whatsapp?: string
   facebook?: string
   youtubeChannel?: string
+  website?: string
 }
 
 async function MosqueLink({ mosque }: { mosque: MosqueReference }) {
@@ -56,6 +57,7 @@ export default async function ImamInfobox({
   whatsapp,
   facebook,
   youtubeChannel,
+  website,
 }: ImamInfoboxProps) {
   return (
     <div className="infobox w-full">
@@ -183,7 +185,7 @@ export default async function ImamInfobox({
       )}
 
       {/* Contact Info */}
-      {(phone || email || whatsapp || facebook || youtubeChannel) && (
+      {(phone || email || whatsapp || facebook || youtubeChannel || website) && (
         <>
           <div className="infobox-section-header">معلومات الاتصال</div>
           <table className="w-full border-collapse text-sm">
@@ -229,6 +231,16 @@ export default async function ImamInfobox({
                   </td>
                   <td className="py-1.5 px-3">
                     <a href={youtubeChannel} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs">رابط</a>
+                  </td>
+                </tr>
+              )}
+              {website && (
+                <tr className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium">
+                    <span className="flex items-center gap-1"><Globe size={12} /> الموقع</span>
+                  </td>
+                  <td className="py-1.5 px-3">
+                    <a href={website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs">رابط</a>
                   </td>
                 </tr>
               )}
