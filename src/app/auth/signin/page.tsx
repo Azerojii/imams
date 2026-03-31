@@ -81,7 +81,7 @@ function SignInForm() {
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="block w-full px-3 py-2 border border-border-light rounded-md shadow-sm"
+                  className="block w-full px-3 py-2.5 border border-border-light rounded-md shadow-sm text-base"
                 />
               </div>
             </div>
@@ -99,7 +99,7 @@ function SignInForm() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full px-3 py-2 border border-border-light rounded-md shadow-sm"
+                  className="block w-full px-3 py-2.5 border border-border-light rounded-md shadow-sm text-base"
                 />
               </div>
             </div>

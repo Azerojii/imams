@@ -92,10 +92,10 @@ export default function SubmissionsPage() {
                       </div>
                     </div>
 
-                    <div className="flex gap-2 mr-4">
+                    <div className="flex-shrink-0 mr-2">
                       <Link
                         href={`/admin/submissions/${submission.id}`}
-                        className="p-3 text-primary hover:bg-primary/10 rounded border border-primary"
+                        className="p-2.5 text-primary hover:bg-primary/10 rounded border border-primary inline-flex"
                         title="مراجعة"
                       >
                         <Eye size={18} />

@@ -134,7 +134,7 @@ function MosqueLocationPicker({
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
       <div>
         <label className="block text-xs text-text-secondary mb-0.5">ولاية المسجد</label>
         <select
@@ -528,7 +528,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
       {mode === 'submit' && (
         <div className="bg-bg-sidebar rounded-lg p-4 space-y-4 border border-border-light">
           <h3 className="font-bold text-lg font-heading text-primary">معلوماتك</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-black">الاسم <span className="text-destructive">*</span></label>
               <input
@@ -597,7 +597,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
         <div className="bg-bg-sidebar rounded-lg p-4 border border-border-light space-y-4">
           <h3 className="font-bold text-lg font-heading text-primary">معلومات {getTypeLabel(articleType)}</h3>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-black">تاريخ الميلاد</label>
               <input
@@ -638,7 +638,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
             <div className="space-y-3">
               {ranks.map((r, idx) => (
                 <div key={idx} className="bg-white p-3 rounded border border-border-light space-y-2">
-                  <div className="flex gap-2 items-center">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
                     <div className="flex-1">
                       <select
                         value={RANK_OPTIONS.includes(r.rank) ? r.rank : '__custom__'}
@@ -658,24 +658,25 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                         <option value="__custom__">أخرى (كتابة يدوية)</option>
                       </select>
                     </div>
-                    {(!RANK_OPTIONS.includes(r.rank) && r.rank !== '') || (RANK_OPTIONS.includes(r.rank) ? false : true) ? null : null}
-                    <input
-                      type="text"
-                      value={r.fromDate}
-                      onChange={(e) => updateRank(idx, 'fromDate', e.target.value)}
-                      className="w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                      placeholder="من"
-                    />
-                    <input
-                      type="text"
-                      value={r.toDate}
-                      onChange={(e) => updateRank(idx, 'toDate', e.target.value)}
-                      className="w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                      placeholder="إلى"
-                    />
-                    <button type="button" onClick={() => removeRank(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded">
-                      <Trash2 size={16} />
-                    </button>
+                    <div className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        value={r.fromDate}
+                        onChange={(e) => updateRank(idx, 'fromDate', e.target.value)}
+                        className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                        placeholder="من"
+                      />
+                      <input
+                        type="text"
+                        value={r.toDate}
+                        onChange={(e) => updateRank(idx, 'toDate', e.target.value)}
+                        className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                        placeholder="إلى"
+                      />
+                      <button type="button" onClick={() => removeRank(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </div>
                   {!RANK_OPTIONS.includes(r.rank) && (
                     <input
@@ -705,7 +706,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
             <div className="space-y-3">
               {mosquesServed.map((m, idx) => (
                 <div key={idx} className="bg-white p-3 rounded border border-border-light space-y-2">
-                  <div className="flex gap-2 items-center">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
                     <input
                       type="text"
                       value={m.name}
@@ -713,23 +714,25 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
                       placeholder="اسم المسجد"
                     />
-                    <input
-                      type="text"
-                      value={m.startDate}
-                      onChange={(e) => updateMosqueRef(idx, 'startDate', e.target.value)}
-                      className="w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                      placeholder="من"
-                    />
-                    <input
-                      type="text"
-                      value={m.endDate}
-                      onChange={(e) => updateMosqueRef(idx, 'endDate', e.target.value)}
-                      className="w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                      placeholder="إلى"
-                    />
-                    <button type="button" onClick={() => removeMosqueRef(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded">
-                      <Trash2 size={16} />
-                    </button>
+                    <div className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        value={m.startDate}
+                        onChange={(e) => updateMosqueRef(idx, 'startDate', e.target.value)}
+                        className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                        placeholder="من"
+                      />
+                      <input
+                        type="text"
+                        value={m.endDate}
+                        onChange={(e) => updateMosqueRef(idx, 'endDate', e.target.value)}
+                        className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                        placeholder="إلى"
+                      />
+                      <button type="button" onClick={() => removeMosqueRef(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </div>
                   <MosqueLocationPicker
                     mosqueIndex={idx}
@@ -756,24 +759,26 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
             <label className="block text-sm font-bold mb-2 text-black">معلومات إضافية</label>
             <div className="space-y-2">
               {customFields.map((f, idx) => (
-                <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
+                <div key={idx} className="flex flex-col sm:flex-row gap-2 sm:items-center bg-white p-2 rounded border border-border-light">
                   <input
                     type="text"
                     value={f.label}
                     onChange={(e) => updateCustomField(idx, 'label', e.target.value)}
-                    className="w-1/3 px-3 py-1.5 border border-border-light rounded text-sm"
+                    className="w-full sm:w-1/3 px-3 py-1.5 border border-border-light rounded text-sm"
                     placeholder="العنوان (مثال: الطريقة، المذهب...)"
                   />
-                  <input
-                    type="text"
-                    value={f.value}
-                    onChange={(e) => updateCustomField(idx, 'value', e.target.value)}
-                    className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                    placeholder="القيمة"
-                  />
-                  <button type="button" onClick={() => removeCustomField(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded">
-                    <Trash2 size={16} />
-                  </button>
+                  <div className="flex gap-2 items-center flex-1">
+                    <input
+                      type="text"
+                      value={f.value}
+                      onChange={(e) => updateCustomField(idx, 'value', e.target.value)}
+                      className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                      placeholder="القيمة"
+                    />
+                    <button type="button" onClick={() => removeCustomField(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
               ))}
               <button
@@ -828,7 +833,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-black">تاريخ البناء</label>
               <input
@@ -852,7 +857,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
           </div>
 
           {/* Mosque detail fields */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-black">مساحة قاعة الصلاة</label>
               <input
@@ -911,7 +916,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
             <label className="block text-sm font-bold mb-2 text-black">المؤسسون</label>
             <div className="space-y-2">
               {founders.map((f, idx) => (
-                <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
+                <div key={idx} className="flex flex-col sm:flex-row gap-2 sm:items-center bg-white p-2 rounded border border-border-light">
                   <input
                     type="text"
                     value={f.name}
@@ -919,16 +924,18 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                     className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
                     placeholder="اسم المؤسس"
                   />
-                  <input
-                    type="text"
-                    value={f.rutba}
-                    onChange={(e) => updateFounder(idx, 'rutba', e.target.value)}
-                    className="w-40 px-3 py-1.5 border border-border-light rounded text-sm"
-                    placeholder="الرتبة"
-                  />
-                  <button type="button" onClick={() => removeFounder(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded">
-                    <Trash2 size={16} />
-                  </button>
+                  <div className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={f.rutba}
+                      onChange={(e) => updateFounder(idx, 'rutba', e.target.value)}
+                      className="flex-1 sm:w-40 px-3 py-1.5 border border-border-light rounded text-sm"
+                      placeholder="الرتبة"
+                    />
+                    <button type="button" onClick={() => removeFounder(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
               ))}
               <button
@@ -947,38 +954,44 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
             <label className="block text-sm font-bold mb-2 text-black">الأئمة الذين عملو فيه</label>
             <div className="space-y-2">
               {imamsServed.map((im, idx) => (
-                <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
-                  <input
-                    type="text"
-                    value={im.name}
-                    onChange={(e) => updateImamRef(idx, 'name', e.target.value)}
-                    className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                    placeholder="اسم الإمام"
-                  />
-                  <input
-                    type="text"
-                    value={im.rutba}
-                    onChange={(e) => updateImamRef(idx, 'rutba', e.target.value)}
-                    className="w-32 px-3 py-1.5 border border-border-light rounded text-sm"
-                    placeholder="الرتبة"
-                  />
-                  <input
-                    type="text"
-                    value={im.startDate}
-                    onChange={(e) => updateImamRef(idx, 'startDate', e.target.value)}
-                    className="w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                    placeholder="من"
-                  />
-                  <input
-                    type="text"
-                    value={im.endDate}
-                    onChange={(e) => updateImamRef(idx, 'endDate', e.target.value)}
-                    className="w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                    placeholder="إلى"
-                  />
-                  <button type="button" onClick={() => removeImamRef(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded">
-                    <Trash2 size={16} />
-                  </button>
+                <div key={idx} className="bg-white p-2 rounded border border-border-light space-y-2">
+                  <div className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={im.name}
+                      onChange={(e) => updateImamRef(idx, 'name', e.target.value)}
+                      className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                      placeholder="اسم الإمام"
+                    />
+                    <button type="button" onClick={() => removeImamRef(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <input
+                      type="text"
+                      value={im.rutba}
+                      onChange={(e) => updateImamRef(idx, 'rutba', e.target.value)}
+                      className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                      placeholder="الرتبة"
+                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={im.startDate}
+                        onChange={(e) => updateImamRef(idx, 'startDate', e.target.value)}
+                        className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                        placeholder="من"
+                      />
+                      <input
+                        type="text"
+                        value={im.endDate}
+                        onChange={(e) => updateImamRef(idx, 'endDate', e.target.value)}
+                        className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                        placeholder="إلى"
+                      />
+                    </div>
+                  </div>
                 </div>
               ))}
               <button
@@ -1034,24 +1047,26 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
             <label className="block text-sm font-bold mb-2 text-black">معلومات إضافية عن المسجد</label>
             <div className="space-y-2">
               {customMosqueFields.map((f, idx) => (
-                <div key={idx} className="flex gap-2 items-center bg-white p-2 rounded border border-border-light">
+                <div key={idx} className="flex flex-col sm:flex-row gap-2 sm:items-center bg-white p-2 rounded border border-border-light">
                   <input
                     type="text"
                     value={f.label}
                     onChange={(e) => updateCustomMosqueField(idx, 'label', e.target.value)}
-                    className="w-1/3 px-3 py-1.5 border border-border-light rounded text-sm"
+                    className="w-full sm:w-1/3 px-3 py-1.5 border border-border-light rounded text-sm"
                     placeholder="العنوان"
                   />
-                  <input
-                    type="text"
-                    value={f.value}
-                    onChange={(e) => updateCustomMosqueField(idx, 'value', e.target.value)}
-                    className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                    placeholder="القيمة"
-                  />
-                  <button type="button" onClick={() => removeCustomMosqueField(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded">
-                    <Trash2 size={16} />
-                  </button>
+                  <div className="flex gap-2 items-center flex-1">
+                    <input
+                      type="text"
+                      value={f.value}
+                      onChange={(e) => updateCustomMosqueField(idx, 'value', e.target.value)}
+                      className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                      placeholder="القيمة"
+                    />
+                    <button type="button" onClick={() => removeCustomMosqueField(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
               ))}
               <button
@@ -1070,11 +1085,11 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
       {/* Contact Info (all types) */}
       <div className="bg-bg-sidebar rounded-lg p-4 border border-border-light space-y-4">
         <h3 className="font-bold text-lg font-heading text-primary">معلومات الاتصال</h3>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-bold mb-2 text-black">رقم الهاتف</label>
             <input
-              type="text"
+              type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="w-full px-4 py-2 border border-border-light rounded"
@@ -1084,7 +1099,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
           <div>
             <label className="block text-sm font-bold mb-2 text-black">رقم الواتساب</label>
             <input
-              type="text"
+              type="tel"
               value={whatsapp}
               onChange={(e) => setWhatsapp(e.target.value)}
               className="w-full px-4 py-2 border border-border-light rounded"
@@ -1104,27 +1119,27 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
           <div>
             <label className="block text-sm font-bold mb-2 text-black">الفيسبوك</label>
             <input
-              type="text"
+              type="url"
               value={facebook}
               onChange={(e) => setFacebook(e.target.value)}
               className="w-full px-4 py-2 border border-border-light rounded"
               placeholder="رابط صفحة الفيسبوك"
             />
           </div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className="block text-sm font-bold mb-2 text-black">قناة اليوتيوب</label>
             <input
-              type="text"
+              type="url"
               value={youtubeChannel}
               onChange={(e) => setYoutubeChannel(e.target.value)}
               className="w-full px-4 py-2 border border-border-light rounded"
               placeholder="رابط قناة اليوتيوب"
             />
           </div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className="block text-sm font-bold mb-2 text-black">الموقع الإلكتروني</label>
             <input
-              type="text"
+              type="url"
               value={website}
               onChange={(e) => setWebsite(e.target.value)}
               className="w-full px-4 py-2 border border-border-light rounded"

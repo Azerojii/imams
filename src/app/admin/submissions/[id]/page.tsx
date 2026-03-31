@@ -166,55 +166,55 @@ export default function ReviewSubmissionPage() {
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
         
-        <main className="flex-1 px-6 py-4 max-w-[900px]">
+        <main className="flex-1 px-4 md:px-6 py-4 max-w-[900px]">
           <div className="mb-6">
-            <h1 className="text-4xl font-serif font-bold border-b border-gray-300 pb-2 mb-4">
-              Examiner la soumission
+            <h1 className="text-2xl md:text-4xl font-heading font-bold border-b border-border-light pb-2 mb-4 text-primary">
+              مراجعة المقال المقدم
             </h1>
             
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-              <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <div>
-                  <strong>Soumis par:</strong> {submission.submitterName || 'Anonyme'}
+                  <strong>المقدم:</strong> {submission.submitterName || 'مجهول'}
                 </div>
                 {submission.submitterEmail && (
-                  <div>
-                    <strong>Email:</strong> {submission.submitterEmail}
+                  <div className="break-all">
+                    <strong>البريد:</strong> {submission.submitterEmail}
                   </div>
                 )}
                 <div>
-                  <strong>Date:</strong> {new Date(submission.submittedAt).toLocaleDateString('fr-FR')}
+                  <strong>التاريخ:</strong> {new Date(submission.submittedAt).toLocaleDateString('ar-DZ')}
                 </div>
                 <div>
-                  <strong>Catégorie:</strong> {submission.category}
+                  <strong>التصنيف:</strong> {submission.category}
                 </div>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-3 mb-6">
+            <div className="flex flex-wrap gap-3 mb-6">
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="flex items-center gap-2 px-4 py-2 bg-secondary text-white rounded hover:opacity-90"
+                className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded hover:opacity-90 text-sm"
               >
                 <Edit size={16} />
-                {isEditing ? 'Annuler modification' : 'Modifier avant publication'}
+                {isEditing ? 'إلغاء التعديل' : 'تعديل قبل النشر'}
               </button>
               <button
                 onClick={handleApprove}
                 disabled={processing}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 text-sm"
               >
                 <Check size={16} />
-                {processing ? 'En cours...' : 'Approuver et publier'}
+                {processing ? 'جاري...' : 'موافقة ونشر'}
               </button>
               <button
                 onClick={handleReject}
                 disabled={processing}
-                className="flex items-center gap-2 px-4 py-2 bg-destructive text-white rounded hover:opacity-90 disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2.5 bg-destructive text-white rounded hover:opacity-90 disabled:opacity-50 text-sm"
               >
                 <X size={16} />
-                Rejeter
+                رفض
               </button>
             </div>
           </div>

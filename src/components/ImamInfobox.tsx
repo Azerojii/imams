@@ -170,7 +170,7 @@ export default async function ImamInfobox({
                       )}
                     </div>
                   </td>
-                  <td className="py-2 px-3 text-xs text-text-secondary text-left whitespace-nowrap align-top">
+                  <td className="py-2 px-3 text-xs text-text-secondary text-left align-top">
                     {mosque.startDate && mosque.endDate
                       ? `${mosque.startDate} - ${mosque.endDate}`
                       : mosque.startDate

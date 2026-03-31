@@ -89,7 +89,7 @@ export default function LocationPicker({
         <span>الموقع الجغرافي</span>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {/* Wilaya dropdown */}
         <div>
           <label className="block text-xs font-medium text-text-secondary mb-1">

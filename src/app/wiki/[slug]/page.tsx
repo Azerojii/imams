@@ -93,9 +93,9 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
 
-        <main className="flex-1 px-6 py-4 max-w-[860px]">
+        <main className="flex-1 px-4 md:px-6 py-4 max-w-[860px]">
           {/* Breadcrumbs */}
-          <div className="text-sm text-text-secondary mb-4 flex items-center gap-2 print:hidden">
+          <div className="text-xs sm:text-sm text-text-secondary mb-4 flex items-center gap-1.5 sm:gap-2 flex-wrap print:hidden">
             <Link href="/" className="text-primary hover:underline">
               الرئيسية
             </Link>
@@ -123,14 +123,14 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2 print:hidden">
+          <div className="flex items-center gap-2 flex-wrap print:hidden">
             <EditButton slug={slug} />
             <PrintButton />
             <SuggestEditButton slug={slug} articleTitle={article.title} />
           </div>
 
           {/* Article Title */}
-          <h1 className="text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-4">
             {article.title}
           </h1>
 
@@ -168,7 +168,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             </p>
           )}
 
-          <div className="flex gap-6">
+          <div className="flex flex-col-reverse md:flex-row gap-6">
             <div className="flex-1">
               {/* Article Content */}
               <div className="prose-arabic">
@@ -205,7 +205,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             </div>
 
             {/* Right Sidebar */}
-            <aside className="w-72 flex-shrink-0">
+            <aside className="w-full md:w-72 md:flex-shrink-0">
               {isImamLike ? (
                 <ImamInfobox
                   title={article.title}

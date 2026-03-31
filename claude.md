@@ -1,3 +1,4 @@
+##IMPORTANT : AFTER EVERY NEW ADDED FEATURE PUSH IT TO THE ONLINE GITHUB REPO
 # Project Overview
 
 This is a Next.js 14+ full-stack application focused on exceptional UI/UX and modern web standards.
@@ -366,3 +367,5 @@ Create a slash command called /api that:
 2. Creates route handler in app/api/
 3. Includes proper TypeScript types
 4. Adds validation with Zod
+
+##IMPORTANT : AFTER EVERY NEW ADDED FEATURE PUSH IT TO THE ONLINE GITHUB REPO

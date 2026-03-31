@@ -70,9 +70,9 @@ export default function SuggestEditButton({ slug, articleTitle }: SuggestEditBut
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-heading font-bold text-primary">اقتراح تعديل على: {articleTitle}</h2>
-              <button onClick={() => setIsOpen(false)} className="p-1 hover:bg-gray-100 rounded">
+            <div className="flex justify-between items-start gap-3 mb-4">
+              <h2 className="text-lg sm:text-xl font-heading font-bold text-primary">اقتراح تعديل على: {articleTitle}</h2>
+              <button onClick={() => setIsOpen(false)} className="p-1.5 hover:bg-gray-100 rounded flex-shrink-0">
                 <X size={20} />
               </button>
             </div>
@@ -90,7 +90,7 @@ export default function SuggestEditButton({ slug, articleTitle }: SuggestEditBut
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-bold mb-1 text-black">الاسم <span className="text-destructive">*</span></label>
                     <input
@@ -98,7 +98,7 @@ export default function SuggestEditButton({ slug, articleTitle }: SuggestEditBut
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      className="w-full px-3 py-2 border border-border-light rounded text-sm"
+                      className="w-full px-3 py-2 border border-border-light rounded text-base sm:text-sm"
                       placeholder="اسمك"
                     />
                   </div>
@@ -109,7 +109,7 @@ export default function SuggestEditButton({ slug, articleTitle }: SuggestEditBut
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="w-full px-3 py-2 border border-border-light rounded text-sm"
+                      className="w-full px-3 py-2 border border-border-light rounded text-base sm:text-sm"
                       placeholder="email@example.com"
                     />
                   </div>

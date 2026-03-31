@@ -287,6 +287,35 @@ input:focus, textarea:focus, select:focus {
   text-decoration: underline;
 }
 
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .prose-arabic table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .prose-arabic pre {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .prose-arabic img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .infobox table {
+    table-layout: fixed;
+    word-break: break-word;
+  }
+
+  .infobox td {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
 /* Print styles */
 @media print {
   body {

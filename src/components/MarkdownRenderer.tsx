@@ -22,7 +22,7 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
       prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
       prose-pre:bg-gray-100 prose-pre:border prose-pre:border-gray-300
       prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic
-      prose-table:border-collapse prose-table:w-full
+      prose-table:border-collapse prose-table:w-full prose-table:block prose-table:overflow-x-auto sm:prose-table:table
       prose-th:border prose-th:border-gray-300 prose-th:bg-gray-100 prose-th:px-3 prose-th:py-2
       prose-td:border prose-td:border-gray-300 prose-td:px-3 prose-td:py-2
       prose-img:rounded-lg prose-img:shadow-md prose-img:mx-auto prose-img:my-6 prose-img:max-w-full

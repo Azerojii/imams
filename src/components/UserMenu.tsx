@@ -30,7 +30,7 @@ export default function UserMenu() {
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-border-light overflow-hidden z-50">
+        <div className="absolute left-0 mt-2 w-60 sm:w-64 bg-white rounded-lg shadow-xl border border-border-light overflow-hidden z-50">
           <div className="py-2">
             {/* Contribute Section */}
             <div className="px-4 py-2 bg-bg-sidebar border-b border-border-light">

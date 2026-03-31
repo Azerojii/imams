@@ -86,9 +86,8 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-4 py-3 focus:outline-none resize-none font-sans"
+        className="w-full px-4 py-3 focus:outline-none resize-none font-sans min-h-[250px] md:min-h-[400px]"
         rows={15}
-        style={{ minHeight: '400px' }}
       />
 
       {/* Helper Text */}

@@ -18,7 +18,7 @@ function CreateContent() {
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
 
-        <main className="flex-1 px-6 py-4 max-w-[860px]">
+        <main className="flex-1 px-4 md:px-6 py-4 max-w-[860px]">
           <h1 className="text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-6">
             إنشاء مقال جديد
           </h1>

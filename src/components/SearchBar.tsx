@@ -78,7 +78,7 @@ export default function SearchBar() {
   }
 
   return (
-    <div ref={searchRef} className="relative w-64">
+    <div ref={searchRef} className="relative w-full md:w-64">
       <div className="relative">
         <input
           type="text"
@@ -86,9 +86,9 @@ export default function SearchBar() {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="ابحث عن إمام أو مسجد..."
-          className="w-full px-4 py-2 pl-10 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:bg-white/20 focus:border-accent text-sm"
+          className="w-full px-4 py-2.5 pl-10 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/50 focus:bg-white/20 focus:border-accent text-base sm:text-sm"
         />
-        <Search className="absolute left-3 top-2.5 text-white/50" size={18} />
+        <Search className="absolute left-3 top-3 sm:top-2.5 text-white/50" size={18} />
       </div>
 
       {isOpen && query.trim() !== '' && (

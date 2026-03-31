@@ -151,17 +151,17 @@ export default function AdminPage() {
                         <span>آخر تحديث: {article.lastUpdated}</span>
                       </div>
                     </div>
-                    <div className="flex gap-2 mr-4">
+                    <div className="flex gap-1 mr-2 flex-shrink-0">
                       <Link
                         href={`/wiki/${article.slug}/edit`}
-                        className="p-3 text-primary hover:bg-primary/10 rounded"
+                        className="p-2.5 text-primary hover:bg-primary/10 rounded"
                         title="تعديل"
                       >
                         <Edit size={18} />
                       </Link>
                       <button
                         onClick={() => handleDelete(article.slug)}
-                        className="p-3 text-destructive hover:bg-red-50 rounded"
+                        className="p-2.5 text-destructive hover:bg-red-50 rounded"
                         title="حذف"
                       >
                         <Trash2 size={18} />
