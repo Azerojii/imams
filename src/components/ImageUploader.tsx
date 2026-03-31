@@ -167,8 +167,8 @@ export default function ImageUploader({ onImageInsert, onImageSelected }: ImageU
           </div>
         )}
 
-        <div className="text-xs text-gray-500 mt-2">
-          💡 Astuce : Les images sont stockées sur Vercel Blob (max 4.5 Mo)
+        <div className="text-xs text-text-secondary mt-2">
+          الحد الأقصى لحجم الصورة: 4.5 ميغابايت
         </div>
       </div>
     </div>
