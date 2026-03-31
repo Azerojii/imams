@@ -22,14 +22,14 @@ export default async function CategoryPage({ params }: { params: Promise<{ name:
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
 
-        <main className="flex-1 px-6 py-4 max-w-[960px]">
+        <main className="flex-1 px-4 md:px-6 py-4 max-w-[960px]">
           <div className="text-sm text-text-secondary mb-4 flex items-center gap-2">
             <Link href="/" className="text-primary hover:underline">الرئيسية</Link>
             <span className="text-border">‹</span>
             <span className="text-text-primary">{categoryName}</span>
           </div>
 
-          <h1 className="text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-2 flex items-center gap-3">
+          <h1 className="text-2xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-2 flex items-center gap-3">
             {isImamCategory ? <UserCircle size={32} /> : <Landmark size={32} />}
             {categoryName}
           </h1>

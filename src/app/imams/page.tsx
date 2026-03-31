@@ -28,8 +28,8 @@ export default async function ImamsPage() {
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
 
-        <main className="flex-1 px-6 py-4 max-w-[960px]">
-          <h1 className="text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-2 flex items-center gap-3">
+        <main className="flex-1 px-4 md:px-6 py-4 max-w-[960px]">
+          <h1 className="text-2xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-2 flex items-center gap-3">
             <UserCircle size={32} />
             الأئمة
           </h1>

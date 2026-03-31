@@ -51,7 +51,7 @@ export default async function Home() {
       {/* Hero Section */}
       <div className="bg-primary islamic-pattern">
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <h1 className="font-heading text-5xl md:text-6xl text-white mb-4">
+          <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl text-white mb-4">
             موسوعة أئمة ومساجد الجزائر
           </h1>
           <p className="text-white/80 text-lg mb-2">
@@ -72,19 +72,19 @@ export default async function Home() {
           </div>
 
           {/* Stats */}
-          <div className="flex justify-center gap-8 mb-8 flex-wrap">
+          <div className="flex justify-center gap-6 md:gap-8 mb-8 flex-wrap">
             <div className="text-center">
               <div className="text-3xl font-bold text-accent">{imams.length}</div>
               <div className="text-white/60 text-sm">إمام</div>
             </div>
-            <div className="w-px bg-white/20"></div>
+            <div className="hidden sm:block w-px bg-white/20"></div>
             <div className="text-center">
               <div className="text-3xl font-bold text-accent">{mosques.length}</div>
               <div className="text-white/60 text-sm">مسجد</div>
             </div>
             {quranTeachers.length > 0 && (
               <>
-                <div className="w-px bg-white/20"></div>
+                <div className="hidden sm:block w-px bg-white/20"></div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-accent">{quranTeachers.length}</div>
                   <div className="text-white/60 text-sm">معلم قرآن</div>
@@ -93,14 +93,14 @@ export default async function Home() {
             )}
             {mourshidat.length > 0 && (
               <>
-                <div className="w-px bg-white/20"></div>
+                <div className="hidden sm:block w-px bg-white/20"></div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-accent">{mourshidat.length}</div>
                   <div className="text-white/60 text-sm">مرشدة دينية</div>
                 </div>
               </>
             )}
-            <div className="w-px bg-white/20"></div>
+            <div className="hidden sm:block w-px bg-white/20"></div>
             <div className="text-center">
               <div className="text-3xl font-bold text-accent">{wilayas.length}</div>
               <div className="text-white/60 text-sm">ولاية</div>
@@ -109,7 +109,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-10">
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-10">
         {/* Main Categories */}
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           {/* Imams Card */}

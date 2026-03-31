@@ -60,8 +60,8 @@ export default function AdminPage() {
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
 
-        <main className="flex-1 px-6 py-4 max-w-[960px]">
-          <h1 className="text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-4">
+        <main className="flex-1 px-4 md:px-6 py-4 max-w-[960px]">
+          <h1 className="text-2xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-4">
             لوحة التحكم
           </h1>
           <p className="text-text-secondary mb-6">إدارة مقالات موسوعة أئمة ومساجد الجزائر</p>
@@ -154,14 +154,14 @@ export default function AdminPage() {
                     <div className="flex gap-2 mr-4">
                       <Link
                         href={`/wiki/${article.slug}/edit`}
-                        className="p-2 text-primary hover:bg-primary/10 rounded"
+                        className="p-3 text-primary hover:bg-primary/10 rounded"
                         title="تعديل"
                       >
                         <Edit size={18} />
                       </Link>
                       <button
                         onClick={() => handleDelete(article.slug)}
-                        className="p-2 text-destructive hover:bg-red-50 rounded"
+                        className="p-3 text-destructive hover:bg-red-50 rounded"
                         title="حذف"
                       >
                         <Trash2 size={18} />

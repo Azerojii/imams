@@ -53,8 +53,8 @@ export default function SubmissionsPage() {
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
 
-        <main className="flex-1 px-6 py-4 max-w-[960px]">
-          <h1 className="text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-4">
+        <main className="flex-1 px-4 md:px-6 py-4 max-w-[960px]">
+          <h1 className="text-2xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-4">
             المقالات المعلقة
           </h1>
           <div className="mb-6">
@@ -95,7 +95,7 @@ export default function SubmissionsPage() {
                     <div className="flex gap-2 mr-4">
                       <Link
                         href={`/admin/submissions/${submission.id}`}
-                        className="p-2 text-primary hover:bg-primary/10 rounded border border-primary"
+                        className="p-3 text-primary hover:bg-primary/10 rounded border border-primary"
                         title="مراجعة"
                       >
                         <Eye size={18} />

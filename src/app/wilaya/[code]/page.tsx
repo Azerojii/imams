@@ -28,7 +28,7 @@ export default async function WilayaPage({ params }: { params: Promise<{ code: s
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
 
-        <main className="flex-1 px-6 py-4 max-w-[960px]">
+        <main className="flex-1 px-4 md:px-6 py-4 max-w-[960px]">
           {/* Breadcrumbs */}
           <div className="text-sm text-text-secondary mb-4 flex items-center gap-2">
             <Link href="/" className="text-primary hover:underline">الرئيسية</Link>
@@ -39,7 +39,7 @@ export default async function WilayaPage({ params }: { params: Promise<{ code: s
             </span>
           </div>
 
-          <h1 className="text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-2 flex items-center gap-3">
+          <h1 className="text-2xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-2 flex items-center gap-3">
             <MapPin size={32} className="text-accent" />
             {wilayaName}
           </h1>
