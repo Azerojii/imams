@@ -9,7 +9,7 @@ import { Loader2, Landmark } from 'lucide-react'
 function SignInForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/admin'
+  const callbackUrl = searchParams.get('callbackUrl') || '/'
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -50,7 +50,7 @@ function SignInForm() {
           </div>
         </div>
         <h2 className="mt-6 text-center text-3xl font-heading font-bold text-primary">
-          تسجيل دخول الإدارة
+          تسجيل دخول الإدارة (الموقع العام)
         </h2>
         <p className="mt-2 text-center text-sm text-text-secondary">
           <Link href="/" className="text-primary hover:underline">

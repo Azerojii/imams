@@ -1,37 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
-export async function GET() {
-  try {
-    const { data, error } = await supabase
-      .from('submissions')
-      .select('id, title, description, category, article_type, submitted_at, submitter_name, submitter_email, status')
-      .eq('status', 'pending')
-      .order('submitted_at', { ascending: false })
-
-    if (error) {
-      console.error('Error fetching submissions:', error)
-      return NextResponse.json({ error: 'فشل في جلب المقالات المعلقة' }, { status: 500 })
-    }
-
-    const submissions = (data || []).map((row: any) => ({
-      id: row.id,
-      title: row.title,
-      description: row.description,
-      category: row.category,
-      articleType: row.article_type,
-      submittedAt: row.submitted_at,
-      submitterName: row.submitter_name,
-      submitterEmail: row.submitter_email,
-    }))
-
-    return NextResponse.json({ submissions })
-  } catch (error) {
-    console.error('Error fetching submissions:', error)
-    return NextResponse.json({ error: 'فشل في جلب المقالات المعلقة' }, { status: 500 })
-  }
-}
-
 export async function POST(request: Request) {
   try {
     const body = await request.json()

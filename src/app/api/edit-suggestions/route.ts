@@ -1,26 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
-export async function GET() {
-  try {
-    const { data, error } = await supabase
-      .from('edit_suggestions')
-      .select('*')
-      .eq('status', 'pending')
-      .order('created_at', { ascending: false })
-
-    if (error) {
-      console.error('Error fetching edit suggestions:', error)
-      return NextResponse.json({ error: 'فشل في جلب الاقتراحات' }, { status: 500 })
-    }
-
-    return NextResponse.json({ suggestions: data || [] })
-  } catch (error) {
-    console.error('Error:', error)
-    return NextResponse.json({ error: 'خطأ في الخادم' }, { status: 500 })
-  }
-}
-
 export async function POST(request: Request) {
   try {
     const body = await request.json()

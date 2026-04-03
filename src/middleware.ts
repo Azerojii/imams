@@ -17,6 +17,6 @@ export const config = {
   matcher: [
     '/admin/:path*',
     '/wiki/:slug/edit',
+    '/wiki/create',
   ]
 }
-
