@@ -34,6 +34,16 @@ export interface RankEntry {
   toDate?: string
 }
 
+export interface Reference {
+  id: string
+  author?: string
+  title: string
+  year?: string
+  url?: string
+  publisher?: string
+  accessDate?: string
+}
+
 export interface WikiArticle {
   slug: string
   title: string
@@ -84,6 +94,8 @@ export interface WikiArticle {
   website?: string
   dateInauguration?: string
   mosqueGallery?: string[]
+  // References/Citations
+  references?: Reference[]
 }
 
 export interface WikiMetadata {
@@ -184,6 +196,7 @@ function rowToArticle(row: any): WikiArticle {
     website: row.website || undefined,
     dateInauguration: row.date_inauguration || undefined,
     mosqueGallery: row.mosque_gallery?.length ? row.mosque_gallery : undefined,
+    references: row.references?.length ? row.references : undefined,
   }
 }
 

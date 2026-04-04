@@ -80,23 +80,40 @@ export default async function ImamInfobox({
       <div className="infobox-section-header">معلومات شخصية</div>
       <table className="w-full border-collapse text-sm">
         <tbody>
-          {/* Ranks display */}
+          {/* Ranks display - current vs previous */}
           {ranks && ranks.length > 0 ? (
-            ranks.map((r, idx) => (
-              <tr key={idx} className="border-t border-border-light">
-                <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                  {idx === 0 ? 'الرتبة' : ''}
-                </td>
-                <td className="py-1.5 px-3">
-                  <span className="font-semibold">{r.rank}</span>
-                  {(r.fromDate || r.toDate) && (
-                    <span className="text-xs text-text-secondary mr-1">
-                      ({r.fromDate}{r.fromDate && r.toDate ? ' - ' : ''}{r.toDate})
-                    </span>
-                  )}
-                </td>
-              </tr>
-            ))
+            <>
+              {ranks.find(r => !r.toDate) && (() => {
+                const cr = ranks.find(r => !r.toDate)!
+                return (
+                  <tr className="border-t border-border-light">
+                    <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">الرتبة الحالية</td>
+                    <td className="py-1.5 px-3">
+                      <span className="font-semibold">{cr.rank}</span>
+                      {cr.fromDate && (
+                        <span className="text-xs text-text-secondary mr-1">(منذ {cr.fromDate})</span>
+                      )}
+                      <span className="mr-1 inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">حالي</span>
+                    </td>
+                  </tr>
+                )
+              })()}
+              {ranks.filter(r => !!r.toDate).map((r, idx) => (
+                <tr key={idx} className="border-t border-border-light">
+                  <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                    {idx === 0 ? 'الرتب السابقة' : ''}
+                  </td>
+                  <td className="py-1.5 px-3">
+                    <span>{r.rank}</span>
+                    {(r.fromDate || r.toDate) && (
+                      <span className="text-xs text-text-secondary mr-1">
+                        ({r.fromDate}{r.fromDate && r.toDate ? ' - ' : ''}{r.toDate})
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </>
           ) : rank ? (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">الرتبة</td>

@@ -6,7 +6,7 @@ import WikiSidebar from '@/components/WikiSidebar'
 import TableOfContents from '@/components/TableOfContents'
 import ImamInfobox from '@/components/ImamInfobox'
 import MosqueInfobox from '@/components/MosqueInfobox'
-import MarkdownRenderer from '@/components/MarkdownRenderer'
+import ArticleReferences from '@/components/ArticleReferences'
 import YouTubeVideos from '@/components/YouTubeVideos'
 import PrintButton from '@/components/PrintButton'
 import SuggestEditButton from '@/components/SuggestEditButton'
@@ -170,7 +170,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             <div className="flex-1">
               {/* Article Content */}
               <div className="prose-arabic">
-                <MarkdownRenderer content={article.content} />
+                <ArticleReferences content={article.content} references={article.references} />
               </div>
 
               {/* YouTube Videos */}
