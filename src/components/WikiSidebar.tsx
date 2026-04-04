@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { UserCircle, Landmark, Home, MapPin, PenSquare, Settings, FileText } from 'lucide-react'
+import { UserCircle, Landmark, Home, PenSquare } from 'lucide-react'
 
 export default function WikiSidebar() {
   return (
@@ -63,18 +63,6 @@ export default function WikiSidebar() {
               <Link href="/submit" className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors">
                 <PenSquare size={15} />
                 تقديم مقال
-              </Link>
-            </li>
-            <li>
-              <Link href="/admin" className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors">
-                <Settings size={15} />
-                الإدارة
-              </Link>
-            </li>
-            <li>
-              <Link href="/admin/submissions" className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors">
-                <FileText size={15} />
-                المقالات المعلقة
               </Link>
             </li>
           </ul>
