@@ -123,8 +123,10 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2 flex-wrap print:hidden">
-<PrintButton />
+            <PrintButton />
             <SuggestEditButton slug={slug} articleTitle={article.title} initialContent={article.rawContent} />
+          </div>
+
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-4">
             {article.title}
           </h1>
