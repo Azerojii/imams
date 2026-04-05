@@ -11,6 +11,7 @@ export async function POST(request: Request) {
       mosqueType, dateBuilt, founders, imamsServed,
       prayerHallArea, prayerHallCapacity, minaretHeight, totalArea, otherFacilities, customMosqueFields,
       phone, email, whatsapp, facebook, youtubeChannel,
+      currentImam, currentCouncil,
     } = body
 
     if (!title || !content || !submitterName || !submitterEmail) {
@@ -71,6 +72,8 @@ export async function POST(request: Request) {
       if (totalArea) row.total_area = totalArea
       if (otherFacilities) row.other_facilities = otherFacilities
       if (customMosqueFields?.length) row.custom_mosque_fields = customMosqueFields
+      if (currentImam) row.current_imam = currentImam
+      if (currentCouncil) row.current_council = currentCouncil
     }
 
     const { data, error } = await supabase

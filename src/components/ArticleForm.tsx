@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Loader2, Plus, Trash2, UserCircle, Landmark, BookOpen, Heart } from 'lucide-react'
 import LocationPicker from './LocationPicker'
 import ImageUploader from './ImageUploader'
-import RichTextEditor from './RichTextEditor'
+import QuillEditor, { type QuillEditorHandle } from './QuillEditor'
 import type { WikiArticle } from '@/lib/wiki'
 
 interface MosqueRef {
@@ -211,6 +211,7 @@ interface ArticleFormProps {
 export default function ArticleForm({ mode, initialTitle = '', initialData, slug }: ArticleFormProps) {
   const router = useRouter()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const editorRef = useRef<QuillEditorHandle>(null)
 
   const [articleType, setArticleType] = useState<ArticleType>('imam')
   const [title, setTitle] = useState(initialTitle)
@@ -241,8 +242,10 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
   const [birthDate, setBirthDate] = useState('')
   const [deathDate, setDeathDate] = useState('')
   const [isAlive, setIsAlive] = useState(true)
-  const [ranks, setRanks] = useState<RankEntry[]>([])
-  const [mosquesServed, setMosquesServed] = useState<MosqueRef[]>([])
+  const [currentRankEntry, setCurrentRankEntry] = useState<{ rank: string; fromDate: string }>({ rank: '', fromDate: '' })
+  const [oldRanks, setOldRanks] = useState<RankEntry[]>([])
+  const [currentMosqueEntry, setCurrentMosqueEntry] = useState<MosqueRef>({ name: '', slug: '', startDate: '', endDate: '', wilaya: '', commune: '', wilayaCode: '' })
+  const [oldMosques, setOldMosques] = useState<MosqueRef[]>([])
   const [customFields, setCustomFields] = useState<CustomField[]>([])
 
   // Mosque fields
@@ -256,6 +259,8 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
   const [totalArea, setTotalArea] = useState('')
   const [otherFacilities, setOtherFacilities] = useState('')
   const [customMosqueFields, setCustomMosqueFields] = useState<CustomField[]>([])
+  const [currentImam, setCurrentImam] = useState('')
+  const [currentCouncil, setCurrentCouncil] = useState('')
 
   // New fields
   const [website, setWebsite] = useState('')
@@ -290,12 +295,22 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
     setBirthDate(initialData.birthDate || '')
     setDeathDate(initialData.deathDate || '')
     setIsAlive(initialData.isAlive !== false)
-    setRanks(initialData.ranks?.map(r => ({ rank: r.rank, fromDate: r.fromDate || '', toDate: r.toDate || '' })) || [])
-    setMosquesServed(initialData.mosquesServed?.map(m => ({
+    // Split ranks into current (no toDate) and old (with toDate)
+    const allRanksInit = initialData.ranks?.map(r => ({ rank: r.rank, fromDate: r.fromDate || '', toDate: r.toDate || '' })) || []
+    const currentRankInit = allRanksInit.find(r => !r.toDate)
+    setCurrentRankEntry(currentRankInit ? { rank: currentRankInit.rank, fromDate: currentRankInit.fromDate } : { rank: '', fromDate: '' })
+    setOldRanks(allRanksInit.filter(r => r.toDate))
+    // Split mosques into current (no endDate) and old (with endDate)
+    const allMosquesInit = initialData.mosquesServed?.map(m => ({
       name: m.name, slug: m.slug || '', startDate: m.startDate || '', endDate: m.endDate || '',
       wilaya: m.wilaya || '', commune: m.commune || '', wilayaCode: m.wilayaCode || ''
-    })) || [])
+    })) || []
+    const currentMosqueInit = allMosquesInit.find(m => !m.endDate)
+    setCurrentMosqueEntry(currentMosqueInit || { name: '', slug: '', startDate: '', endDate: '', wilaya: '', commune: '', wilayaCode: '' })
+    setOldMosques(allMosquesInit.filter(m => m.endDate))
     setCustomFields(initialData.customFields || [])
+    setCurrentImam(initialData.currentImam || '')
+    setCurrentCouncil(initialData.currentCouncil || '')
     // Mosque
     const mt = initialData.mosqueType || ''
     const knownTypes = ['جامع الجزائر','مسجد تاريخي','مسجد رئيسي','مسجد وطني','مسجد محلي','مسجد حي','مسجد قطب','زاوية علمية']
@@ -332,17 +347,22 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
     setImageCaption(caption || '')
   }
 
-  // Mosque refs
-  const addMosqueRef = () => {
-    setMosquesServed([...mosquesServed, { name: '', slug: '', startDate: '', endDate: '', wilaya: '', commune: '', wilayaCode: '' }])
+  // Old mosque refs
+  const addOldMosque = () => {
+    setOldMosques([...oldMosques, { name: '', slug: '', startDate: '', endDate: '', wilaya: '', commune: '', wilayaCode: '' }])
   }
-  const updateMosqueRef = (idx: number, field: keyof MosqueRef, value: string) => {
-    const updated = [...mosquesServed]
+  const updateOldMosque = (idx: number, field: keyof MosqueRef, value: string) => {
+    const updated = [...oldMosques]
     updated[idx][field] = value
     if (field === 'name') updated[idx].slug = value.replace(/\s+/g, '_')
-    setMosquesServed(updated)
+    setOldMosques(updated)
   }
-  const removeMosqueRef = (idx: number) => setMosquesServed(mosquesServed.filter((_, i) => i !== idx))
+  const removeOldMosque = (idx: number) => setOldMosques(oldMosques.filter((_, i) => i !== idx))
+
+  // Current mosque entry
+  const updateCurrentMosque = (field: keyof MosqueRef, value: string) => {
+    setCurrentMosqueEntry(prev => ({ ...prev, [field]: value, ...(field === 'name' ? { slug: value.replace(/\s+/g, '_') } : {}) }))
+  }
 
   // Custom fields
   const addCustomField = () => setCustomFields([...customFields, { label: '', value: '' }])
@@ -353,14 +373,14 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
   }
   const removeCustomField = (idx: number) => setCustomFields(customFields.filter((_, i) => i !== idx))
 
-  // Ranks
-  const addRank = () => setRanks([...ranks, { rank: '', fromDate: '', toDate: '' }])
-  const updateRank = (idx: number, field: keyof RankEntry, value: string) => {
-    const updated = [...ranks]
+  // Old ranks
+  const addOldRank = () => setOldRanks([...oldRanks, { rank: '', fromDate: '', toDate: '' }])
+  const updateOldRank = (idx: number, field: keyof RankEntry, value: string) => {
+    const updated = [...oldRanks]
     updated[idx][field] = value
-    setRanks(updated)
+    setOldRanks(updated)
   }
-  const removeRank = (idx: number) => setRanks(ranks.filter((_, i) => i !== idx))
+  const removeOldRank = (idx: number) => setOldRanks(oldRanks.filter((_, i) => i !== idx))
 
   // Imam refs
   const addImamRef = () => setImamsServed([...imamsServed, { name: '', slug: '', startDate: '', endDate: '', rutba: '' }])
@@ -422,8 +442,16 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
         articleData.birthDate = birthDate || undefined
         articleData.deathDate = isAlive ? undefined : deathDate || undefined
         articleData.isAlive = isAlive
-        articleData.ranks = ranks.filter(r => r.rank.trim() !== '')
-        articleData.mosquesServed = mosquesServed.filter(m => m.name.trim() !== '')
+        const allRanks = [
+          ...(currentRankEntry.rank.trim() ? [{ ...currentRankEntry, toDate: '' }] : []),
+          ...oldRanks.filter(r => r.rank.trim() !== '')
+        ]
+        articleData.ranks = allRanks
+        const allMosques = [
+          ...(currentMosqueEntry.name.trim() ? [{ ...currentMosqueEntry, endDate: '' }] : []),
+          ...oldMosques.filter(m => m.name.trim() !== '')
+        ]
+        articleData.mosquesServed = allMosques
         articleData.customFields = customFields.filter(f => f.label.trim() !== '' && f.value.trim() !== '')
       } else {
         articleData.mosqueType = mosqueType || undefined
@@ -438,6 +466,8 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
         articleData.customMosqueFields = customMosqueFields.filter(f => f.label.trim() !== '' && f.value.trim() !== '')
         articleData.dateInauguration = dateInauguration || undefined
         articleData.mosqueGallery = mosqueGallery.filter(g => g.trim() !== '')
+        articleData.currentImam = currentImam || undefined
+        articleData.currentCouncil = currentCouncil || undefined
       }
 
       if (mode === 'submit') {
@@ -523,6 +553,11 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
           ))}
         </div>
       </div>
+
+      {/* Mandatory fields note */}
+      <p className="text-sm text-text-secondary bg-amber-50 border border-amber-200 rounded px-3 py-2">
+        الحقول المُعلَّمة بـ <span className="text-destructive font-bold">*</span> إلزامية والبقية اختيارية
+      </p>
 
       {/* Submitter Info (submit mode only) */}
       {mode === 'submit' && (
@@ -632,11 +667,55 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
             </div>
           </div>
 
-          {/* Ranks (dynamic array) */}
+          {/* Current Rank */}
           <div>
-            <label className="block text-sm font-bold mb-2 text-black">الرتب</label>
+            <label className="block text-sm font-bold mb-2 text-black">الرتبة الحالية</label>
+            <div className="bg-white p-3 rounded border border-border-light space-y-2">
+              <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                <div className="flex-1">
+                  <select
+                    value={RANK_OPTIONS.includes(currentRankEntry.rank) ? currentRankEntry.rank : (currentRankEntry.rank ? '__custom__' : '')}
+                    onChange={(e) => {
+                      if (e.target.value === '__custom__') {
+                        setCurrentRankEntry(prev => ({ ...prev, rank: '' }))
+                      } else {
+                        setCurrentRankEntry(prev => ({ ...prev, rank: e.target.value }))
+                      }
+                    }}
+                    className="w-full px-2 py-1.5 border border-border-light rounded text-sm bg-white"
+                  >
+                    <option value="">اختر الرتبة الحالية</option>
+                    {RANK_OPTIONS.map(opt => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                    <option value="__custom__">أخرى (كتابة يدوية)</option>
+                  </select>
+                </div>
+                <input
+                  type="text"
+                  value={currentRankEntry.fromDate}
+                  onChange={(e) => setCurrentRankEntry(prev => ({ ...prev, fromDate: e.target.value }))}
+                  className="w-full sm:w-28 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                  placeholder="منذ (السنة)"
+                />
+              </div>
+              {!RANK_OPTIONS.includes(currentRankEntry.rank) && currentRankEntry.rank !== '' && (
+                <input
+                  type="text"
+                  value={currentRankEntry.rank}
+                  onChange={(e) => setCurrentRankEntry(prev => ({ ...prev, rank: e.target.value }))}
+                  className="w-full px-3 py-1.5 border border-border-light rounded text-sm"
+                  placeholder="اكتب الرتبة يدوياً"
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Old Ranks */}
+          <div>
+            <label className="block text-sm font-bold mb-2 text-black">الرتب السابقة</label>
             <div className="space-y-3">
-              {ranks.map((r, idx) => (
+              {oldRanks.map((r, idx) => (
                 <div key={idx} className="bg-white p-3 rounded border border-border-light space-y-2">
                   <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
                     <div className="flex-1">
@@ -644,9 +723,9 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                         value={RANK_OPTIONS.includes(r.rank) ? r.rank : '__custom__'}
                         onChange={(e) => {
                           if (e.target.value === '__custom__') {
-                            updateRank(idx, 'rank', '')
+                            updateOldRank(idx, 'rank', '')
                           } else {
-                            updateRank(idx, 'rank', e.target.value)
+                            updateOldRank(idx, 'rank', e.target.value)
                           }
                         }}
                         className="w-full px-2 py-1.5 border border-border-light rounded text-sm bg-white"
@@ -662,18 +741,18 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                       <input
                         type="text"
                         value={r.fromDate}
-                        onChange={(e) => updateRank(idx, 'fromDate', e.target.value)}
+                        onChange={(e) => updateOldRank(idx, 'fromDate', e.target.value)}
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
                         placeholder="من"
                       />
                       <input
                         type="text"
                         value={r.toDate}
-                        onChange={(e) => updateRank(idx, 'toDate', e.target.value)}
+                        onChange={(e) => updateOldRank(idx, 'toDate', e.target.value)}
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
                         placeholder="إلى"
                       />
-                      <button type="button" onClick={() => removeRank(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
+                      <button type="button" onClick={() => removeOldRank(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -682,7 +761,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                     <input
                       type="text"
                       value={r.rank}
-                      onChange={(e) => updateRank(idx, 'rank', e.target.value)}
+                      onChange={(e) => updateOldRank(idx, 'rank', e.target.value)}
                       className="w-full px-3 py-1.5 border border-border-light rounded text-sm"
                       placeholder="اكتب الرتبة يدوياً"
                     />
@@ -691,26 +770,56 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
               ))}
               <button
                 type="button"
-                onClick={addRank}
+                onClick={addOldRank}
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
               >
                 <Plus size={16} />
-                إضافة رتبة
+                إضافة رتبة سابقة
               </button>
             </div>
           </div>
 
-          {/* Mosques served */}
+          {/* Current Mosque */}
           <div>
-            <label className="block text-sm font-bold mb-2 text-black">المساجد التي عمل فيها</label>
+            <label className="block text-sm font-bold mb-2 text-black">المسجد الحالي</label>
+            <div className="bg-white p-3 rounded border border-border-light space-y-2">
+              <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                <input
+                  type="text"
+                  value={currentMosqueEntry.name}
+                  onChange={(e) => updateCurrentMosque('name', e.target.value)}
+                  className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                  placeholder="اسم المسجد الحالي"
+                />
+                <input
+                  type="text"
+                  value={currentMosqueEntry.startDate}
+                  onChange={(e) => updateCurrentMosque('startDate', e.target.value)}
+                  className="w-full sm:w-28 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                  placeholder="منذ (السنة)"
+                />
+              </div>
+              <MosqueLocationPicker
+                mosqueIndex={0}
+                wilaya={currentMosqueEntry.wilaya}
+                commune={currentMosqueEntry.commune}
+                wilayaCode={currentMosqueEntry.wilayaCode}
+                onUpdate={(_, field, value) => updateCurrentMosque(field, value)}
+              />
+            </div>
+          </div>
+
+          {/* Old Mosques */}
+          <div>
+            <label className="block text-sm font-bold mb-2 text-black">المساجد السابقة</label>
             <div className="space-y-3">
-              {mosquesServed.map((m, idx) => (
+              {oldMosques.map((m, idx) => (
                 <div key={idx} className="bg-white p-3 rounded border border-border-light space-y-2">
                   <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
                     <input
                       type="text"
                       value={m.name}
-                      onChange={(e) => updateMosqueRef(idx, 'name', e.target.value)}
+                      onChange={(e) => updateOldMosque(idx, 'name', e.target.value)}
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
                       placeholder="اسم المسجد"
                     />
@@ -718,18 +827,18 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                       <input
                         type="text"
                         value={m.startDate}
-                        onChange={(e) => updateMosqueRef(idx, 'startDate', e.target.value)}
+                        onChange={(e) => updateOldMosque(idx, 'startDate', e.target.value)}
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
                         placeholder="من"
                       />
                       <input
                         type="text"
                         value={m.endDate}
-                        onChange={(e) => updateMosqueRef(idx, 'endDate', e.target.value)}
+                        onChange={(e) => updateOldMosque(idx, 'endDate', e.target.value)}
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
                         placeholder="إلى"
                       />
-                      <button type="button" onClick={() => removeMosqueRef(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
+                      <button type="button" onClick={() => removeOldMosque(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -739,17 +848,17 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                     wilaya={m.wilaya}
                     commune={m.commune}
                     wilayaCode={m.wilayaCode}
-                    onUpdate={updateMosqueRef}
+                    onUpdate={updateOldMosque}
                   />
                 </div>
               ))}
               <button
                 type="button"
-                onClick={addMosqueRef}
+                onClick={addOldMosque}
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
               >
                 <Plus size={16} />
-                إضافة مسجد
+                إضافة مسجد سابق
               </button>
             </div>
           </div>
@@ -909,6 +1018,30 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
               className="w-full px-4 py-2 border border-border-light rounded"
               placeholder="مثال: مدرسة قرآنية، مكتبة، قاعة محاضرات..."
             />
+          </div>
+
+          {/* Current Imam & Council */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-bold mb-2 text-black">الإمام الحالي</label>
+              <input
+                type="text"
+                value={currentImam}
+                onChange={(e) => setCurrentImam(e.target.value)}
+                className="w-full px-4 py-2 border border-border-light rounded"
+                placeholder="اسم الإمام الحالي"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold mb-2 text-black">المجلس الحالي</label>
+              <input
+                type="text"
+                value={currentCouncil}
+                onChange={(e) => setCurrentCouncil(e.target.value)}
+                className="w-full px-4 py-2 border border-border-light rounded"
+                placeholder="أعضاء المجلس الحالي"
+              />
+            </div>
           </div>
 
           {/* Founders */}
@@ -1232,7 +1365,8 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
         )}
 
         {useRichText ? (
-          <RichTextEditor
+          <QuillEditor
+            ref={editorRef}
             value={content}
             onChange={setContent}
             placeholder="ابدأ كتابة المقال هنا..."

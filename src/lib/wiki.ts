@@ -94,6 +94,8 @@ export interface WikiArticle {
   website?: string
   dateInauguration?: string
   mosqueGallery?: string[]
+  currentImam?: string
+  currentCouncil?: string
   // References/Citations
   references?: Reference[]
 }
@@ -196,6 +198,8 @@ function rowToArticle(row: any): WikiArticle {
     website: row.website || undefined,
     dateInauguration: row.date_inauguration || undefined,
     mosqueGallery: row.mosque_gallery?.length ? row.mosque_gallery : undefined,
+    currentImam: row.current_imam || undefined,
+    currentCouncil: row.current_council || undefined,
     references: row.references?.length ? row.references : undefined,
   }
 }
