@@ -78,7 +78,7 @@ export default function SearchBar() {
   }
 
   return (
-    <div ref={searchRef} className="relative w-full md:w-64">
+    <div ref={searchRef} className="relative w-full md:w-80">
       <div className="relative">
         <input
           type="text"

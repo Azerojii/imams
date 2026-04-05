@@ -25,7 +25,6 @@ export default function UserMenu() {
         className="flex items-center gap-2 px-4 py-2 bg-accent text-primary-dark rounded-lg hover:bg-accent-light transition-all shadow-sm hover:shadow-md font-semibold"
       >
         <User size={18} />
-        <span className="hidden md:inline">القائمة</span>
         <ChevronDown size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 

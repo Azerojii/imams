@@ -7,7 +7,8 @@ import HijabiWomanIcon from './HijabiWomanIcon'
 import LocationPicker from './LocationPicker'
 import ImageUploader from './ImageUploader'
 import QuillEditor, { type QuillEditorHandle } from './QuillEditor'
-import type { WikiArticle } from '@/lib/wiki'
+import ReferencesManager from './ReferencesManager'
+import type { WikiArticle, Reference } from '@/lib/wiki'
 
 interface MosqueRef {
   name: string
@@ -219,6 +220,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
   const [description, setDescription] = useState('')
   const [content, setContent] = useState('')
   const [useRichText, setUseRichText] = useState(true)
+  const [references, setReferences] = useState<Reference[]>([])
 
   // Submitter info (only for submit mode)
   const [submitterName, setSubmitterName] = useState('')
@@ -335,6 +337,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
     setOtherFacilities(initialData.otherFacilities || '')
     setCustomMosqueFields(initialData.customMosqueFields || [])
     setMosqueGallery(initialData.mosqueGallery || [])
+    setReferences(initialData.references || [])
   }, [initialData])
 
   const handleLocationChange = (loc: { wilaya: string; commune: string; wilayaCode: string }) => {
@@ -435,6 +438,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
         wilayaCode,
         image: image ? { src: image, caption: imageCaption } : undefined,
         youtubeVideos: validYoutubeVideos.length > 0 ? validYoutubeVideos : undefined,
+        references: references.length > 0 ? references : undefined,
         // Contact info
         phone: phone || undefined,
         email: email || undefined,
@@ -1389,6 +1393,16 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
           />
         )}
       </div>
+
+      {/* References / تهميش */}
+      <ReferencesManager
+        references={references}
+        onChange={setReferences}
+        onInsertCitation={(refId) => {
+          const idx = references.findIndex(r => r.id === refId)
+          editorRef.current?.insertCitation(refId, idx + 1)
+        }}
+      />
 
       {/* Submit */}
       <div className="flex gap-4">
