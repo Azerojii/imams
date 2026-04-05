@@ -361,7 +361,12 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
 
   // Current mosque entry
   const updateCurrentMosque = (field: keyof MosqueRef, value: string) => {
-    setCurrentMosqueEntry(prev => ({ ...prev, [field]: value, ...(field === 'name' ? { slug: value.replace(/\s+/g, '_') } : {}) }))
+    setCurrentMosqueEntry(prev => {
+      const updated = { ...prev }
+      updated[field] = value
+      if (field === 'name') updated.slug = value.replace(/\s+/g, '_')
+      return updated
+    })
   }
 
   // Custom fields
