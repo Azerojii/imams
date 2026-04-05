@@ -26,6 +26,9 @@ export default function RootLayout({
         <AuthProvider>
           {children}
         </AuthProvider>
+        <footer className="text-center text-xs text-text-secondary py-4 border-t border-border-light bg-bg-sidebar">
+          جميع الحقوق محفوظة © 2026
+        </footer>
       </body>
     </html>
   )
