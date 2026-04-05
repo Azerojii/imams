@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { Heart, MapPin } from 'lucide-react'
+import { MapPin } from 'lucide-react'
+import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
 import { getMourshibat } from '@/lib/wiki'
@@ -27,14 +28,14 @@ export default async function MourshidatPage() {
         <WikiSidebar />
         <main className="flex-1 px-4 md:px-6 py-4 max-w-[960px]">
           <h1 className="text-2xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-2 flex items-center gap-3">
-            <Heart size={32} />
+            <HijabiWomanIcon size={32} />
             المرشدات الدينيات
           </h1>
           <p className="text-text-secondary mb-6">{mourshidat.length} مرشدة دينية في الموسوعة</p>
 
           {mourshidat.length === 0 ? (
             <div className="text-center py-16 text-text-secondary">
-              <Heart size={48} className="mx-auto mb-4 opacity-30" />
+              <HijabiWomanIcon size={48} className="mx-auto mb-4 opacity-30" />
               <p className="text-lg">لا توجد مقالات عن المرشدات الدينيات بعد.</p>
               <Link href="/submit" className="text-primary hover:underline mt-2 inline-block">
                 كن أول من يضيف مقالاً

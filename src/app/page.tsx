@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { UserCircle, Landmark, MapPin, ArrowLeft, BookOpen, Heart } from 'lucide-react'
+import { UserCircle, Landmark, MapPin, ArrowLeft, BookOpen } from 'lucide-react'
+import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 import SearchBar from '@/components/SearchBar'
 import WikiHeader from '@/components/WikiHeader'
 import { getAllWikiMetadata } from '@/lib/wiki'
@@ -12,7 +13,7 @@ function getTypeIcon(type: string) {
     case 'imam': return <UserCircle size={14} className="text-accent-dark" />
     case 'mosque': return <Landmark size={14} className="text-accent-dark" />
     case 'quran_teacher': return <BookOpen size={14} className="text-accent-dark" />
-    case 'mourshida': return <Heart size={14} className="text-accent-dark" />
+    case 'mourshida': return <HijabiWomanIcon size={14} className="text-accent-dark" />
     default: return <UserCircle size={14} className="text-accent-dark" />
   }
 }
@@ -177,7 +178,7 @@ export default async function Home() {
           <Link href="/mourshidat" className="card-islamic rounded-lg p-5 sm:p-8 group hover:no-underline">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <Heart size={28} className="text-primary" />
+                <HijabiWomanIcon size={28} className="text-primary" />
               </div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-heading font-bold text-primary">المرشدات الدينيات</h2>

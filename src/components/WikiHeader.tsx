@@ -4,7 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import SearchBar from './SearchBar'
 import UserMenu from './UserMenu'
-import { UserCircle, Landmark, Menu, X, BookOpen, Heart } from 'lucide-react'
+import { UserCircle, Landmark, Menu, X, BookOpen } from 'lucide-react'
+import HijabiWomanIcon from './HijabiWomanIcon'
 
 export default function WikiHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -41,7 +42,7 @@ export default function WikiHeader() {
                 معلمو القرآن
               </Link>
               <Link href="/mourshidat" className="text-white/80 hover:text-accent transition-colors hover:no-underline flex items-center gap-1">
-                <Heart size={14} />
+                <HijabiWomanIcon size={14} />
                 المرشدات
               </Link>
               <Link href="/submit" className="text-white/80 hover:text-accent transition-colors hover:no-underline">
@@ -110,7 +111,7 @@ export default function WikiHeader() {
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-white/80 hover:bg-white/10 hover:text-accent transition-colors hover:no-underline text-sm"
           >
-            <Heart size={16} />
+            <HijabiWomanIcon size={16} />
             المرشدات الدينيات
           </Link>
           <Link

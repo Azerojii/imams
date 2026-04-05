@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2, Plus, Trash2, UserCircle, Landmark, BookOpen, Heart } from 'lucide-react'
+import { Loader2, Plus, Trash2, UserCircle, Landmark, BookOpen } from 'lucide-react'
+import HijabiWomanIcon from './HijabiWomanIcon'
 import LocationPicker from './LocationPicker'
 import ImageUploader from './ImageUploader'
 import QuillEditor, { type QuillEditorHandle } from './QuillEditor'
@@ -540,7 +541,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
             { type: 'imam' as const, icon: UserCircle, label: 'إمام' },
             { type: 'mosque' as const, icon: Landmark, label: 'مسجد' },
             { type: 'quran_teacher' as const, icon: BookOpen, label: 'معلم قرآن' },
-            { type: 'mourshida' as const, icon: Heart, label: 'مرشدة دينية' },
+            { type: 'mourshida' as const, icon: HijabiWomanIcon, label: 'مرشدة دينية' },
           ]).map(({ type, icon: Icon, label }) => (
             <button
               key={type}

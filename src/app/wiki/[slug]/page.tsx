@@ -10,7 +10,8 @@ import ArticleReferences from '@/components/ArticleReferences'
 import YouTubeVideos from '@/components/YouTubeVideos'
 import PrintButton from '@/components/PrintButton'
 import SuggestEditButton from '@/components/SuggestEditButton'
-import { UserCircle, Landmark, BookOpen, Heart } from 'lucide-react'
+import { UserCircle, Landmark, BookOpen } from 'lucide-react'
+import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -20,7 +21,7 @@ function getTypeIcon(type: string) {
     case 'imam': return <UserCircle size={12} />
     case 'mosque': return <Landmark size={12} />
     case 'quran_teacher': return <BookOpen size={12} />
-    case 'mourshida': return <Heart size={12} />
+    case 'mourshida': return <HijabiWomanIcon size={12} />
     default: return <UserCircle size={12} />
   }
 }
