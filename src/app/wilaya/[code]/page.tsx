@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { MapPin, UserCircle, Landmark } from 'lucide-react'
+import ArticleListCard from '@/components/ArticleListCard'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
 import { getArticlesByWilaya } from '@/lib/wiki'
@@ -64,14 +65,7 @@ export default async function WilayaPage({ params }: { params: Promise<{ code: s
                   </h2>
                   <div className="grid md:grid-cols-2 gap-3">
                     {imams.map(imam => (
-                      <Link
-                        key={imam.slug}
-                        href={`/wiki/${imam.slug}`}
-                        className="card-islamic rounded-lg p-4 hover:no-underline"
-                      >
-                        <h3 className="font-bold text-primary">{imam.title}</h3>
-                        <p className="text-sm text-text-secondary mt-1 line-clamp-2">{imam.description}</p>
-                      </Link>
+                      <ArticleListCard key={imam.slug} article={imam} />
                     ))}
                   </div>
                 </section>
@@ -87,14 +81,7 @@ export default async function WilayaPage({ params }: { params: Promise<{ code: s
                   </h2>
                   <div className="grid md:grid-cols-2 gap-3">
                     {mosques.map(mosque => (
-                      <Link
-                        key={mosque.slug}
-                        href={`/wiki/${mosque.slug}`}
-                        className="card-islamic rounded-lg p-4 hover:no-underline"
-                      >
-                        <h3 className="font-bold text-primary">{mosque.title}</h3>
-                        <p className="text-sm text-text-secondary mt-1 line-clamp-2">{mosque.description}</p>
-                      </Link>
+                      <ArticleListCard key={mosque.slug} article={mosque} />
                     ))}
                   </div>
                 </section>

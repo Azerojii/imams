@@ -30,9 +30,9 @@ export default async function RootLayout({
       <body>
         <AuthProvider>{children}</AuthProvider>
         <footer className="border-t border-border-light bg-bg-sidebar">
-          <div className="mx-auto flex max-w-[1400px] flex-col gap-3 px-4 py-5 text-sm text-text-secondary md:flex-row md:items-center md:justify-between md:px-6">
-            <p>{siteSettings.footerText}</p>
-            <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm">
+          <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-3 px-4 py-5 text-center text-sm text-text-secondary md:px-6">
+            <p className="w-full text-center">{siteSettings.footerText}</p>
+            <div className="flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm">
               {siteSettings.contactLinks.slice(0, 2).map(link => (
                 <a
                   key={link.id}

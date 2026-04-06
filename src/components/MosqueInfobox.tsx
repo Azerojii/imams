@@ -31,6 +31,8 @@ interface MosqueInfoboxProps {
   mosqueGallery?: string[]
   currentImam?: string
   currentCouncil?: string
+  currentAssociation?: string
+  associationMembers?: string
 }
 
 async function ImamLink({ imam }: { imam: ImamReference }) {
@@ -72,6 +74,8 @@ export default async function MosqueInfobox({
   mosqueGallery,
   currentImam,
   currentCouncil,
+  currentAssociation,
+  associationMembers,
 }: MosqueInfoboxProps) {
   return (
     <div className="infobox w-full">
@@ -164,6 +168,18 @@ export default async function MosqueInfobox({
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">المجلس الحالي</td>
               <td className="py-1.5 px-3">{currentCouncil}</td>
+            </tr>
+          )}
+          {currentAssociation && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">الجمعية الحالية</td>
+              <td className="py-1.5 px-3">{currentAssociation}</td>
+            </tr>
+          )}
+          {associationMembers && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">أعضاء الجمعية</td>
+              <td className="py-1.5 px-3">{associationMembers}</td>
             </tr>
           )}
         </tbody>

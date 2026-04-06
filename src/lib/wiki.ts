@@ -96,6 +96,8 @@ export interface WikiArticle {
   mosqueGallery?: string[]
   currentImam?: string
   currentCouncil?: string
+  currentAssociation?: string
+  associationMembers?: string
   // References/Citations
   references?: Reference[]
 }
@@ -117,9 +119,13 @@ export interface WikiMetadata {
  * Parse WikiLinks [[Article Name]] and convert to Next.js links
  */
 export function parseWikiLinks(content: string): string {
+  const isHtml = /<\/?[a-z][\s\S]*>/i.test(content)
+
   return content.replace(/\[\[(.*?)\]\]/g, (match, articleName) => {
     const slug = articleName.trim().replace(/\s+/g, '_')
-    return `[${articleName}](/wiki/${slug})`
+    return isHtml
+      ? `<a href="/wiki/${slug}">${articleName}</a>`
+      : `[${articleName}](/wiki/${slug})`
   })
 }
 
@@ -133,8 +139,36 @@ export interface TocItem {
 }
 
 export function generateTableOfContents(content: string): TocItem[] {
-  const headingRegex = /^(#{2,3})\s+(.+)$/gm
   const toc: TocItem[] = []
+  const isHtml = /<\/?[a-z][\s\S]*>/i.test(content)
+
+  if (isHtml) {
+    const headingRegex = /<h([23])[^>]*>([\s\S]*?)<\/h\1>/gi
+    let match
+
+    while ((match = headingRegex.exec(content)) !== null) {
+      const level = Number(match[1])
+      const text = match[2]
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+
+      if (!text) continue
+
+      toc.push({
+        level,
+        text,
+        slug: text
+          .replace(/\s+/g, '-')
+          .replace(/[^\u0600-\u06FF\w\s-]/g, ''),
+      })
+    }
+
+    return toc
+  }
+
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm
   let match
 
   while ((match = headingRegex.exec(content)) !== null) {
@@ -200,6 +234,8 @@ function rowToArticle(row: any): WikiArticle {
     mosqueGallery: row.mosque_gallery?.length ? row.mosque_gallery : undefined,
     currentImam: row.current_imam || undefined,
     currentCouncil: row.current_council || undefined,
+    currentAssociation: row.current_association || undefined,
+    associationMembers: row.association_members || undefined,
     references: row.references?.length ? row.references : undefined,
   }
 }

@@ -12,6 +12,7 @@ export interface SiteFooterSettings {
   contactIntro: string
   contactLinks: SiteFooterLink[]
   websiteLinks: SiteFooterLink[]
+  duaCharacterLimit: number
 }
 
 const DEFAULT_SETTINGS: SiteFooterSettings = {
@@ -19,6 +20,7 @@ const DEFAULT_SETTINGS: SiteFooterSettings = {
   contactIntro: 'يمكنكم التواصل معنا أو زيارة الروابط الرسمية التالية.',
   contactLinks: [],
   websiteLinks: [],
+  duaCharacterLimit: 250,
 }
 
 function normalizeLink(link: any, fallbackPrefix: string, index: number): SiteFooterLink {
@@ -44,6 +46,7 @@ function normalizeSettings(row: any): SiteFooterSettings {
     websiteLinks: Array.isArray(row.website_links)
       ? row.website_links.map((link: any, index: number) => normalizeLink(link, 'website', index))
       : [],
+    duaCharacterLimit: Number(row.dua_character_limit || DEFAULT_SETTINGS.duaCharacterLimit),
   }
 }
 
@@ -51,7 +54,7 @@ export async function getSiteFooterSettings(): Promise<SiteFooterSettings> {
   try {
     const { data, error } = await supabase
       .from('site_settings')
-      .select('footer_text, contact_intro, contact_links, website_links')
+      .select('footer_text, contact_intro, contact_links, website_links, dua_character_limit')
       .eq('key', 'global')
       .maybeSingle()
 

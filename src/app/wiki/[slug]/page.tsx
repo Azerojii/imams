@@ -250,6 +250,8 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   mosqueGallery={article.mosqueGallery}
                   currentImam={article.currentImam}
                   currentCouncil={article.currentCouncil}
+                  currentAssociation={article.currentAssociation}
+                  associationMembers={article.associationMembers}
                 />
               )}
               {toc.length > 0 && <TableOfContents items={toc} />}

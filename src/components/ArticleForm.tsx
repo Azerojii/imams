@@ -264,6 +264,8 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
   const [customMosqueFields, setCustomMosqueFields] = useState<CustomField[]>([])
   const [currentImam, setCurrentImam] = useState('')
   const [currentCouncil, setCurrentCouncil] = useState('')
+  const [currentAssociation, setCurrentAssociation] = useState('')
+  const [associationMembers, setAssociationMembers] = useState('')
 
   // New fields
   const [website, setWebsite] = useState('')
@@ -314,6 +316,8 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
     setCustomFields(initialData.customFields || [])
     setCurrentImam(initialData.currentImam || '')
     setCurrentCouncil(initialData.currentCouncil || '')
+    setCurrentAssociation(initialData.currentAssociation || '')
+    setAssociationMembers(initialData.associationMembers || '')
     // Mosque
     const mt = initialData.mosqueType || ''
     const knownTypes = ['جامع الجزائر','مسجد تاريخي','مسجد رئيسي','مسجد وطني','مسجد محلي','مسجد حي','مسجد قطب','زاوية علمية']
@@ -478,6 +482,8 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
         articleData.mosqueGallery = mosqueGallery.filter(g => g.trim() !== '')
         articleData.currentImam = currentImam || undefined
         articleData.currentCouncil = currentCouncil || undefined
+        articleData.currentAssociation = currentAssociation || undefined
+        articleData.associationMembers = associationMembers || undefined
       }
 
       if (mode === 'submit') {
@@ -1050,6 +1056,26 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                 onChange={(e) => setCurrentCouncil(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
                 placeholder="أعضاء المجلس الحالي"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold mb-2 text-black">الجمعية الحالية</label>
+              <input
+                type="text"
+                value={currentAssociation}
+                onChange={(e) => setCurrentAssociation(e.target.value)}
+                className="w-full px-4 py-2 border border-border-light rounded"
+                placeholder="اسم الجمعية الحالية"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-bold mb-2 text-black">أعضاء الجمعية</label>
+              <input
+                type="text"
+                value={associationMembers}
+                onChange={(e) => setAssociationMembers(e.target.value)}
+                className="w-full px-4 py-2 border border-border-light rounded"
+                placeholder="أعضاء الجمعية الحالية"
               />
             </div>
           </div>

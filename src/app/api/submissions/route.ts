@@ -10,8 +10,8 @@ export async function POST(request: Request) {
       birthDate, deathDate, isAlive, rank, ranks, mosquesServed, customFields,
       mosqueType, dateBuilt, founders, imamsServed,
       prayerHallArea, prayerHallCapacity, minaretHeight, totalArea, otherFacilities, customMosqueFields,
-      phone, email, whatsapp, facebook, youtubeChannel,
-      currentImam, currentCouncil,
+      phone, email, whatsapp, facebook, youtubeChannel, website,
+      dateInauguration, mosqueGallery, currentImam, currentCouncil, currentAssociation, associationMembers, references,
     } = body
 
     if (!title || !content || !submitterName || !submitterEmail) {
@@ -43,6 +43,7 @@ export async function POST(request: Request) {
       row.image_caption = image.caption
     }
     if (youtubeVideos?.length) row.youtube_videos = youtubeVideos
+    if (references?.length) row.references = references
 
     // Contact info
     if (phone) row.phone = phone
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
     if (whatsapp) row.whatsapp = whatsapp
     if (facebook) row.facebook = facebook
     if (youtubeChannel) row.youtube_channel = youtubeChannel
+    if (website) row.website = website
 
     if (articleType === 'imam' || articleType === 'quran_teacher' || articleType === 'mourshida') {
       if (birthDate) row.birth_date = birthDate
@@ -72,8 +74,12 @@ export async function POST(request: Request) {
       if (totalArea) row.total_area = totalArea
       if (otherFacilities) row.other_facilities = otherFacilities
       if (customMosqueFields?.length) row.custom_mosque_fields = customMosqueFields
+      if (dateInauguration) row.date_inauguration = dateInauguration
+      if (mosqueGallery?.length) row.mosque_gallery = mosqueGallery
       if (currentImam) row.current_imam = currentImam
       if (currentCouncil) row.current_council = currentCouncil
+      if (currentAssociation) row.current_association = currentAssociation
+      if (associationMembers) row.association_members = associationMembers
     }
 
     const { data, error } = await supabase
