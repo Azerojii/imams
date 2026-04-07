@@ -3,17 +3,20 @@
 import { useState } from 'react'
 import { Pencil, Loader2, X } from 'lucide-react'
 
+import QuillEditor from './QuillEditor'
+
 interface SuggestEditButtonProps {
   slug: string
   articleTitle: string
+  initialContent: string
 }
 
-export default function SuggestEditButton({ slug, articleTitle }: SuggestEditButtonProps) {
+export default function SuggestEditButton({ slug, articleTitle, initialContent }: SuggestEditButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [description, setDescription] = useState('')
-  const [newContent, setNewContent] = useState('')
+  const [newContent, setNewContent] = useState(initialContent)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -28,7 +31,7 @@ export default function SuggestEditButton({ slug, articleTitle }: SuggestEditBut
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          slug,
+          slug: decodeURIComponent(slug),
           articleTitle,
           suggestedBy: name,
           suggestedByEmail: email,
@@ -69,7 +72,7 @@ export default function SuggestEditButton({ slug, articleTitle }: SuggestEditBut
 
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto p-6">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6">
             <div className="flex justify-between items-start gap-3 mb-4">
               <h2 className="text-lg sm:text-xl font-heading font-bold text-primary">اقتراح تعديل على: {articleTitle}</h2>
               <button onClick={() => setIsOpen(false)} className="p-1.5 hover:bg-gray-100 rounded flex-shrink-0">
@@ -129,12 +132,10 @@ export default function SuggestEditButton({ slug, articleTitle }: SuggestEditBut
 
                 <div>
                   <label className="block text-sm font-bold mb-1 text-black">المحتوى الجديد (اختياري)</label>
-                  <textarea
+                  <QuillEditor
                     value={newContent}
-                    onChange={(e) => setNewContent(e.target.value)}
-                    rows={6}
-                    className="w-full px-3 py-2 border border-border-light rounded text-sm"
-                    placeholder="إذا كنت تريد اقتراح نص بديل، اكتبه هنا..."
+                    onChange={setNewContent}
+                    placeholder="قم بإجراء التعديلات اللازمة هنا..."
                   />
                 </div>
 

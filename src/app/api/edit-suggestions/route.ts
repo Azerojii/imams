@@ -5,8 +5,9 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
     const { slug, articleTitle, suggestedBy, suggestedByEmail, description, newContent } = body
+    const normalizedSlug = typeof slug === 'string' ? decodeURIComponent(slug) : ''
 
-    if (!slug || !suggestedBy || !suggestedByEmail || !description) {
+    if (!normalizedSlug || !suggestedBy || !suggestedByEmail || !description) {
       return NextResponse.json(
         { error: 'جميع الحقول المطلوبة يجب ملؤها' },
         { status: 400 }
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
     const { error } = await supabase
       .from('edit_suggestions')
       .insert({
-        article_slug: slug,
+        article_slug: normalizedSlug,
         article_title: articleTitle,
         suggested_by: suggestedBy,
         suggested_by_email: suggestedByEmail,
