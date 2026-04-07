@@ -1,26 +1,32 @@
 import Link from 'next/link'
-import { BookOpen, MapPin } from 'lucide-react'
+import { BookOpen } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
+import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
 import { getQuranTeachers } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 
-export default async function QuranTeachersPage() {
+const PAGE_SIZE = 10
+
+export default async function QuranTeachersPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ page?: string }>
+}) {
+  const params = (await searchParams) || {}
+  const pageValue = Number.parseInt(params.page || '1', 10)
+
   const teachers = await getQuranTeachers()
+  const sortedTeachers = [...teachers].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
+  const totalPages = Math.max(1, Math.ceil(sortedTeachers.length / PAGE_SIZE))
+  const currentPage = Number.isFinite(pageValue)
+    ? Math.min(Math.max(pageValue, 1), totalPages)
+    : 1
 
-  const byWilaya = new Map<string, typeof teachers>()
-  const noWilaya: typeof teachers = []
-
-  teachers.forEach(article => {
-    if (article.wilaya) {
-      if (!byWilaya.has(article.wilaya)) byWilaya.set(article.wilaya, [])
-      byWilaya.get(article.wilaya)!.push(article)
-    } else {
-      noWilaya.push(article)
-    }
-  })
+  const startIndex = (currentPage - 1) * PAGE_SIZE
+  const paginatedTeachers = sortedTeachers.slice(startIndex, startIndex + PAGE_SIZE)
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -45,35 +51,17 @@ export default async function QuranTeachersPage() {
               </Link>
             </div>
           ) : (
-            <div className="space-y-8">
-              {Array.from(byWilaya.entries())
-                .sort(([a], [b]) => a.localeCompare(b, 'ar'))
-                .map(([wilayaName, wilayaArticles]) => (
-                  <section key={wilayaName}>
-                    <h2 className="mb-3 flex items-center gap-2 text-xl font-heading font-bold text-primary-dark">
-                      <MapPin size={18} className="text-accent" />
-                      {wilayaName}
-                      <span className="text-sm font-normal text-text-secondary">({wilayaArticles.length})</span>
-                    </h2>
-                    <div className="grid gap-3 md:grid-cols-2">
-                      {wilayaArticles.map(article => (
-                        <ArticleListCard key={article.slug} article={article} />
-                      ))}
-                    </div>
-                  </section>
+            <>
+              <div className="mb-4 text-xs text-text-secondary">
+                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, sortedTeachers.length)} من {sortedTeachers.length}
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {paginatedTeachers.map(teacher => (
+                  <ArticleListCard key={teacher.slug} article={teacher} />
                 ))}
-
-              {noWilaya.length > 0 && (
-                <section>
-                  <h2 className="mb-3 text-xl font-heading font-bold text-primary-dark">بدون ولاية محددة</h2>
-                  <div className="grid gap-3 md:grid-cols-2">
-                    {noWilaya.map(article => (
-                      <ArticleListCard key={article.slug} article={article} />
-                    ))}
-                  </div>
-                </section>
-              )}
-            </div>
+              </div>
+              <PaginationControls basePath="/quran-teachers" currentPage={currentPage} totalPages={totalPages} />
+            </>
           )}
         </main>
       </div>

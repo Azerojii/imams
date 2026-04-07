@@ -33,6 +33,13 @@ interface ImamRef {
   rutba: string
 }
 
+interface MosqueWorkerEntry {
+  name: string
+  rank: string
+  fromDate: string
+  toDate: string
+}
+
 interface FounderRef {
   name: string
   rutba: string
@@ -263,9 +270,9 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
   const [otherFacilities, setOtherFacilities] = useState('')
   const [customMosqueFields, setCustomMosqueFields] = useState<CustomField[]>([])
   const [currentImam, setCurrentImam] = useState('')
-  const [currentCouncil, setCurrentCouncil] = useState('')
   const [currentAssociation, setCurrentAssociation] = useState('')
   const [associationMembers, setAssociationMembers] = useState('')
+  const [mosqueWorkers, setMosqueWorkers] = useState<MosqueWorkerEntry[]>([])
 
   // New fields
   const [website, setWebsite] = useState('')
@@ -315,9 +322,14 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
     setOldMosques(allMosquesInit.filter(m => m.endDate))
     setCustomFields(initialData.customFields || [])
     setCurrentImam(initialData.currentImam || '')
-    setCurrentCouncil(initialData.currentCouncil || '')
     setCurrentAssociation(initialData.currentAssociation || '')
     setAssociationMembers(initialData.associationMembers || '')
+    setMosqueWorkers(initialData.mosqueWorkers?.map(worker => ({
+      name: worker.name || '',
+      rank: worker.rank || '',
+      fromDate: worker.fromDate || '',
+      toDate: worker.toDate || '',
+    })) || [])
     // Mosque
     const mt = initialData.mosqueType || ''
     const knownTypes = ['جامع الجزائر','مسجد تاريخي','مسجد رئيسي','مسجد وطني','مسجد محلي','مسجد حي','مسجد قطب','زاوية علمية']
@@ -405,6 +417,15 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
   }
   const removeImamRef = (idx: number) => setImamsServed(imamsServed.filter((_, i) => i !== idx))
 
+  // Mosque workers
+  const addMosqueWorker = () => setMosqueWorkers([...mosqueWorkers, { name: '', rank: '', fromDate: '', toDate: '' }])
+  const updateMosqueWorker = (idx: number, field: keyof MosqueWorkerEntry, value: string) => {
+    const updated = [...mosqueWorkers]
+    updated[idx][field] = value
+    setMosqueWorkers(updated)
+  }
+  const removeMosqueWorker = (idx: number) => setMosqueWorkers(mosqueWorkers.filter((_, i) => i !== idx))
+
   // Founders
   const addFounder = () => setFounders([...founders, { name: '', rutba: '' }])
   const updateFounder = (idx: number, field: keyof FounderRef, value: string) => {
@@ -481,9 +502,9 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
         articleData.dateInauguration = dateInauguration || undefined
         articleData.mosqueGallery = mosqueGallery.filter(g => g.trim() !== '')
         articleData.currentImam = currentImam || undefined
-        articleData.currentCouncil = currentCouncil || undefined
         articleData.currentAssociation = currentAssociation || undefined
         articleData.associationMembers = associationMembers || undefined
+        articleData.mosqueWorkers = mosqueWorkers.filter(worker => worker.name.trim() !== '')
       }
 
       if (mode === 'submit') {
@@ -1036,7 +1057,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
             />
           </div>
 
-          {/* Current Imam & Council */}
+          {/* Current Imam & Association */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-black">الإمام الحالي</label>
@@ -1046,16 +1067,6 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                 onChange={(e) => setCurrentImam(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
                 placeholder="اسم الإمام الحالي"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-bold mb-2 text-black">المجلس الحالي</label>
-              <input
-                type="text"
-                value={currentCouncil}
-                onChange={(e) => setCurrentCouncil(e.target.value)}
-                className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="أعضاء المجلس الحالي"
               />
             </div>
             <div>
@@ -1077,6 +1088,62 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
                 className="w-full px-4 py-2 border border-border-light rounded"
                 placeholder="أعضاء الجمعية الحالية"
               />
+            </div>
+          </div>
+
+          {/* Mosque workers */}
+          <div>
+            <label className="block text-sm font-bold mb-2 text-black">عمال المساجد</label>
+            <div className="space-y-2">
+              {mosqueWorkers.map((worker, idx) => (
+                <div key={idx} className="bg-white p-2 rounded border border-border-light space-y-2">
+                  <div className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={worker.name}
+                      onChange={(e) => updateMosqueWorker(idx, 'name', e.target.value)}
+                      className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                      placeholder="اسم العامل"
+                    />
+                    <button type="button" onClick={() => removeMosqueWorker(idx)} className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <input
+                      type="text"
+                      value={worker.rank}
+                      onChange={(e) => updateMosqueWorker(idx, 'rank', e.target.value)}
+                      className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                      placeholder="الرتبة"
+                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={worker.fromDate}
+                        onChange={(e) => updateMosqueWorker(idx, 'fromDate', e.target.value)}
+                        className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                        placeholder="من"
+                      />
+                      <input
+                        type="text"
+                        value={worker.toDate}
+                        onChange={(e) => updateMosqueWorker(idx, 'toDate', e.target.value)}
+                        className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
+                        placeholder="إلى"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addMosqueWorker}
+                className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
+              >
+                <Plus size={16} />
+                إضافة عامل
+              </button>
             </div>
           </div>
 

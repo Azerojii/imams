@@ -1,26 +1,32 @@
 import Link from 'next/link'
-import { MapPin, UserCircle } from 'lucide-react'
+import { UserCircle } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
+import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
 import { getImams } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 
-export default async function ImamsPage() {
+const PAGE_SIZE = 10
+
+export default async function ImamsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ page?: string }>
+}) {
+  const params = (await searchParams) || {}
+  const pageValue = Number.parseInt(params.page || '1', 10)
+
   const imams = await getImams()
+  const sortedImams = [...imams].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
+  const totalPages = Math.max(1, Math.ceil(sortedImams.length / PAGE_SIZE))
+  const currentPage = Number.isFinite(pageValue)
+    ? Math.min(Math.max(pageValue, 1), totalPages)
+    : 1
 
-  const byWilaya = new Map<string, typeof imams>()
-  const noWilaya: typeof imams = []
-
-  imams.forEach(imam => {
-    if (imam.wilaya) {
-      if (!byWilaya.has(imam.wilaya)) byWilaya.set(imam.wilaya, [])
-      byWilaya.get(imam.wilaya)!.push(imam)
-    } else {
-      noWilaya.push(imam)
-    }
-  })
+  const startIndex = (currentPage - 1) * PAGE_SIZE
+  const paginatedImams = sortedImams.slice(startIndex, startIndex + PAGE_SIZE)
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -45,35 +51,17 @@ export default async function ImamsPage() {
               </Link>
             </div>
           ) : (
-            <div className="space-y-8">
-              {Array.from(byWilaya.entries())
-                .sort(([a], [b]) => a.localeCompare(b, 'ar'))
-                .map(([wilayaName, wilayaImams]) => (
-                  <section key={wilayaName}>
-                    <h2 className="mb-3 flex items-center gap-2 text-xl font-heading font-bold text-primary-dark">
-                      <MapPin size={18} className="text-accent" />
-                      {wilayaName}
-                      <span className="text-sm font-normal text-text-secondary">({wilayaImams.length})</span>
-                    </h2>
-                    <div className="grid gap-3 md:grid-cols-2">
-                      {wilayaImams.map(imam => (
-                        <ArticleListCard key={imam.slug} article={imam} />
-                      ))}
-                    </div>
-                  </section>
+            <>
+              <div className="mb-4 text-xs text-text-secondary">
+                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, sortedImams.length)} من {sortedImams.length}
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {paginatedImams.map(imam => (
+                  <ArticleListCard key={imam.slug} article={imam} />
                 ))}
-
-              {noWilaya.length > 0 && (
-                <section>
-                  <h2 className="mb-3 text-xl font-heading font-bold text-primary-dark">بدون ولاية محددة</h2>
-                  <div className="grid gap-3 md:grid-cols-2">
-                    {noWilaya.map(imam => (
-                      <ArticleListCard key={imam.slug} article={imam} />
-                    ))}
-                  </div>
-                </section>
-              )}
-            </div>
+              </div>
+              <PaginationControls basePath="/imams" currentPage={currentPage} totalPages={totalPages} />
+            </>
           )}
         </main>
       </div>

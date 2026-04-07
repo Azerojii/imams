@@ -28,6 +28,13 @@ export interface Founder {
   rutba?: string
 }
 
+export interface MosqueWorker {
+  name: string
+  rank?: string
+  fromDate?: string
+  toDate?: string
+}
+
 export interface RankEntry {
   rank: string
   fromDate?: string
@@ -98,6 +105,7 @@ export interface WikiArticle {
   currentCouncil?: string
   currentAssociation?: string
   associationMembers?: string
+  mosqueWorkers?: MosqueWorker[]
   // References/Citations
   references?: Reference[]
 }
@@ -236,6 +244,7 @@ function rowToArticle(row: any): WikiArticle {
     currentCouncil: row.current_council || undefined,
     currentAssociation: row.current_association || undefined,
     associationMembers: row.association_members || undefined,
+    mosqueWorkers: row.mosque_workers?.length ? row.mosque_workers : undefined,
     references: row.references?.length ? row.references : undefined,
   }
 }

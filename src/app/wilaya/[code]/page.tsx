@@ -1,11 +1,14 @@
 import Link from 'next/link'
-import { MapPin, UserCircle, Landmark } from 'lucide-react'
+import { MapPin } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
+import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
 import { getArticlesByWilaya } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
+
+const PAGE_SIZE = 10
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params
@@ -15,12 +18,34 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
   }
 }
 
-export default async function WilayaPage({ params }: { params: Promise<{ code: string }> }) {
+export default async function WilayaPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ code: string }>
+  searchParams?: Promise<{ page?: string }>
+}) {
   const { code } = await params
+  const query = (await searchParams) || {}
+  const pageValue = Number.parseInt(query.page || '1', 10)
+
   const wilayaName = decodeURIComponent(code)
   const articles = await getArticlesByWilaya(wilayaName)
-  const imams = articles.filter(a => a.articleType === 'imam')
-  const mosques = articles.filter(a => a.articleType === 'mosque')
+  const sortedArticles = [...articles].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
+  const totalPages = Math.max(1, Math.ceil(sortedArticles.length / PAGE_SIZE))
+  const currentPage = Number.isFinite(pageValue)
+    ? Math.min(Math.max(pageValue, 1), totalPages)
+    : 1
+
+  const startIndex = (currentPage - 1) * PAGE_SIZE
+  const paginatedArticles = sortedArticles.slice(startIndex, startIndex + PAGE_SIZE)
+
+  const stats = {
+    imam: articles.filter(a => a.articleType === 'imam').length,
+    mosque: articles.filter(a => a.articleType === 'mosque').length,
+    quranTeacher: articles.filter(a => a.articleType === 'quran_teacher').length,
+    mourshida: articles.filter(a => a.articleType === 'mourshida').length,
+  }
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -30,7 +55,6 @@ export default async function WilayaPage({ params }: { params: Promise<{ code: s
         <WikiSidebar />
 
         <main className="flex-1 px-4 md:px-6 py-4 max-w-[960px]">
-          {/* Breadcrumbs */}
           <div className="text-sm text-text-secondary mb-4 flex items-center gap-2">
             <Link href="/" className="text-primary hover:underline">الرئيسية</Link>
             <span className="text-border">‹</span>
@@ -44,8 +68,13 @@ export default async function WilayaPage({ params }: { params: Promise<{ code: s
             <MapPin size={32} className="text-accent" />
             {wilayaName}
           </h1>
-          <p className="text-text-secondary mb-8">
-            {articles.length} مقال ({imams.length} إمام و {mosques.length} مسجد)
+
+          <p className="text-text-secondary mb-4">
+            {articles.length} مقال
+            {` (${stats.imam} إمام، ${stats.mosque} مسجد`}
+            {stats.quranTeacher > 0 ? `، ${stats.quranTeacher} معلم قرآن` : ''}
+            {stats.mourshida > 0 ? `، ${stats.mourshida} مرشدة دينية` : ''}
+            {')'}
           </p>
 
           {articles.length === 0 ? (
@@ -54,39 +83,21 @@ export default async function WilayaPage({ params }: { params: Promise<{ code: s
               <p className="text-lg">لا توجد مقالات لهذه الولاية بعد.</p>
             </div>
           ) : (
-            <div className="space-y-8">
-              {/* Imams */}
-              {imams.length > 0 && (
-                <section>
-                  <h2 className="text-xl font-heading font-bold text-primary-dark mb-3 flex items-center gap-2">
-                    <UserCircle size={20} />
-                    الأئمة
-                    <span className="text-sm text-text-secondary font-normal">({imams.length})</span>
-                  </h2>
-                  <div className="grid md:grid-cols-2 gap-3">
-                    {imams.map(imam => (
-                      <ArticleListCard key={imam.slug} article={imam} />
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* Mosques */}
-              {mosques.length > 0 && (
-                <section>
-                  <h2 className="text-xl font-heading font-bold text-primary-dark mb-3 flex items-center gap-2">
-                    <Landmark size={20} />
-                    المساجد
-                    <span className="text-sm text-text-secondary font-normal">({mosques.length})</span>
-                  </h2>
-                  <div className="grid md:grid-cols-2 gap-3">
-                    {mosques.map(mosque => (
-                      <ArticleListCard key={mosque.slug} article={mosque} />
-                    ))}
-                  </div>
-                </section>
-              )}
-            </div>
+            <>
+              <div className="mb-4 text-xs text-text-secondary">
+                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, sortedArticles.length)} من {sortedArticles.length}
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {paginatedArticles.map(article => (
+                  <ArticleListCard key={article.slug} article={article} />
+                ))}
+              </div>
+              <PaginationControls
+                basePath={`/wilaya/${encodeURIComponent(wilayaName)}`}
+                currentPage={currentPage}
+                totalPages={totalPages}
+              />
+            </>
           )}
         </main>
       </div>

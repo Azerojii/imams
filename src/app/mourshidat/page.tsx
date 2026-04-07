@@ -1,27 +1,32 @@
 import Link from 'next/link'
-import { MapPin } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
+import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
 import { getMourshibat } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 
-export default async function MourshidatPage() {
+const PAGE_SIZE = 10
+
+export default async function MourshidatPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ page?: string }>
+}) {
+  const params = (await searchParams) || {}
+  const pageValue = Number.parseInt(params.page || '1', 10)
+
   const mourshidat = await getMourshibat()
+  const sortedMourshidat = [...mourshidat].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
+  const totalPages = Math.max(1, Math.ceil(sortedMourshidat.length / PAGE_SIZE))
+  const currentPage = Number.isFinite(pageValue)
+    ? Math.min(Math.max(pageValue, 1), totalPages)
+    : 1
 
-  const byWilaya = new Map<string, typeof mourshidat>()
-  const noWilaya: typeof mourshidat = []
-
-  mourshidat.forEach(article => {
-    if (article.wilaya) {
-      if (!byWilaya.has(article.wilaya)) byWilaya.set(article.wilaya, [])
-      byWilaya.get(article.wilaya)!.push(article)
-    } else {
-      noWilaya.push(article)
-    }
-  })
+  const startIndex = (currentPage - 1) * PAGE_SIZE
+  const paginatedMourshidat = sortedMourshidat.slice(startIndex, startIndex + PAGE_SIZE)
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -46,35 +51,17 @@ export default async function MourshidatPage() {
               </Link>
             </div>
           ) : (
-            <div className="space-y-8">
-              {Array.from(byWilaya.entries())
-                .sort(([a], [b]) => a.localeCompare(b, 'ar'))
-                .map(([wilayaName, wilayaArticles]) => (
-                  <section key={wilayaName}>
-                    <h2 className="mb-3 flex items-center gap-2 text-xl font-heading font-bold text-primary-dark">
-                      <MapPin size={18} className="text-accent" />
-                      {wilayaName}
-                      <span className="text-sm font-normal text-text-secondary">({wilayaArticles.length})</span>
-                    </h2>
-                    <div className="grid gap-3 md:grid-cols-2">
-                      {wilayaArticles.map(article => (
-                        <ArticleListCard key={article.slug} article={article} />
-                      ))}
-                    </div>
-                  </section>
+            <>
+              <div className="mb-4 text-xs text-text-secondary">
+                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, sortedMourshidat.length)} من {sortedMourshidat.length}
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {paginatedMourshidat.map(article => (
+                  <ArticleListCard key={article.slug} article={article} />
                 ))}
-
-              {noWilaya.length > 0 && (
-                <section>
-                  <h2 className="mb-3 text-xl font-heading font-bold text-primary-dark">بدون ولاية محددة</h2>
-                  <div className="grid gap-3 md:grid-cols-2">
-                    {noWilaya.map(article => (
-                      <ArticleListCard key={article.slug} article={article} />
-                    ))}
-                  </div>
-                </section>
-              )}
-            </div>
+              </div>
+              <PaginationControls basePath="/mourshidat" currentPage={currentPage} totalPages={totalPages} />
+            </>
           )}
         </main>
       </div>

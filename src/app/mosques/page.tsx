@@ -1,26 +1,32 @@
 import Link from 'next/link'
-import { Landmark, MapPin } from 'lucide-react'
+import { Landmark } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
+import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
 import { getMosques } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 
-export default async function MosquesPage() {
+const PAGE_SIZE = 10
+
+export default async function MosquesPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ page?: string }>
+}) {
+  const params = (await searchParams) || {}
+  const pageValue = Number.parseInt(params.page || '1', 10)
+
   const mosques = await getMosques()
+  const sortedMosques = [...mosques].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
+  const totalPages = Math.max(1, Math.ceil(sortedMosques.length / PAGE_SIZE))
+  const currentPage = Number.isFinite(pageValue)
+    ? Math.min(Math.max(pageValue, 1), totalPages)
+    : 1
 
-  const byWilaya = new Map<string, typeof mosques>()
-  const noWilaya: typeof mosques = []
-
-  mosques.forEach(mosque => {
-    if (mosque.wilaya) {
-      if (!byWilaya.has(mosque.wilaya)) byWilaya.set(mosque.wilaya, [])
-      byWilaya.get(mosque.wilaya)!.push(mosque)
-    } else {
-      noWilaya.push(mosque)
-    }
-  })
+  const startIndex = (currentPage - 1) * PAGE_SIZE
+  const paginatedMosques = sortedMosques.slice(startIndex, startIndex + PAGE_SIZE)
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -45,35 +51,17 @@ export default async function MosquesPage() {
               </Link>
             </div>
           ) : (
-            <div className="space-y-8">
-              {Array.from(byWilaya.entries())
-                .sort(([a], [b]) => a.localeCompare(b, 'ar'))
-                .map(([wilayaName, wilayaMosques]) => (
-                  <section key={wilayaName}>
-                    <h2 className="mb-3 flex items-center gap-2 text-xl font-heading font-bold text-primary-dark">
-                      <MapPin size={18} className="text-accent" />
-                      {wilayaName}
-                      <span className="text-sm font-normal text-text-secondary">({wilayaMosques.length})</span>
-                    </h2>
-                    <div className="grid gap-3 md:grid-cols-2">
-                      {wilayaMosques.map(mosque => (
-                        <ArticleListCard key={mosque.slug} article={mosque} />
-                      ))}
-                    </div>
-                  </section>
+            <>
+              <div className="mb-4 text-xs text-text-secondary">
+                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, sortedMosques.length)} من {sortedMosques.length}
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {paginatedMosques.map(mosque => (
+                  <ArticleListCard key={mosque.slug} article={mosque} />
                 ))}
-
-              {noWilaya.length > 0 && (
-                <section>
-                  <h2 className="mb-3 text-xl font-heading font-bold text-primary-dark">بدون ولاية محددة</h2>
-                  <div className="grid gap-3 md:grid-cols-2">
-                    {noWilaya.map(mosque => (
-                      <ArticleListCard key={mosque.slug} article={mosque} />
-                    ))}
-                  </div>
-                </section>
-              )}
-            </div>
+              </div>
+              <PaginationControls basePath="/mosques" currentPage={currentPage} totalPages={totalPages} />
+            </>
           )}
         </main>
       </div>

@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BookOpen, Landmark, MapPin, UserCircle } from 'lucide-react'
@@ -35,20 +38,24 @@ function getTypeLabel(type: WikiMetadata['articleType']) {
 }
 
 export default function ArticleListCard({ article }: { article: WikiMetadata }) {
+  const [imageError, setImageError] = useState(false)
+  const showImage = Boolean(article.imageSrc) && !imageError
+
   return (
     <Link
       href={`/wiki/${article.slug}`}
-      className="card-islamic group block rounded-2xl p-4 sm:p-5 hover:no-underline"
+      className="card-islamic group block rounded-xl p-3.5 hover:no-underline"
     >
-      <div className="flex items-start gap-4">
-        <div className="relative h-16 w-16 overflow-hidden rounded-full border border-border-light bg-bg-sidebar flex-shrink-0 sm:h-20 sm:w-20">
-          {article.imageSrc ? (
+      <div className="flex items-start gap-3">
+        <div className="relative h-14 w-14 overflow-hidden rounded-full border border-border-light bg-bg-sidebar flex-shrink-0 sm:h-16 sm:w-16">
+          {showImage ? (
             <Image
-              src={article.imageSrc}
+              src={article.imageSrc!}
               alt={article.title}
               fill
-              sizes="80px"
+              sizes="64px"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
+              onError={() => setImageError(true)}
               unoptimized
             />
           ) : (
@@ -59,26 +66,26 @@ export default function ArticleListCard({ article }: { article: WikiMetadata }) 
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+          <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px]">
             <span className="flex items-center gap-1 text-accent-dark font-semibold">
               {getTypeIcon(article.articleType)}
               {getTypeLabel(article.articleType)}
             </span>
             {article.wilaya && (
               <span className="flex items-center gap-1 text-text-secondary">
-                <MapPin size={12} className="text-accent-dark" />
+                <MapPin size={11} className="text-accent-dark" />
                 {article.wilaya}
               </span>
             )}
             <span className="text-text-secondary sm:mr-auto">{article.lastUpdated}</span>
           </div>
 
-          <h3 className="text-lg font-bold text-primary sm:text-xl">{article.title}</h3>
-          <p className="mt-1 line-clamp-2 text-sm text-text-secondary sm:text-base">{article.description}</p>
+          <h3 className="text-base font-bold text-primary sm:text-lg line-clamp-2">{article.title}</h3>
+          <p className="mt-1 line-clamp-1 text-xs text-text-secondary sm:text-sm">{article.description}</p>
 
-          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px]">
             {article.commune && (
-              <span className="rounded-full bg-accent/10 px-2.5 py-1 font-medium text-accent-dark">
+              <span className="rounded-full bg-accent/10 px-2 py-0.5 font-medium text-accent-dark">
                 {article.commune}
               </span>
             )}

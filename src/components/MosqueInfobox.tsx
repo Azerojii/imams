@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { checkArticleExists } from '@/lib/wiki'
-import type { ImamReference, Founder, CustomField } from '@/lib/wiki'
+import type { ImamReference, Founder, CustomField, MosqueWorker } from '@/lib/wiki'
 import { Phone, Mail, MessageCircle, Facebook, Youtube, Globe } from 'lucide-react'
 
 interface MosqueInfoboxProps {
@@ -30,9 +30,9 @@ interface MosqueInfoboxProps {
   dateInauguration?: string
   mosqueGallery?: string[]
   currentImam?: string
-  currentCouncil?: string
   currentAssociation?: string
   associationMembers?: string
+  mosqueWorkers?: MosqueWorker[]
 }
 
 async function ImamLink({ imam }: { imam: ImamReference }) {
@@ -73,9 +73,9 @@ export default async function MosqueInfobox({
   dateInauguration,
   mosqueGallery,
   currentImam,
-  currentCouncil,
   currentAssociation,
   associationMembers,
+  mosqueWorkers,
 }: MosqueInfoboxProps) {
   return (
     <div className="infobox w-full">
@@ -164,12 +164,6 @@ export default async function MosqueInfobox({
               <td className="py-1.5 px-3">{currentImam}</td>
             </tr>
           )}
-          {currentCouncil && (
-            <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">المجلس الحالي</td>
-              <td className="py-1.5 px-3">{currentCouncil}</td>
-            </tr>
-          )}
           {currentAssociation && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">الجمعية الحالية</td>
@@ -244,6 +238,36 @@ export default async function MosqueInfobox({
                       ? `${imam.startDate} - ${imam.endDate}`
                       : imam.startDate
                         ? `منذ ${imam.startDate}`
+                        : ''}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+
+      {/* Mosque workers */}
+      {mosqueWorkers && mosqueWorkers.length > 0 && (
+        <>
+          <div className="infobox-section-header">عمال المسجد</div>
+          <table className="w-full border-collapse text-sm">
+            <tbody>
+              {mosqueWorkers.map((worker, idx) => (
+                <tr key={idx} className="border-t border-border-light">
+                  <td className="py-1.5 px-3">
+                    <div>
+                      <span className="font-medium">{worker.name}</span>
+                      {worker.rank && (
+                        <div className="text-xs text-text-secondary mt-0.5">{worker.rank}</div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="py-1.5 px-3 text-xs text-text-secondary text-left align-top">
+                    {worker.fromDate && worker.toDate
+                      ? `${worker.fromDate} - ${worker.toDate}`
+                      : worker.fromDate
+                        ? `منذ ${worker.fromDate}`
                         : ''}
                   </td>
                 </tr>
