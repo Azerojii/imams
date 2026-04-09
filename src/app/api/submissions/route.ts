@@ -11,7 +11,8 @@ export async function POST(request: Request) {
       mosqueType, dateBuilt, founders, imamsServed,
       prayerHallArea, prayerHallCapacity, minaretHeight, totalArea, otherFacilities, customMosqueFields,
       phone, email, whatsapp, facebook, youtubeChannel, website,
-      dateInauguration, mosqueGallery, currentImam, currentCouncil, currentAssociation, associationMembers, mosqueWorkers, references,
+      dateInauguration, mosqueGallery, currentImam, currentCouncil, currentAssociation,
+      currentAssociationMembers, formerCommitteeMembers, associationOtherInfo, associationMembers, mosqueWorkers, references,
     } = body
 
     if (!title || !content || !submitterName || !submitterEmail) {
@@ -79,6 +80,9 @@ export async function POST(request: Request) {
       if (currentImam) row.current_imam = currentImam
       if (currentCouncil) row.current_council = currentCouncil
       if (currentAssociation) row.current_association = currentAssociation
+      if (currentAssociationMembers?.length) row.current_association_members = currentAssociationMembers
+      if (formerCommitteeMembers?.length) row.former_committee_members = formerCommitteeMembers
+      if (associationOtherInfo) row.association_other_info = associationOtherInfo
       if (associationMembers) row.association_members = associationMembers
       if (mosqueWorkers?.length) row.mosque_workers = mosqueWorkers
     }

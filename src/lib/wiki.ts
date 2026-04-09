@@ -104,6 +104,10 @@ export interface WikiArticle {
   currentImam?: string
   currentCouncil?: string
   currentAssociation?: string
+  currentAssociationMembers?: string[]
+  formerCommitteeMembers?: string[]
+  associationOtherInfo?: string
+  // Legacy single-field members text (kept for backward compatibility)
   associationMembers?: string
   mosqueWorkers?: MosqueWorker[]
   // References/Citations
@@ -243,6 +247,9 @@ function rowToArticle(row: any): WikiArticle {
     currentImam: row.current_imam || undefined,
     currentCouncil: row.current_council || undefined,
     currentAssociation: row.current_association || undefined,
+    currentAssociationMembers: row.current_association_members?.length ? row.current_association_members : undefined,
+    formerCommitteeMembers: row.former_committee_members?.length ? row.former_committee_members : undefined,
+    associationOtherInfo: row.association_other_info || undefined,
     associationMembers: row.association_members || undefined,
     mosqueWorkers: row.mosque_workers?.length ? row.mosque_workers : undefined,
     references: row.references?.length ? row.references : undefined,

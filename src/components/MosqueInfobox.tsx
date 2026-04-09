@@ -31,6 +31,10 @@ interface MosqueInfoboxProps {
   mosqueGallery?: string[]
   currentImam?: string
   currentAssociation?: string
+  currentAssociationMembers?: string[]
+  formerCommitteeMembers?: string[]
+  associationOtherInfo?: string
+  // Legacy field kept for backward compatibility
   associationMembers?: string
   mosqueWorkers?: MosqueWorker[]
 }
@@ -74,9 +78,22 @@ export default async function MosqueInfobox({
   mosqueGallery,
   currentImam,
   currentAssociation,
+  currentAssociationMembers,
+  formerCommitteeMembers,
+  associationOtherInfo,
   associationMembers,
   mosqueWorkers,
 }: MosqueInfoboxProps) {
+  const parsedLegacyMembers = (associationMembers || '')
+    .split(/\r?\n|،|,|;/)
+    .map(member => member.trim())
+    .filter(Boolean)
+  const resolvedCurrentMembers = (currentAssociationMembers && currentAssociationMembers.length > 0
+    ? currentAssociationMembers
+    : parsedLegacyMembers
+  ).map(member => member.trim()).filter(Boolean)
+  const resolvedFormerMembers = (formerCommitteeMembers || []).map(member => member.trim()).filter(Boolean)
+
   return (
     <div className="infobox w-full">
       {/* Header */}
@@ -170,10 +187,34 @@ export default async function MosqueInfobox({
               <td className="py-1.5 px-3">{currentAssociation}</td>
             </tr>
           )}
-          {associationMembers && (
+          {resolvedCurrentMembers.length > 0 && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">أعضاء الجمعية</td>
-              <td className="py-1.5 px-3">{associationMembers}</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">أعضاء الجمعية الحالية</td>
+              <td className="py-1.5 px-3">
+                <ul className="list-inside list-disc space-y-0.5">
+                  {resolvedCurrentMembers.map((member, idx) => (
+                    <li key={`current-association-member-${idx}`}>{member}</li>
+                  ))}
+                </ul>
+              </td>
+            </tr>
+          )}
+          {resolvedFormerMembers.length > 0 && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">أعضاء لجنة سابقون</td>
+              <td className="py-1.5 px-3">
+                <ul className="list-inside list-disc space-y-0.5">
+                  {resolvedFormerMembers.map((member, idx) => (
+                    <li key={`former-committee-member-${idx}`}>{member}</li>
+                  ))}
+                </ul>
+              </td>
+            </tr>
+          )}
+          {associationOtherInfo && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">خانة أخرى</td>
+              <td className="py-1.5 px-3">{associationOtherInfo}</td>
             </tr>
           )}
         </tbody>
@@ -304,7 +345,7 @@ export default async function MosqueInfobox({
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
                     <span className="flex items-center gap-1"><Mail size={12} /> إيميل</span>
                   </td>
-                  <td className="py-1.5 px-3" dir="ltr">{email}</td>
+                  <td className="py-1.5 px-3 break-all text-left" dir="ltr">{email}</td>
                 </tr>
               )}
               {facebook && (

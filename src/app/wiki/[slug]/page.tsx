@@ -250,6 +250,9 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   mosqueGallery={article.mosqueGallery}
                   currentImam={article.currentImam}
                   currentAssociation={article.currentAssociation}
+                  currentAssociationMembers={article.currentAssociationMembers}
+                  formerCommitteeMembers={article.formerCommitteeMembers}
+                  associationOtherInfo={article.associationOtherInfo}
                   associationMembers={article.associationMembers}
                   mosqueWorkers={article.mosqueWorkers}
                 />

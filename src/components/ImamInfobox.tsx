@@ -228,7 +228,7 @@ export default async function ImamInfobox({
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
                     <span className="flex items-center gap-1"><Mail size={12} /> إيميل</span>
                   </td>
-                  <td className="py-1.5 px-3" dir="ltr">{email}</td>
+                  <td className="py-1.5 px-3 break-all text-left" dir="ltr">{email}</td>
                 </tr>
               )}
               {facebook && (

@@ -103,6 +103,15 @@ function getTitlePlaceholder(type: ArticleType): string {
   }
 }
 
+function parseMembersText(value?: string): string[] {
+  if (!value) return []
+
+  return value
+    .split(/\r?\n|،|,|;/)
+    .map(member => member.trim())
+    .filter(Boolean)
+}
+
 function MosqueLocationPicker({
   mosqueIndex,
   wilaya,
@@ -272,6 +281,9 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
   const [currentImam, setCurrentImam] = useState('')
   const [currentAssociation, setCurrentAssociation] = useState('')
   const [associationMembers, setAssociationMembers] = useState('')
+  const [currentAssociationMembers, setCurrentAssociationMembers] = useState<string[]>([])
+  const [formerCommitteeMembers, setFormerCommitteeMembers] = useState<string[]>([])
+  const [associationOtherInfo, setAssociationOtherInfo] = useState('')
   const [mosqueWorkers, setMosqueWorkers] = useState<MosqueWorkerEntry[]>([])
 
   // New fields
@@ -324,6 +336,12 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
     setCurrentImam(initialData.currentImam || '')
     setCurrentAssociation(initialData.currentAssociation || '')
     setAssociationMembers(initialData.associationMembers || '')
+    const currentMembersFromData = initialData.currentAssociationMembers?.length
+      ? initialData.currentAssociationMembers
+      : parseMembersText(initialData.associationMembers)
+    setCurrentAssociationMembers(currentMembersFromData)
+    setFormerCommitteeMembers(initialData.formerCommitteeMembers || [])
+    setAssociationOtherInfo(initialData.associationOtherInfo || '')
     setMosqueWorkers(initialData.mosqueWorkers?.map(worker => ({
       name: worker.name || '',
       rank: worker.rank || '',
@@ -444,6 +462,22 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
   }
   const removeCustomMosqueField = (idx: number) => setCustomMosqueFields(customMosqueFields.filter((_, i) => i !== idx))
 
+  const addCurrentAssociationMember = () => setCurrentAssociationMembers([...currentAssociationMembers, ''])
+  const updateCurrentAssociationMember = (idx: number, value: string) => {
+    const updated = [...currentAssociationMembers]
+    updated[idx] = value
+    setCurrentAssociationMembers(updated)
+  }
+  const removeCurrentAssociationMember = (idx: number) => setCurrentAssociationMembers(currentAssociationMembers.filter((_, i) => i !== idx))
+
+  const addFormerCommitteeMember = () => setFormerCommitteeMembers([...formerCommitteeMembers, ''])
+  const updateFormerCommitteeMember = (idx: number, value: string) => {
+    const updated = [...formerCommitteeMembers]
+    updated[idx] = value
+    setFormerCommitteeMembers(updated)
+  }
+  const removeFormerCommitteeMember = (idx: number) => setFormerCommitteeMembers(formerCommitteeMembers.filter((_, i) => i !== idx))
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
@@ -503,7 +537,14 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
         articleData.mosqueGallery = mosqueGallery.filter(g => g.trim() !== '')
         articleData.currentImam = currentImam || undefined
         articleData.currentAssociation = currentAssociation || undefined
-        articleData.associationMembers = associationMembers || undefined
+        const sanitizedCurrentMembers = currentAssociationMembers.map(member => member.trim()).filter(Boolean)
+        const sanitizedFormerMembers = formerCommitteeMembers.map(member => member.trim()).filter(Boolean)
+        articleData.currentAssociationMembers = sanitizedCurrentMembers.length ? sanitizedCurrentMembers : undefined
+        articleData.formerCommitteeMembers = sanitizedFormerMembers.length ? sanitizedFormerMembers : undefined
+        articleData.associationOtherInfo = associationOtherInfo || undefined
+        articleData.associationMembers = sanitizedCurrentMembers.length
+          ? sanitizedCurrentMembers.join('، ')
+          : associationMembers || undefined
         articleData.mosqueWorkers = mosqueWorkers.filter(worker => worker.name.trim() !== '')
       }
 
@@ -1080,13 +1121,75 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
               />
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-sm font-bold mb-2 text-black">أعضاء الجمعية</label>
+              <label className="block text-sm font-bold mb-2 text-black">أعضاء الجمعية الحالية</label>
+              <div className="space-y-2">
+                {currentAssociationMembers.map((member, idx) => (
+                  <div key={`current-member-${idx}`} className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={member}
+                      onChange={(e) => updateCurrentAssociationMember(idx, e.target.value)}
+                      className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                      placeholder="اسم عضو الجمعية"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeCurrentAssociationMember(idx)}
+                      className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addCurrentAssociationMember}
+                  className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
+                >
+                  <Plus size={16} />
+                  إضافة عضو
+                </button>
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-bold mb-2 text-black">أعضاء لجنة سابقون</label>
+              <div className="space-y-2">
+                {formerCommitteeMembers.map((member, idx) => (
+                  <div key={`former-member-${idx}`} className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={member}
+                      onChange={(e) => updateFormerCommitteeMember(idx, e.target.value)}
+                      className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
+                      placeholder="اسم عضو لجنة سابق"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeFormerCommitteeMember(idx)}
+                      className="p-1.5 text-destructive hover:bg-red-50 rounded flex-shrink-0"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addFormerCommitteeMember}
+                  className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
+                >
+                  <Plus size={16} />
+                  إضافة عضو
+                </button>
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-bold mb-2 text-black">خانة أخرى</label>
               <input
                 type="text"
-                value={associationMembers}
-                onChange={(e) => setAssociationMembers(e.target.value)}
+                value={associationOtherInfo}
+                onChange={(e) => setAssociationOtherInfo(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="أعضاء الجمعية الحالية"
+                placeholder="أي معلومات إضافية عن الجمعية أو اللجنة"
               />
             </div>
           </div>
@@ -1348,6 +1451,7 @@ export default function ArticleForm({ mode, initialTitle = '', initialData, slug
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              dir="ltr"
               className="w-full px-4 py-2 border border-border-light rounded"
               placeholder="email@example.com"
             />
