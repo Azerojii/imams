@@ -1,112 +1,158 @@
-import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
+    const body = await request.json();
     const {
-      title, description, category, content, submitterName, submitterEmail,
-      articleType, wilaya, commune, wilayaCode, image, youtubeVideos,
-      birthDate, deathDate, isAlive, rank, ranks, mosquesServed, customFields,
-      mosqueType, dateBuilt, founders, imamsServed,
-      prayerHallArea, prayerHallCapacity, minaretHeight, totalArea, otherFacilities, customMosqueFields,
-      phone, email, whatsapp, facebook, youtubeChannel, website,
-      dateInauguration, mosqueGallery, currentImam, currentCouncil, currentAssociation,
-      currentAssociationMembers, formerCommitteeMembers, associationOtherInfo, associationMembers, mosqueWorkers, references,
-    } = body
+      title,
+      description,
+      category,
+      content,
+      submitterName,
+      submitterEmail,
+      articleType,
+      wilaya,
+      commune,
+      wilayaCode,
+      image,
+      youtubeVideos,
+      birthDate,
+      deathDate,
+      isAlive,
+      rank,
+      ranks,
+      mosquesServed,
+      customFields,
+      mosqueType,
+      dateBuilt,
+      founders,
+      imamsServed,
+      prayerHallArea,
+      prayerHallCapacity,
+      minaretHeight,
+      totalArea,
+      otherFacilities,
+      customMosqueFields,
+      phone,
+      email,
+      whatsapp,
+      facebook,
+      youtubeChannel,
+      website,
+      dateInauguration,
+      mosqueGallery,
+      currentImam,
+      currentCouncil,
+      currentAssociation,
+      currentAssociationMembers,
+      formerCommitteeMembers,
+      associationOtherInfo,
+      associationMembers,
+      mosqueWorkers,
+      references,
+    } = body;
 
     if (!title || !content || !submitterName || !submitterEmail) {
       return NextResponse.json(
-        { error: 'العنوان والمحتوى والاسم والبريد الإلكتروني مطلوبون' },
-        { status: 400 }
-      )
+        { error: "العنوان والمحتوى والاسم والبريد الإلكتروني مطلوبون" },
+        { status: 400 },
+      );
     }
 
-    const slug = title.trim().replace(/\s+/g, '_')
+    const slug = title.trim().replace(/\s+/g, "_");
 
     const row: Record<string, unknown> = {
       slug,
       title,
-      description: description || '',
+      description:
+        typeof description === "string" ? description.slice(0, 70) : "",
       content,
-      category: category || 'أئمة',
-      article_type: articleType || 'imam',
+      category: category || "أئمة",
+      article_type: articleType || "imam",
       submitter_name: submitterName,
       submitter_email: submitterEmail,
-      status: 'pending',
-    }
+      status: "pending",
+    };
 
-    if (wilaya) row.wilaya = wilaya
-    if (commune) row.commune = commune
-    if (wilayaCode) row.wilaya_code = wilayaCode
+    if (wilaya) row.wilaya = wilaya;
+    if (commune) row.commune = commune;
+    if (wilayaCode) row.wilaya_code = wilayaCode;
     if (image) {
-      row.image_src = image.src
-      row.image_caption = image.caption
+      row.image_src = image.src;
+      row.image_caption = image.caption;
     }
-    if (youtubeVideos?.length) row.youtube_videos = youtubeVideos
-    if (references?.length) row.references = references
+    if (youtubeVideos?.length) row.youtube_videos = youtubeVideos;
+    if (references?.length) row.references = references;
 
     // Contact info
-    if (phone) row.phone = phone
-    if (email) row.email = email
-    if (whatsapp) row.whatsapp = whatsapp
-    if (facebook) row.facebook = facebook
-    if (youtubeChannel) row.youtube_channel = youtubeChannel
-    if (website) row.website = website
+    if (phone) row.phone = phone;
+    if (email) row.email = email;
+    if (whatsapp) row.whatsapp = whatsapp;
+    if (facebook) row.facebook = facebook;
+    if (youtubeChannel) row.youtube_channel = youtubeChannel;
+    if (website) row.website = website;
 
-    if (articleType === 'imam' || articleType === 'quran_teacher' || articleType === 'mourshida') {
-      if (birthDate) row.birth_date = birthDate
-      if (deathDate) row.death_date = deathDate
-      if (isAlive !== undefined) row.is_alive = isAlive
-      if (rank) row.rank = rank
-      if (ranks?.length) row.ranks = ranks
-      if (mosquesServed?.length) row.mosques_served = mosquesServed
-      if (customFields?.length) row.custom_fields = customFields
+    if (
+      articleType === "imam" ||
+      articleType === "quran_teacher" ||
+      articleType === "mourshida"
+    ) {
+      if (birthDate) row.birth_date = birthDate;
+      if (deathDate) row.death_date = deathDate;
+      if (isAlive !== undefined) row.is_alive = isAlive;
+      if (rank) row.rank = rank;
+      if (ranks?.length) row.ranks = ranks;
+      if (mosquesServed?.length) row.mosques_served = mosquesServed;
+      if (customFields?.length) row.custom_fields = customFields;
     }
 
-    if (articleType === 'mosque') {
-      if (mosqueType) row.mosque_type = mosqueType
-      if (dateBuilt) row.date_built = dateBuilt
-      if (founders?.length) row.founders = founders
-      if (imamsServed?.length) row.imams_served = imamsServed
-      if (prayerHallArea) row.prayer_hall_area = prayerHallArea
-      if (prayerHallCapacity) row.prayer_hall_capacity = prayerHallCapacity
-      if (minaretHeight) row.minaret_height = minaretHeight
-      if (totalArea) row.total_area = totalArea
-      if (otherFacilities) row.other_facilities = otherFacilities
-      if (customMosqueFields?.length) row.custom_mosque_fields = customMosqueFields
-      if (dateInauguration) row.date_inauguration = dateInauguration
-      if (mosqueGallery?.length) row.mosque_gallery = mosqueGallery
-      if (currentImam) row.current_imam = currentImam
-      if (currentCouncil) row.current_council = currentCouncil
-      if (currentAssociation) row.current_association = currentAssociation
-      if (currentAssociationMembers?.length) row.current_association_members = currentAssociationMembers
-      if (formerCommitteeMembers?.length) row.former_committee_members = formerCommitteeMembers
-      if (associationOtherInfo) row.association_other_info = associationOtherInfo
-      if (associationMembers) row.association_members = associationMembers
-      if (mosqueWorkers?.length) row.mosque_workers = mosqueWorkers
+    if (articleType === "mosque") {
+      if (mosqueType) row.mosque_type = mosqueType;
+      if (dateBuilt) row.date_built = dateBuilt;
+      if (founders?.length) row.founders = founders;
+      if (imamsServed?.length) row.imams_served = imamsServed;
+      if (prayerHallArea) row.prayer_hall_area = prayerHallArea;
+      if (prayerHallCapacity) row.prayer_hall_capacity = prayerHallCapacity;
+      if (minaretHeight) row.minaret_height = minaretHeight;
+      if (totalArea) row.total_area = totalArea;
+      if (otherFacilities) row.other_facilities = otherFacilities;
+      if (customMosqueFields?.length)
+        row.custom_mosque_fields = customMosqueFields;
+      if (dateInauguration) row.date_inauguration = dateInauguration;
+      if (mosqueGallery?.length) row.mosque_gallery = mosqueGallery;
+      if (currentImam) row.current_imam = currentImam;
+      if (currentCouncil) row.current_council = currentCouncil;
+      if (currentAssociation) row.current_association = currentAssociation;
+      if (currentAssociationMembers?.length)
+        row.current_association_members = currentAssociationMembers;
+      if (formerCommitteeMembers?.length)
+        row.former_committee_members = formerCommitteeMembers;
+      if (associationOtherInfo)
+        row.association_other_info = associationOtherInfo;
+      if (associationMembers) row.association_members = associationMembers;
+      if (mosqueWorkers?.length) row.mosque_workers = mosqueWorkers;
     }
 
     const { data, error } = await supabase
-      .from('submissions')
+      .from("submissions")
       .insert(row)
-      .select('id')
-      .single()
+      .select("id")
+      .single();
 
     if (error) {
-      console.error('Supabase insert error:', error)
-      return NextResponse.json(
-        { error: 'فشل في حفظ المقال' },
-        { status: 500 }
-      )
+      console.error("Supabase insert error:", error);
+      return NextResponse.json({ error: "فشل في حفظ المقال" }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, id: data.id })
+    return NextResponse.json({ success: true, id: data.id });
   } catch (error) {
-    console.error('Error creating submission:', error)
+    console.error("Error creating submission:", error);
     return NextResponse.json(
-      { error: `فشل في تقديم المقال: ${error instanceof Error ? error.message : 'خطأ غير معروف'}` },
-      { status: 500 }
-    )
+      {
+        error: `فشل في تقديم المقال: ${error instanceof Error ? error.message : "خطأ غير معروف"}`,
+      },
+      { status: 500 },
+    );
   }
 }

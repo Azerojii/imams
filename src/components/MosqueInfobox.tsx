@@ -1,46 +1,58 @@
-import Link from 'next/link'
-import { checkArticleExists } from '@/lib/wiki'
-import type { ImamReference, Founder, CustomField, MosqueWorker } from '@/lib/wiki'
-import { Phone, Mail, MessageCircle, Facebook, Youtube, Globe } from 'lucide-react'
+import Link from "next/link";
+import { checkArticleExists } from "@/lib/wiki";
+import type {
+  ImamReference,
+  Founder,
+  CustomField,
+  MosqueWorker,
+} from "@/lib/wiki";
+import {
+  Phone,
+  Mail,
+  MessageCircle,
+  Facebook,
+  Youtube,
+  Globe,
+} from "lucide-react";
 
 interface MosqueInfoboxProps {
-  title: string
+  title: string;
   image?: {
-    src: string
-    caption: string
-  }
-  mosqueType?: string
-  dateBuilt?: string
-  wilaya?: string
-  commune?: string
-  founders?: Founder[]
-  imamsServed?: ImamReference[]
-  prayerHallArea?: string
-  prayerHallCapacity?: string
-  minaretHeight?: string
-  totalArea?: string
-  otherFacilities?: string
-  customMosqueFields?: CustomField[]
-  phone?: string
-  email?: string
-  whatsapp?: string
-  facebook?: string
-  youtubeChannel?: string
-  website?: string
-  dateInauguration?: string
-  mosqueGallery?: string[]
-  currentImam?: string
-  currentAssociation?: string
-  currentAssociationMembers?: string[]
-  formerCommitteeMembers?: string[]
-  associationOtherInfo?: string
+    src: string;
+    caption: string;
+  };
+  mosqueType?: string;
+  dateBuilt?: string;
+  wilaya?: string;
+  commune?: string;
+  founders?: Founder[];
+  imamsServed?: ImamReference[];
+  prayerHallArea?: string;
+  prayerHallCapacity?: string;
+  minaretHeight?: string;
+  totalArea?: string;
+  otherFacilities?: string;
+  customMosqueFields?: CustomField[];
+  phone?: string;
+  email?: string;
+  whatsapp?: string;
+  facebook?: string;
+  youtubeChannel?: string;
+  website?: string;
+  dateInauguration?: string;
+  mosqueGallery?: string[];
+  currentImam?: string;
+  currentAssociation?: string;
+  currentAssociationMembers?: string[];
+  formerCommitteeMembers?: string[];
+  associationOtherInfo?: string;
   // Legacy field kept for backward compatibility
-  associationMembers?: string
-  mosqueWorkers?: MosqueWorker[]
+  associationMembers?: string;
+  mosqueWorkers?: MosqueWorker[];
 }
 
 async function ImamLink({ imam }: { imam: ImamReference }) {
-  const exists = imam.slug ? await checkArticleExists(imam.slug) : false
+  const exists = imam.slug ? await checkArticleExists(imam.slug) : false;
   return exists && imam.slug ? (
     <Link
       href={`/wiki/${imam.slug}`}
@@ -50,7 +62,7 @@ async function ImamLink({ imam }: { imam: ImamReference }) {
     </Link>
   ) : (
     <span className="text-text-secondary">{imam.name}</span>
-  )
+  );
 }
 
 export default async function MosqueInfobox({
@@ -84,15 +96,20 @@ export default async function MosqueInfobox({
   associationMembers,
   mosqueWorkers,
 }: MosqueInfoboxProps) {
-  const parsedLegacyMembers = (associationMembers || '')
+  const parsedLegacyMembers = (associationMembers || "")
     .split(/\r?\n|،|,|;/)
-    .map(member => member.trim())
-    .filter(Boolean)
-  const resolvedCurrentMembers = (currentAssociationMembers && currentAssociationMembers.length > 0
-    ? currentAssociationMembers
-    : parsedLegacyMembers
-  ).map(member => member.trim()).filter(Boolean)
-  const resolvedFormerMembers = (formerCommitteeMembers || []).map(member => member.trim()).filter(Boolean)
+    .map((member) => member.trim())
+    .filter(Boolean);
+  const resolvedCurrentMembers = (
+    currentAssociationMembers && currentAssociationMembers.length > 0
+      ? currentAssociationMembers
+      : parsedLegacyMembers
+  )
+    .map((member) => member.trim())
+    .filter(Boolean);
+  const resolvedFormerMembers = (formerCommitteeMembers || [])
+    .map((member) => member.trim())
+    .filter(Boolean);
 
   return (
     <div className="infobox w-full">
@@ -117,79 +134,105 @@ export default async function MosqueInfobox({
         <tbody>
           {mosqueType && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">النوع</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                النوع
+              </td>
               <td className="py-1.5 px-3">{mosqueType}</td>
             </tr>
           )}
           {dateBuilt && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">تاريخ البناء</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                تاريخ البناء
+              </td>
               <td className="py-1.5 px-3">{dateBuilt}</td>
             </tr>
           )}
           {dateInauguration && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">تاريخ الافتتاح</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                تاريخ الافتتاح
+              </td>
               <td className="py-1.5 px-3">{dateInauguration}</td>
             </tr>
           )}
           {wilaya && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium">الولاية</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium">
+                الولاية
+              </td>
               <td className="py-1.5 px-3">{wilaya}</td>
             </tr>
           )}
           {commune && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium">البلدية</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium">
+                البلدية
+              </td>
               <td className="py-1.5 px-3">{commune}</td>
             </tr>
           )}
           {prayerHallArea && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium">مساحة قاعة الصلاة</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium">
+                مساحة قاعة الصلاة
+              </td>
               <td className="py-1.5 px-3">{prayerHallArea}</td>
             </tr>
           )}
           {prayerHallCapacity && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium">عدد المصلين</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium">
+                عدد المصلين
+              </td>
               <td className="py-1.5 px-3">{prayerHallCapacity}</td>
             </tr>
           )}
           {minaretHeight && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium">طول المئذنة</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium">
+                طول المئذنة
+              </td>
               <td className="py-1.5 px-3">{minaretHeight}</td>
             </tr>
           )}
           {totalArea && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium">المساحة الكلية</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium">
+                المساحة الكلية
+              </td>
               <td className="py-1.5 px-3">{totalArea}</td>
             </tr>
           )}
           {otherFacilities && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium">مرافق أخرى</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium">
+                مرافق أخرى
+              </td>
               <td className="py-1.5 px-3">{otherFacilities}</td>
             </tr>
           )}
           {currentImam && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">الإمام الحالي</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                الإمام الحالي
+              </td>
               <td className="py-1.5 px-3">{currentImam}</td>
             </tr>
           )}
           {currentAssociation && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">الجمعية الحالية</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                الجمعية الحالية
+              </td>
               <td className="py-1.5 px-3">{currentAssociation}</td>
             </tr>
           )}
           {resolvedCurrentMembers.length > 0 && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">أعضاء الجمعية الحالية</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                أعضاء الجمعية الحالية
+              </td>
               <td className="py-1.5 px-3">
                 <ul className="list-inside list-disc space-y-0.5">
                   {resolvedCurrentMembers.map((member, idx) => (
@@ -201,7 +244,9 @@ export default async function MosqueInfobox({
           )}
           {resolvedFormerMembers.length > 0 && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">أعضاء لجنة سابقون</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                أعضاء لجنة سابقون
+              </td>
               <td className="py-1.5 px-3">
                 <ul className="list-inside list-disc space-y-0.5">
                   {resolvedFormerMembers.map((member, idx) => (
@@ -213,7 +258,9 @@ export default async function MosqueInfobox({
           )}
           {associationOtherInfo && (
             <tr className="border-t border-border-light">
-              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">خانة أخرى</td>
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                خانة أخرى
+              </td>
               <td className="py-1.5 px-3">{associationOtherInfo}</td>
             </tr>
           )}
@@ -228,7 +275,9 @@ export default async function MosqueInfobox({
             <tbody>
               {customMosqueFields.map((field, idx) => (
                 <tr key={idx} className="border-t border-border-light">
-                  <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">{field.label}</td>
+                  <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                    {field.label}
+                  </td>
                   <td className="py-1.5 px-3">{field.value}</td>
                 </tr>
               ))}
@@ -249,7 +298,7 @@ export default async function MosqueInfobox({
                     <span className="font-medium">{founder.name}</span>
                   </td>
                   <td className="py-1.5 px-3 text-xs text-text-secondary text-left">
-                    {founder.rutba || ''}
+                    {founder.rutba || ""}
                   </td>
                 </tr>
               ))}
@@ -261,7 +310,7 @@ export default async function MosqueInfobox({
       {/* Imams Served */}
       {imamsServed && imamsServed.length > 0 && (
         <>
-          <div className="infobox-section-header">الأئمة الذين خدموا فيه</div>
+          <div className="infobox-section-header">الأئمة الذين عملوا فيه</div>
           <table className="w-full border-collapse text-sm">
             <tbody>
               {imamsServed.map((imam, idx) => (
@@ -270,7 +319,9 @@ export default async function MosqueInfobox({
                     <div>
                       <ImamLink imam={imam} />
                       {imam.rutba && (
-                        <div className="text-xs text-text-secondary mt-0.5">{imam.rutba}</div>
+                        <div className="text-xs text-text-secondary mt-0.5">
+                          {imam.rutba}
+                        </div>
                       )}
                     </div>
                   </td>
@@ -279,7 +330,7 @@ export default async function MosqueInfobox({
                       ? `${imam.startDate} - ${imam.endDate}`
                       : imam.startDate
                         ? `منذ ${imam.startDate}`
-                        : ''}
+                        : ""}
                   </td>
                 </tr>
               ))}
@@ -300,7 +351,9 @@ export default async function MosqueInfobox({
                     <div>
                       <span className="font-medium">{worker.name}</span>
                       {worker.rank && (
-                        <div className="text-xs text-text-secondary mt-0.5">{worker.rank}</div>
+                        <div className="text-xs text-text-secondary mt-0.5">
+                          {worker.rank}
+                        </div>
                       )}
                     </div>
                   </td>
@@ -309,7 +362,7 @@ export default async function MosqueInfobox({
                       ? `${worker.fromDate} - ${worker.toDate}`
                       : worker.fromDate
                         ? `منذ ${worker.fromDate}`
-                        : ''}
+                        : ""}
                   </td>
                 </tr>
               ))}
@@ -319,7 +372,12 @@ export default async function MosqueInfobox({
       )}
 
       {/* Contact Info */}
-      {(phone || email || whatsapp || facebook || youtubeChannel || website) && (
+      {(phone ||
+        email ||
+        whatsapp ||
+        facebook ||
+        youtubeChannel ||
+        website) && (
         <>
           <div className="infobox-section-header">معلومات الاتصال</div>
           <table className="w-full border-collapse text-sm">
@@ -327,54 +385,93 @@ export default async function MosqueInfobox({
               {phone && (
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                    <span className="flex items-center gap-1"><Phone size={12} /> الهاتف</span>
+                    <span className="flex items-center gap-1">
+                      <Phone size={12} /> الهاتف
+                    </span>
                   </td>
-                  <td className="py-1.5 px-3" dir="ltr">{phone}</td>
+                  <td className="py-1.5 px-3" dir="ltr">
+                    {phone}
+                  </td>
                 </tr>
               )}
               {whatsapp && (
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
-                    <span className="flex items-center gap-1"><MessageCircle size={12} /> واتساب</span>
+                    <span className="flex items-center gap-1">
+                      <MessageCircle size={12} /> واتساب
+                    </span>
                   </td>
-                  <td className="py-1.5 px-3" dir="ltr">{whatsapp}</td>
+                  <td className="py-1.5 px-3" dir="ltr">
+                    {whatsapp}
+                  </td>
                 </tr>
               )}
               {email && (
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
-                    <span className="flex items-center gap-1"><Mail size={12} /> إيميل</span>
+                    <span className="flex items-center gap-1">
+                      <Mail size={12} /> إيميل
+                    </span>
                   </td>
-                  <td className="py-1.5 px-3 break-all text-left" dir="ltr">{email}</td>
+                  <td className="py-1.5 px-3 break-all text-left" dir="ltr">
+                    {email}
+                  </td>
                 </tr>
               )}
               {facebook && (
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
-                    <span className="flex items-center gap-1"><Facebook size={12} /> فيسبوك</span>
+                    <span className="flex items-center gap-1">
+                      <Facebook size={12} /> فيسبوك
+                    </span>
                   </td>
                   <td className="py-1.5 px-3">
-                    <a href={facebook} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs">رابط</a>
+                    <a
+                      href={facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline text-xs"
+                    >
+                      رابط
+                    </a>
                   </td>
                 </tr>
               )}
               {youtubeChannel && (
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
-                    <span className="flex items-center gap-1"><Youtube size={12} /> يوتيوب</span>
+                    <span className="flex items-center gap-1">
+                      <Youtube size={12} /> يوتيوب
+                    </span>
                   </td>
                   <td className="py-1.5 px-3">
-                    <a href={youtubeChannel} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs">رابط</a>
+                    <a
+                      href={youtubeChannel}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline text-xs"
+                    >
+                      رابط
+                    </a>
                   </td>
                 </tr>
               )}
               {website && (
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
-                    <span className="flex items-center gap-1"><Globe size={12} /> الموقع</span>
+                    <span className="flex items-center gap-1">
+                      <Globe size={12} /> الموقع
+                    </span>
                   </td>
                   <td className="py-1.5 px-3">
-                    <a href={website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-xs">رابط</a>
+                    <a
+                      href={website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline text-xs"
+                    >
+                      رابط
+                    </a>
                   </td>
                 </tr>
               )}
@@ -389,11 +486,16 @@ export default async function MosqueInfobox({
           <div className="infobox-section-header">معرض الصور</div>
           <div className="p-2 grid grid-cols-2 gap-1">
             {mosqueGallery.map((src, idx) => (
-              <img key={idx} src={src} alt={`صورة ${idx + 1}`} className="w-full h-24 object-cover rounded" />
+              <img
+                key={idx}
+                src={src}
+                alt={`صورة ${idx + 1}`}
+                className="w-full h-24 object-cover rounded"
+              />
             ))}
           </div>
         </>
       )}
     </div>
-  )
+  );
 }
