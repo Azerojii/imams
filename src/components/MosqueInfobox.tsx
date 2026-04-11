@@ -49,6 +49,8 @@ interface MosqueInfoboxProps {
   // Legacy field kept for backward compatibility
   associationMembers?: string;
   mosqueWorkers?: MosqueWorker[];
+  mosqueEngineer?: string;
+  historicalPeriod?: string;
 }
 
 async function ImamLink({ imam }: { imam: ImamReference }) {
@@ -95,6 +97,8 @@ export default async function MosqueInfobox({
   associationOtherInfo,
   associationMembers,
   mosqueWorkers,
+  mosqueEngineer,
+  historicalPeriod,
 }: MosqueInfoboxProps) {
   const parsedLegacyMembers = (associationMembers || "")
     .split(/\r?\n|،|,|;/)
@@ -146,6 +150,22 @@ export default async function MosqueInfobox({
                 تاريخ البناء
               </td>
               <td className="py-1.5 px-3">{dateBuilt}</td>
+            </tr>
+          )}
+          {historicalPeriod && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                العهد / الدولة
+              </td>
+              <td className="py-1.5 px-3">{historicalPeriod}</td>
+            </tr>
+          )}
+          {mosqueEngineer && (
+            <tr className="border-t border-border-light">
+              <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
+                مهندس المسجد
+              </td>
+              <td className="py-1.5 px-3">{mosqueEngineer}</td>
             </tr>
           )}
           {dateInauguration && (

@@ -55,9 +55,6 @@ export default async function Home() {
           <h1 className="font-heading text-2xl sm:text-5xl md:text-6xl text-white mb-3 sm:mb-4">
             موسوعة أئمة ومساجد الجزائر
           </h1>
-          <p className="text-white/80 text-base sm:text-lg mb-2">
-            موسوعة الأئمة والمساجد الجزائرية
-          </p>
 
           {/* Introductory paragraph */}
           <div className="max-w-3xl mx-auto text-white/70 text-sm leading-loose mb-6 font-amiri">

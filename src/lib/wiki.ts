@@ -112,6 +112,9 @@ export interface WikiArticle {
   mosqueWorkers?: MosqueWorker[]
   // References/Citations
   references?: Reference[]
+  // New fields v9
+  mosqueEngineer?: string
+  historicalPeriod?: string
 }
 
 export interface WikiMetadata {
@@ -253,6 +256,8 @@ function rowToArticle(row: any): WikiArticle {
     associationMembers: row.association_members || undefined,
     mosqueWorkers: row.mosque_workers?.length ? row.mosque_workers : undefined,
     references: row.references?.length ? row.references : undefined,
+    mosqueEngineer: row.mosque_engineer || undefined,
+    historicalPeriod: row.historical_period || undefined,
   }
 }
 

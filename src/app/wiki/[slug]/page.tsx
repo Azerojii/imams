@@ -178,6 +178,12 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                 <YouTubeVideos videos={article.youtubeVideos} />
               )}
 
+              {/* Contribution phrase */}
+              <div className="mt-8 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                <span aria-hidden="true">✏️</span>
+                <span>هذه المقالة بحاجة إلى توسيع وتطوير ، يُرجى المساهمة في تحسينه</span>
+              </div>
+
               {/* Footer */}
               <div className="mt-12 pt-6 border-t border-border-light">
                 <div className="text-sm text-text-secondary">
@@ -255,6 +261,8 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   associationOtherInfo={article.associationOtherInfo}
                   associationMembers={article.associationMembers}
                   mosqueWorkers={article.mosqueWorkers}
+                  mosqueEngineer={article.mosqueEngineer}
+                  historicalPeriod={article.historicalPeriod}
                 />
               )}
               {toc.length > 0 && <TableOfContents items={toc} />}

@@ -33,3 +33,7 @@ coverage/
 
 # Misc
 *.pem
+.vercel
+.env.vercel
+stderr.log
+stdout.log

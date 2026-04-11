@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { slug, articleTitle, suggestedBy, suggestedByEmail, description, newContent } = body
+    const { slug, articleTitle, suggestedBy, suggestedByEmail, description, newContent, originalContent } = body
     const normalizedSlug = typeof slug === 'string' ? decodeURIComponent(slug) : ''
 
     if (!normalizedSlug || !suggestedBy || !suggestedByEmail || !description) {
@@ -23,6 +23,7 @@ export async function POST(request: Request) {
         suggested_by_email: suggestedByEmail,
         description,
         new_content: newContent || null,
+        original_content: originalContent || null,
         status: 'pending',
       })
 

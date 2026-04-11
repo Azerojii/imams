@@ -37,6 +37,7 @@ export default function SuggestEditButton({ slug, articleTitle, initialContent }
           suggestedByEmail: email,
           description,
           newContent: newContent || undefined,
+          originalContent: initialContent || undefined,
         }),
       })
 
