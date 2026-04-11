@@ -347,6 +347,7 @@ export default function ArticleForm({
   const [dateInauguration, setDateInauguration] = useState("");
   const [mosqueGallery, setMosqueGallery] = useState<string[]>([]);
   const [mosqueTypeCustom, setMosqueTypeCustom] = useState(false);
+  const [galleryUploading, setGalleryUploading] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -1806,14 +1807,51 @@ export default function ArticleForm({
                   </div>
                 </div>
               ))}
-              <button
-                type="button"
-                onClick={() => setMosqueGallery([...mosqueGallery, ""])}
-                className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
-              >
-                <Plus size={16} />
-                إضافة صورة
-              </button>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => setMosqueGallery([...mosqueGallery, ""])}
+                  className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
+                >
+                  <Plus size={16} />
+                  إضافة صورة
+                </button>
+                <label className={`flex items-center gap-2 px-4 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded text-sm text-amber-800 font-medium transition-colors cursor-pointer ${galleryUploading ? "opacity-50 pointer-events-none" : ""}`}>
+                  {galleryUploading ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : (
+                    <Plus size={16} />
+                  )}
+                  {galleryUploading ? "جاري الرفع..." : "رفع صور متعددة"}
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    className="hidden"
+                    disabled={galleryUploading}
+                    onChange={async (e) => {
+                      const files = Array.from(e.target.files || []);
+                      if (files.length === 0) return;
+                      setGalleryUploading(true);
+                      const newUrls: string[] = [];
+                      for (const file of files) {
+                        const fd = new FormData();
+                        fd.append("file", file);
+                        try {
+                          const res = await fetch("/api/upload", { method: "POST", body: fd });
+                          const data = await res.json();
+                          if (data.url) newUrls.push(data.url);
+                        } catch {
+                          // skip failed uploads silently
+                        }
+                      }
+                      setMosqueGallery((prev) => [...prev, ...newUrls]);
+                      setGalleryUploading(false);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+              </div>
             </div>
           </div>
 
