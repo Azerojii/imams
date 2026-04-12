@@ -1,8 +1,7 @@
-import { notFound } from 'next/navigation'
+﻿import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getWikiArticle, getAllWikiSlugs, generateTableOfContents } from '@/lib/wiki'
 import WikiHeader from '@/components/WikiHeader'
-import WikiSidebar from '@/components/WikiSidebar'
 import TableOfContents from '@/components/TableOfContents'
 import ImamInfobox from '@/components/ImamInfobox'
 import MosqueInfobox from '@/components/MosqueInfobox'
@@ -28,10 +27,10 @@ function getTypeIcon(type: string) {
 
 function getTypeLabel(type: string) {
   switch (type) {
-    case 'imam': return 'إمام'
-    case 'mosque': return 'مسجد'
-    case 'quran_teacher': return 'معلم قرآن'
-    case 'mourshida': return 'مرشدة دينية'
+    case 'imam': return 'Ø¥Ù…Ø§Ù…'
+    case 'mosque': return 'Ù…Ø³Ø¬Ø¯'
+    case 'quran_teacher': return 'Ù…Ø¹Ù„Ù… Ù‚Ø±Ø¢Ù†'
+    case 'mourshida': return 'Ù…Ø±Ø´Ø¯Ø© Ø¯ÙŠÙ†ÙŠØ©'
     default: return type
   }
 }
@@ -48,11 +47,11 @@ function getTypeListPath(type: string) {
 
 function getTypeCategoryLabel(type: string) {
   switch (type) {
-    case 'imam': return 'الأئمة'
-    case 'mosque': return 'المساجد'
-    case 'quran_teacher': return 'معلمو القرآن'
-    case 'mourshida': return 'المرشدات'
-    default: return 'الأئمة'
+    case 'imam': return 'Ø§Ù„Ø£Ø¦Ù…Ø©'
+    case 'mosque': return 'Ø§Ù„Ù…Ø³Ø§Ø¬Ø¯'
+    case 'quran_teacher': return 'Ù…Ø¹Ù„Ù…Ùˆ Ø§Ù„Ù‚Ø±Ø¢Ù†'
+    case 'mourshida': return 'Ø§Ù„Ù…Ø±Ø´Ø¯Ø§Øª'
+    default: return 'Ø§Ù„Ø£Ø¦Ù…Ø©'
   }
 }
 
@@ -66,11 +65,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = await getWikiArticle(slug)
 
   if (!article) {
-    return { title: 'المقال غير موجود' }
+    return { title: 'Ø§Ù„Ù…Ù‚Ø§Ù„ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯' }
   }
 
   return {
-    title: `${article.title} - موسوعة أئمة ومساجد الجزائر`,
+    title: `${article.title} - Ù…ÙˆØ³ÙˆØ¹Ø© Ø£Ø¦Ù…Ø© ÙˆÙ…Ø³Ø§Ø¬Ø¯ Ø§Ù„Ø¬Ø²Ø§Ø¦Ø±`,
     description: article.description,
   }
 }
@@ -90,16 +89,14 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
     <div className="min-h-screen bg-bg-main">
       <WikiHeader />
 
-      <div className="flex max-w-[1400px] mx-auto">
-        <WikiSidebar />
-
-        <main className="flex-1 px-4 md:px-6 py-4 max-w-[860px]">
+      <div className="mx-auto max-w-[1680px]">
+        <main className="px-4 py-4 md:px-8">
           {/* Breadcrumbs */}
           <div className="text-xs sm:text-sm text-text-secondary mb-4 flex items-center gap-1.5 sm:gap-2 flex-wrap print:hidden">
             <Link href="/" className="text-primary hover:underline">
-              الرئيسية
+              Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©
             </Link>
-            <span className="text-border">‹</span>
+            <span className="text-border">â€¹</span>
             <Link
               href={getTypeListPath(article.articleType)}
               className="text-primary hover:underline flex items-center gap-1"
@@ -109,7 +106,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             </Link>
             {article.wilaya && (
               <>
-                <span className="text-border">‹</span>
+                <span className="text-border">â€¹</span>
                 <Link
                   href={`/wilaya/${encodeURIComponent(article.wilaya)}`}
                   className="text-primary hover:underline"
@@ -118,14 +115,14 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                 </Link>
               </>
             )}
-            <span className="text-border">‹</span>
+            <span className="text-border">â€¹</span>
             <span className="text-text-primary">{article.title}</span>
           </div>
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2 flex-wrap print:hidden">
             <PrintButton />
-            <SuggestEditButton slug={slug} articleTitle={article.title} initialContent={article.rawContent} />
+            <SuggestEditButton article={article} />
           </div>
 
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-4">
@@ -135,11 +132,11 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
           {/* Last modification status */}
           {(article.lastUpdated || article.authorName) && (
             <div className="text-xs text-text-secondary mb-3 flex items-center gap-1">
-              <span>آخر تعديل:</span>
+              <span>Ø¢Ø®Ø± ØªØ¹Ø¯ÙŠÙ„:</span>
               {article.lastUpdated && <span className="font-medium">{article.lastUpdated}</span>}
               {article.authorName && (
                 <>
-                  <span>بواسطة</span>
+                  <span>Ø¨ÙˆØ§Ø³Ø·Ø©</span>
                   <span className="font-medium">{article.authorName}</span>
                 </>
               )}
@@ -166,8 +163,8 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             </p>
           )}
 
-          <div className="flex flex-col-reverse md:flex-row gap-6">
-            <div className="flex-1">
+          <div className="flex flex-col-reverse gap-6 md:flex-row">
+            <div className="min-w-0 flex-1">
               {/* Article Content */}
               <div className="prose-arabic">
                 <ArticleReferences content={article.content} references={article.references} />
@@ -180,25 +177,25 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
 
               {/* Contribution phrase */}
               <div className="mt-8 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                <span aria-hidden="true">✏️</span>
-                <span>هذه المقالة بحاجة إلى توسيع وتطوير ، يُرجى المساهمة في تحسينه</span>
+                <span aria-hidden="true">âœï¸</span>
+                <span>هذه المقالة بحاجة إلى توسيع وتطوير، ويُرجى المساهمة في تحسينها.</span>
               </div>
 
               {/* Footer */}
               <div className="mt-12 pt-6 border-t border-border-light">
                 <div className="text-sm text-text-secondary">
                   <p>
-                    <strong>آخر تحديث:</strong> {article.lastUpdated}
+                    <strong>Ø¢Ø®Ø± ØªØ­Ø¯ÙŠØ«:</strong> {article.lastUpdated}
                   </p>
                   <p className="mt-2">
-                    <strong>التصنيف:</strong>{' '}
+                    <strong>Ø§Ù„ØªØµÙ†ÙŠÙ:</strong>{' '}
                     <Link href={`/category/${article.category}`} className="text-primary">
                       {article.category}
                     </Link>
                   </p>
                   {article.authorName && (
                     <p className="mt-2">
-                      <strong>الكاتب:</strong> {article.authorName}
+                      <strong>Ø§Ù„ÙƒØ§ØªØ¨:</strong> {article.authorName}
                       {article.authorEmail && (
                         <span className="text-text-secondary"> ({article.authorEmail})</span>
                       )}
@@ -209,7 +206,7 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             </div>
 
             {/* Right Sidebar */}
-            <aside className="w-full md:w-72 md:flex-shrink-0">
+            <aside className="w-full md:w-80 md:flex-shrink-0">
               {isImamLike ? (
                 <ImamInfobox
                   title={article.title}
@@ -273,3 +270,4 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
     </div>
   )
 }
+

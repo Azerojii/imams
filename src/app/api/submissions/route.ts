@@ -51,6 +51,8 @@ export async function POST(request: Request) {
       associationMembers,
       mosqueWorkers,
       references,
+      mosqueEngineer,
+      historicalPeriod,
     } = body;
 
     if (!title || !content || !submitterName || !submitterEmail) {
@@ -132,6 +134,8 @@ export async function POST(request: Request) {
         row.association_other_info = associationOtherInfo;
       if (associationMembers) row.association_members = associationMembers;
       if (mosqueWorkers?.length) row.mosque_workers = mosqueWorkers;
+      if (mosqueEngineer) row.mosque_engineer = mosqueEngineer;
+      if (historicalPeriod) row.historical_period = historicalPeriod;
     }
 
     const { data, error } = await supabase

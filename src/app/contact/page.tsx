@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Mail, Phone, Globe2 } from 'lucide-react'
 import WikiHeader from '@/components/WikiHeader'
-import WikiSidebar from '@/components/WikiSidebar'
 import { getSiteFooterSettings, type SiteFooterLink } from '@/lib/site-settings'
 
 export const dynamic = 'force-dynamic'
@@ -51,10 +50,8 @@ export default async function ContactPage() {
     <div className="min-h-screen bg-bg-main">
       <WikiHeader />
 
-      <div className="mx-auto flex max-w-[1400px]">
-        <WikiSidebar />
-
-        <main className="max-w-[960px] flex-1 px-4 py-4 md:px-6">
+      <div className="mx-auto max-w-[1500px]">
+        <main className="px-4 py-4 md:px-6">
           <div className="mb-4 flex items-center gap-2 text-sm text-text-secondary">
             <Link href="/" className="text-primary hover:underline">
               الرئيسية

@@ -3,7 +3,6 @@
 import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import WikiHeader from '@/components/WikiHeader'
-import WikiSidebar from '@/components/WikiSidebar'
 import ArticleForm from '@/components/ArticleForm'
 import { Info, Loader2 } from 'lucide-react'
 
@@ -15,10 +14,8 @@ function SubmitContent() {
     <div className="min-h-screen bg-bg-main">
       <WikiHeader />
 
-      <div className="flex max-w-[1400px] mx-auto">
-        <WikiSidebar />
-
-        <main className="flex-1 px-4 md:px-6 py-4 max-w-[860px]">
+      <div className="mx-auto max-w-[1500px]">
+        <main className="px-4 py-4 md:px-6">
           <h1 className="text-2xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-6">
             تقديم مقال
           </h1>

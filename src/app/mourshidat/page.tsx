@@ -3,7 +3,6 @@ import ArticleListCard from '@/components/ArticleListCard'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
-import WikiSidebar from '@/components/WikiSidebar'
 import { getMourshibat } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
@@ -32,10 +31,8 @@ export default async function MourshidatPage({
     <div className="min-h-screen bg-bg-main">
       <WikiHeader />
 
-      <div className="mx-auto flex max-w-[1400px]">
-        <WikiSidebar />
-
-        <main className="max-w-[960px] flex-1 px-4 py-4 md:px-6">
+      <div className="mx-auto max-w-[1500px]">
+        <main className="px-4 py-4 md:px-6">
           <h1 className="mb-2 flex items-center gap-3 border-b-2 border-border-light pb-2 text-2xl font-heading font-bold text-primary md:text-4xl">
             <HijabiWomanIcon size={32} />
             المرشدات الدينيات

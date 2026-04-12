@@ -3,7 +3,6 @@ import { MapPin } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
-import WikiSidebar from '@/components/WikiSidebar'
 import { getArticlesByWilaya } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
@@ -51,10 +50,8 @@ export default async function WilayaPage({
     <div className="min-h-screen bg-bg-main">
       <WikiHeader />
 
-      <div className="flex max-w-[1400px] mx-auto">
-        <WikiSidebar />
-
-        <main className="flex-1 px-4 md:px-6 py-4 max-w-[960px]">
+      <div className="mx-auto max-w-[1500px]">
+        <main className="px-4 py-4 md:px-6">
           <div className="text-sm text-text-secondary mb-4 flex items-center gap-2">
             <Link href="/" className="text-primary hover:underline">الرئيسية</Link>
             <span className="text-border">‹</span>
