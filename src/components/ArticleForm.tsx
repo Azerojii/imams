@@ -66,15 +66,15 @@ interface Wilaya {
 }
 
 const RANK_OPTIONS = [
-  "Ø¥Ù…Ø§Ù… Ø®Ø·ÙŠØ¨",
-  "Ø¥Ù…Ø§Ù… Ù…Ø¯Ø±Ø³",
-  "Ø¥Ù…Ø§Ù… ÙˆØ§Ø¹Ø¸",
-  "Ø¥Ù…Ø§Ù… Ø®Ø·ÙŠØ¨ Ø£ÙˆÙ„",
-  "Ø¥Ù…Ø§Ù… Ù…Ù…ØªØ§Ø²",
-  "Ø¥Ù…Ø§Ù… Ù…ÙØªÙŠ",
-  "Ø¥Ù…Ø§Ù… ØµÙ„ÙˆØ§Øª",
-  "Ø¥Ù…Ø§Ù… Ù…Ù†ØªØ¯Ø¨",
-  "Ù…Ø¯Ø±Ø³ Ø­Ù„Ù‚Ø§Øª Ø¹Ù„Ù…ÙŠØ©",
+  "إمام خطيب",
+  "إمام مدرس",
+  "إمام واعظ",
+  "إمام خطيب أول",
+  "إمام ممتاز",
+  "إمام مفتي",
+  "إمام صلوات",
+  "إمام منتدب",
+  "مدرس حلقات علمية",
 ];
 
 type ArticleType = "imam" | "mosque" | "quran_teacher" | "mourshida";
@@ -86,39 +86,39 @@ function isImamLike(type: ArticleType): boolean {
 function getCategoryLabel(type: ArticleType): string {
   switch (type) {
     case "imam":
-      return "Ø£Ø¦Ù…Ø©";
+      return "أئمة";
     case "mosque":
-      return "Ù…Ø³Ø§Ø¬Ø¯";
+      return "مساجد";
     case "quran_teacher":
-      return "Ù…Ø¹Ù„Ù…Ùˆ Ø§Ù„Ù‚Ø±Ø¢Ù† Ø§Ù„ÙƒØ±ÙŠÙ…";
+      return "معلمو القرآن الكريم";
     case "mourshida":
-      return "Ù…Ø±Ø´Ø¯Ø§Øª Ø¯ÙŠÙ†ÙŠØ§Øª";
+      return "مرشدات دينيات";
   }
 }
 
 function getTypeLabel(type: ArticleType): string {
   switch (type) {
     case "imam":
-      return "Ø¥Ù…Ø§Ù…";
+      return "إمام";
     case "mosque":
-      return "Ù…Ø³Ø¬Ø¯";
+      return "مسجد";
     case "quran_teacher":
-      return "Ù…Ø¹Ù„Ù… Ù‚Ø±Ø¢Ù†";
+      return "معلم قرآن";
     case "mourshida":
-      return "Ù…Ø±Ø´Ø¯Ø© Ø¯ÙŠÙ†ÙŠØ©";
+      return "مرشدة دينية";
   }
 }
 
 function getTitlePlaceholder(type: ArticleType): string {
   switch (type) {
     case "imam":
-      return "Ù…Ø«Ø§Ù„: Ø§Ù„Ø´ÙŠØ® Ø¹Ø¨Ø¯ Ø§Ù„Ø­Ù…ÙŠØ¯ Ø¨Ù† Ø¨Ø§Ø¯ÙŠØ³";
+      return "مثال: الشيخ عبد الحميد بن باديس";
     case "mosque":
-      return "Ù…Ø«Ø§Ù„: Ø§Ù„Ø¬Ø§Ù…Ø¹ Ø§Ù„Ø£Ø®Ø¶Ø±";
+      return "مثال: الجامع الأخضر";
     case "quran_teacher":
-      return "Ù…Ø«Ø§Ù„: Ø§Ù„Ø´ÙŠØ® Ù…Ø­Ù…Ø¯ Ø§Ù„Ø¹ÙŠØ¯ Ø¢Ù„ Ø®Ù„ÙŠÙØ©";
+      return "مثال: الشيخ محمد العيد آل خليفة";
     case "mourshida":
-      return "Ù…Ø«Ø§Ù„: Ø§Ù„Ø£Ø³ØªØ§Ø°Ø© ÙØ§Ø·Ù…Ø© Ø§Ù„Ø²Ù‡Ø±Ø§Ø¡";
+      return "مثال: الأستاذة فاطمة الزهراء";
   }
 }
 
@@ -126,7 +126,7 @@ function parseMembersText(value?: string): string[] {
   if (!value) return [];
 
   return value
-    .split(/\r?\n|ØŒ|,|;/)
+    .split(/\r?\n|،|,|;/)
     .map((member) => member.trim())
     .filter(Boolean);
 }
@@ -135,7 +135,7 @@ function parseFacilitiesText(value?: string): string[] {
   if (!value) return [];
 
   return value
-    .split(/\r?\n|ØŒ|,|;/)
+    .split(/\r?\n|،|,|;/)
     .map((facility) => facility.trim())
     .filter(Boolean);
 }
@@ -179,14 +179,14 @@ function MosqueLocationPicker({
   const currentWilaya = wilayas.find((w) => w.code === wilayaCode);
 
   if (loading) {
-    return <p className="text-xs text-text-secondary">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù…ÙˆØ§Ù‚Ø¹...</p>;
+    return <p className="text-xs text-text-secondary">جاري تحميل المواقع...</p>;
   }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
       <div>
         <label className="block text-xs text-text-secondary mb-0.5">
-          ÙˆÙ„Ø§ÙŠØ© Ø§Ù„Ù…Ø³Ø¬Ø¯
+          ولاية المسجد
         </label>
         <select
           value={wilayaCode}
@@ -200,7 +200,7 @@ function MosqueLocationPicker({
           }}
           className="w-full px-2 py-1.5 border border-border-light rounded text-sm bg-white"
         >
-          <option value="">Ø§Ø®ØªØ± Ø§Ù„ÙˆÙ„Ø§ÙŠØ©</option>
+          <option value="">اختر الولاية</option>
           {wilayas.map((w) => (
             <option key={w.code} value={w.code}>
               {w.code} - {w.name}
@@ -211,7 +211,7 @@ function MosqueLocationPicker({
       <div>
         <div className="flex items-center justify-between mb-0.5">
           <label className="block text-xs text-text-secondary">
-            Ø¨Ù„Ø¯ÙŠØ© Ø§Ù„Ù…Ø³Ø¬Ø¯
+            بلدية المسجد
           </label>
           {wilayaCode && (
             <button
@@ -222,7 +222,7 @@ function MosqueLocationPicker({
               }}
               className="text-xs text-primary hover:underline"
             >
-              {customCommune ? "Ø§Ø®ØªÙŠØ§Ø± Ù…Ù† Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©" : "ÙƒØªØ§Ø¨Ø© ÙŠØ¯ÙˆÙŠØ©"}
+              {customCommune ? "اختيار من القائمة" : "كتابة يدوية"}
             </button>
           )}
         </div>
@@ -232,7 +232,7 @@ function MosqueLocationPicker({
             value={commune}
             onChange={(e) => onUpdate(mosqueIndex, "commune", e.target.value)}
             className="w-full px-2 py-1.5 border border-border-light rounded text-sm"
-            placeholder="Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ø§Ù„Ø¨Ù„Ø¯ÙŠØ©"
+            placeholder="اكتب اسم البلدية"
           />
         ) : (
           <select
@@ -241,7 +241,7 @@ function MosqueLocationPicker({
             disabled={!wilayaCode}
             className="w-full px-2 py-1.5 border border-border-light rounded text-sm bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
           >
-            <option value="">Ø§Ø®ØªØ± Ø§Ù„Ø¨Ù„Ø¯ÙŠØ©</option>
+            <option value="">اختر البلدية</option>
             {currentWilaya?.communes.map((c) => (
               <option key={c.id} value={c.name}>
                 {c.name}
@@ -447,14 +447,14 @@ export default function ArticleForm({
     // Mosque
     const mt = initialData.mosqueType || "";
     const knownTypes = [
-      "Ø¬Ø§Ù…Ø¹ Ø§Ù„Ø¬Ø²Ø§Ø¦Ø±",
-      "Ù…Ø³Ø¬Ø¯ ØªØ§Ø±ÙŠØ®ÙŠ",
-      "Ù…Ø³Ø¬Ø¯ Ø±Ø¦ÙŠØ³ÙŠ",
-      "Ù…Ø³Ø¬Ø¯ ÙˆØ·Ù†ÙŠ",
-      "Ù…Ø³Ø¬Ø¯ Ù…Ø­Ù„ÙŠ",
-      "Ù…Ø³Ø¬Ø¯ Ø­ÙŠ",
-      "Ù…Ø³Ø¬Ø¯ Ù‚Ø·Ø¨",
-      "Ø²Ø§ÙˆÙŠØ© Ø¹Ù„Ù…ÙŠØ©",
+      "جامع الجزائر",
+      "مسجد تاريخي",
+      "مسجد رئيسي",
+      "مسجد وطني",
+      "مسجد محلي",
+      "مسجد حي",
+      "مسجد قطب",
+      "زاوية علمية",
     ];
     if (mt && !knownTypes.includes(mt)) {
       setMosqueType(mt);
@@ -744,7 +744,7 @@ export default function ArticleForm({
           .map((f) => f.trim())
           .filter(Boolean);
         articleData.otherFacilities = normalizedFacilities.length
-          ? normalizedFacilities.join("ØŒ ")
+          ? normalizedFacilities.join("، ")
           : undefined;
         articleData.customMosqueFields = customMosqueFields.filter(
           (f) => f.label.trim() !== "" && f.value.trim() !== "",
@@ -768,7 +768,7 @@ export default function ArticleForm({
           ? sanitizedFormerMembers
           : undefined;
         articleData.associationMembers = sanitizedCurrentMembers.length
-          ? sanitizedCurrentMembers.join("ØŒ ")
+          ? sanitizedCurrentMembers.join("، ")
           : associationMembers || undefined;
         articleData.currentCouncil = initialData?.currentCouncil || undefined;
         articleData.associationOtherInfo =
@@ -816,7 +816,7 @@ export default function ArticleForm({
       }
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "ÙØ´Ù„ ÙÙŠ Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ù…Ù‚Ø§Ù„");
+      if (!response.ok) throw new Error(data.error || "فشل في إرسال المقال");
 
       if (mode === "submit") {
         setSuccess(true);
@@ -873,21 +873,21 @@ export default function ArticleForm({
       {/* Article Type Selector */}
       <div>
         <label className="block text-sm font-bold mb-3 text-black">
-          Ù†ÙˆØ¹ Ø§Ù„Ù…Ù‚Ø§Ù„ <span className="text-destructive">*</span>
+          نوع المقال <span className="text-destructive">*</span>
         </label>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { type: "imam" as const, icon: UserCircle, label: "Ø¥Ù…Ø§Ù…" },
-            { type: "mosque" as const, icon: Landmark, label: "Ù…Ø³Ø¬Ø¯" },
+            { type: "imam" as const, icon: UserCircle, label: "إمام" },
+            { type: "mosque" as const, icon: Landmark, label: "مسجد" },
             {
               type: "quran_teacher" as const,
               icon: BookOpen,
-              label: "Ù…Ø¹Ù„Ù… Ù‚Ø±Ø¢Ù†",
+              label: "معلم قرآن",
             },
             {
               type: "mourshida" as const,
               icon: HijabiWomanIcon,
-              label: "Ù…Ø±Ø´Ø¯Ø© Ø¯ÙŠÙ†ÙŠØ©",
+              label: "مرشدة دينية",
             },
           ].map(({ type, icon: Icon, label }) => (
             <button
@@ -912,9 +912,9 @@ export default function ArticleForm({
 
       {/* Mandatory fields note */}
       <p className="text-sm text-text-secondary bg-amber-50 border border-amber-200 rounded px-3 py-2">
-        Ø§Ù„Ø­Ù‚ÙˆÙ„ Ø§Ù„Ù…ÙØ¹Ù„ÙŽÙ‘Ù…Ø© Ø¨Ù€{" "}
-        <span className="text-destructive font-bold">*</span> Ø¥Ù„Ø²Ø§Ù…ÙŠØ© ÙˆØ§Ù„Ø¨Ù‚ÙŠØ©
-        Ø§Ø®ØªÙŠØ§Ø±ÙŠØ©
+        الحقول المُعلَّمة بـ{" "}
+        <span className="text-destructive font-bold">*</span> إلزامية والبقية
+        اختيارية
       </p>
 
       {/* Submitter Info (submit + suggestion mode) */}
@@ -931,7 +931,7 @@ export default function ArticleForm({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                Ø§Ù„Ø§Ø³Ù… <span className="text-destructive">*</span>
+                الاسم <span className="text-destructive">*</span>
               </label>
               <input
                 type="text"
@@ -939,12 +939,12 @@ export default function ArticleForm({
                 onChange={(e) => setSubmitterName(e.target.value)}
                 required
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="Ø§Ø³Ù…Ùƒ"
+                placeholder="اسمك"
               />
             </div>
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ <span className="text-destructive">*</span>
+                البريد الإلكتروني <span className="text-destructive">*</span>
               </label>
               <input
                 type="email"
@@ -978,8 +978,8 @@ export default function ArticleForm({
       <div>
         <label className="block text-sm font-bold mb-2 text-black">
           {articleType === "mosque"
-            ? "Ø§Ø³Ù… Ø§Ù„Ù…Ø³Ø¬Ø¯"
-            : `Ø§Ø³Ù… ${getTypeLabel(articleType)}`}{" "}
+            ? "اسم المسجد"
+            : `اسم ${getTypeLabel(articleType)}`}{" "}
           <span className="text-destructive">*</span>
         </label>
         <input
@@ -995,7 +995,7 @@ export default function ArticleForm({
       {/* Description */}
       <div>
         <label className="block text-sm font-bold mb-2 text-black">
-          ÙˆØµÙ Ù…Ø®ØªØµØ±
+          وصف مختصر
         </label>
         <input
           type="text"
@@ -1003,7 +1003,7 @@ export default function ArticleForm({
           onChange={(e) => setDescription(e.target.value.slice(0, 70))}
           maxLength={70}
           className="w-full px-4 py-2 border border-border-light rounded"
-          placeholder="ÙˆØµÙ Ù…ÙˆØ¬Ø² ÙÙŠ Ø³Ø·Ø± ÙˆØ§Ø­Ø¯"
+          placeholder="وصف موجز في سطر واحد"
         />
         <p className="mt-1 text-xs text-text-secondary">
           {description.length}/70
@@ -1024,26 +1024,26 @@ export default function ArticleForm({
       {isImamLike(articleType) ? (
         <div className="bg-bg-sidebar rounded-lg p-4 border border-border-light space-y-4">
           <h3 className="font-bold text-lg font-heading text-primary">
-            Ù…Ø¹Ù„ÙˆÙ…Ø§Øª {getTypeLabel(articleType)}
+            معلومات {getTypeLabel(articleType)}
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                ØªØ§Ø±ÙŠØ® Ø§Ù„Ù…ÙŠÙ„Ø§Ø¯
+                تاريخ الميلاد
               </label>
               <input
                 type="text"
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="Ù…Ø«Ø§Ù„: 1889-12-05 Ø£Ùˆ 1889"
+                placeholder="مثال: 1889-12-05 أو 1889"
               />
             </div>
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="block text-sm font-bold text-black">
-                  ØªØ§Ø±ÙŠØ® Ø§Ù„ÙˆÙØ§Ø©
+                  تاريخ الوفاة
                 </label>
                 <label className="flex items-center gap-2 text-sm text-black">
                   <input
@@ -1052,7 +1052,7 @@ export default function ArticleForm({
                     onChange={(e) => setIsAlive(e.target.checked)}
                     className="rounded"
                   />
-                  <span>Ø¹Ù„Ù‰ Ù‚ÙŠØ¯ Ø§Ù„Ø­ÙŠØ§Ø©</span>
+                  <span>على قيد الحياة</span>
                 </label>
               </div>
               <input
@@ -1061,7 +1061,7 @@ export default function ArticleForm({
                 onChange={(e) => setDeathDate(e.target.value)}
                 disabled={isAlive}
                 className="w-full px-4 py-2 border border-border-light rounded disabled:bg-gray-100 disabled:cursor-not-allowed"
-                placeholder="Ù…Ø«Ø§Ù„: 1940-04-16 Ø£Ùˆ 1940"
+                placeholder="مثال: 1940-04-16 أو 1940"
               />
             </div>
           </div>
@@ -1069,7 +1069,7 @@ export default function ArticleForm({
           {/* Current Rank */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø§Ù„Ø±ØªØ¨Ø© Ø§Ù„Ø­Ø§Ù„ÙŠØ©
+              الرتبة الحالية
             </label>
             <div className="bg-white p-3 rounded border border-border-light space-y-2">
               <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
@@ -1094,13 +1094,13 @@ export default function ArticleForm({
                     }}
                     className="w-full px-2 py-1.5 border border-border-light rounded text-sm bg-white"
                   >
-                    <option value="">Ø§Ø®ØªØ± Ø§Ù„Ø±ØªØ¨Ø© Ø§Ù„Ø­Ø§Ù„ÙŠØ©</option>
+                    <option value="">اختر الرتبة الحالية</option>
                     {RANK_OPTIONS.map((opt) => (
                       <option key={opt} value={opt}>
                         {opt}
                       </option>
                     ))}
-                    <option value="__custom__">Ø£Ø®Ø±Ù‰ (ÙƒØªØ§Ø¨Ø© ÙŠØ¯ÙˆÙŠØ©)</option>
+                    <option value="__custom__">أخرى (كتابة يدوية)</option>
                   </select>
                 </div>
                 <input
@@ -1113,7 +1113,7 @@ export default function ArticleForm({
                     }))
                   }
                   className="w-full sm:w-28 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                  placeholder="Ù…Ù†Ø° (Ø§Ù„Ø³Ù†Ø©)"
+                  placeholder="منذ (السنة)"
                 />
               </div>
               {!RANK_OPTIONS.includes(currentRankEntry.rank) &&
@@ -1128,7 +1128,7 @@ export default function ArticleForm({
                       }))
                     }
                     className="w-full px-3 py-1.5 border border-border-light rounded text-sm"
-                    placeholder="Ø§ÙƒØªØ¨ Ø§Ù„Ø±ØªØ¨Ø© ÙŠØ¯ÙˆÙŠØ§Ù‹"
+                    placeholder="اكتب الرتبة يدوياً"
                   />
                 )}
             </div>
@@ -1137,7 +1137,7 @@ export default function ArticleForm({
           {/* Old Ranks */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø§Ù„Ø±ØªØ¨ Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©
+              الرتب السابقة
             </label>
             <div className="space-y-3">
               {oldRanks.map((r, idx) => (
@@ -1160,13 +1160,13 @@ export default function ArticleForm({
                         }}
                         className="w-full px-2 py-1.5 border border-border-light rounded text-sm bg-white"
                       >
-                        <option value="">Ø§Ø®ØªØ± Ø§Ù„Ø±ØªØ¨Ø©</option>
+                        <option value="">اختر الرتبة</option>
                         {RANK_OPTIONS.map((opt) => (
                           <option key={opt} value={opt}>
                             {opt}
                           </option>
                         ))}
-                        <option value="__custom__">Ø£Ø®Ø±Ù‰ (ÙƒØªØ§Ø¨Ø© ÙŠØ¯ÙˆÙŠØ©)</option>
+                        <option value="__custom__">أخرى (كتابة يدوية)</option>
                       </select>
                     </div>
                     <div className="flex gap-2 items-center">
@@ -1177,7 +1177,7 @@ export default function ArticleForm({
                           updateOldRank(idx, "fromDate", e.target.value)
                         }
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                        placeholder="Ù…Ù†"
+                        placeholder="من"
                       />
                       <input
                         type="text"
@@ -1186,7 +1186,7 @@ export default function ArticleForm({
                           updateOldRank(idx, "toDate", e.target.value)
                         }
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                        placeholder="Ø¥Ù„Ù‰"
+                        placeholder="إلى"
                       />
                       <button
                         type="button"
@@ -1205,7 +1205,7 @@ export default function ArticleForm({
                         updateOldRank(idx, "rank", e.target.value)
                       }
                       className="w-full px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§ÙƒØªØ¨ Ø§Ù„Ø±ØªØ¨Ø© ÙŠØ¯ÙˆÙŠØ§Ù‹"
+                      placeholder="اكتب الرتبة يدوياً"
                     />
                   )}
                 </div>
@@ -1216,7 +1216,7 @@ export default function ArticleForm({
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
               >
                 <Plus size={16} />
-                Ø¥Ø¶Ø§ÙØ© Ø±ØªØ¨Ø© Ø³Ø§Ø¨Ù‚Ø©
+                إضافة رتبة سابقة
               </button>
             </div>
           </div>
@@ -1224,7 +1224,7 @@ export default function ArticleForm({
           {/* Current Mosque */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø§Ù„Ù…Ø³Ø¬Ø¯ Ø§Ù„Ø­Ø§Ù„ÙŠ
+              المسجد الحالي
             </label>
             <div className="bg-white p-3 rounded border border-border-light space-y-2">
               <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
@@ -1233,7 +1233,7 @@ export default function ArticleForm({
                   value={currentMosqueEntry.name}
                   onChange={(e) => updateCurrentMosque("name", e.target.value)}
                   className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                  placeholder="Ø§Ø³Ù… Ø§Ù„Ù…Ø³Ø¬Ø¯ Ø§Ù„Ø­Ø§Ù„ÙŠ"
+                  placeholder="اسم المسجد الحالي"
                 />
                 <input
                   type="text"
@@ -1242,7 +1242,7 @@ export default function ArticleForm({
                     updateCurrentMosque("startDate", e.target.value)
                   }
                   className="w-full sm:w-28 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                  placeholder="Ù…Ù†Ø° (Ø§Ù„Ø³Ù†Ø©)"
+                  placeholder="منذ (السنة)"
                 />
               </div>
               <MosqueLocationPicker
@@ -1260,7 +1260,7 @@ export default function ArticleForm({
           {/* Old Mosques */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø§Ù„Ù…Ø³Ø§Ø¬Ø¯ Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©
+              المساجد السابقة
             </label>
             <div className="space-y-3">
               {oldMosques.map((m, idx) => (
@@ -1276,7 +1276,7 @@ export default function ArticleForm({
                         updateOldMosque(idx, "name", e.target.value)
                       }
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§Ø³Ù… Ø§Ù„Ù…Ø³Ø¬Ø¯"
+                      placeholder="اسم المسجد"
                     />
                     <div className="flex gap-2 items-center">
                       <input
@@ -1286,7 +1286,7 @@ export default function ArticleForm({
                           updateOldMosque(idx, "startDate", e.target.value)
                         }
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                        placeholder="Ù…Ù†"
+                        placeholder="من"
                       />
                       <input
                         type="text"
@@ -1295,7 +1295,7 @@ export default function ArticleForm({
                           updateOldMosque(idx, "endDate", e.target.value)
                         }
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                        placeholder="Ø¥Ù„Ù‰"
+                        placeholder="إلى"
                       />
                       <button
                         type="button"
@@ -1321,7 +1321,7 @@ export default function ArticleForm({
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
               >
                 <Plus size={16} />
-                Ø¥Ø¶Ø§ÙØ© Ù…Ø³Ø¬Ø¯ Ø³Ø§Ø¨Ù‚
+                إضافة مسجد سابق
               </button>
             </div>
           </div>
@@ -1329,7 +1329,7 @@ export default function ArticleForm({
           {/* Custom fields */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø¥Ø¶Ø§ÙÙŠØ©
+              معلومات إضافية
             </label>
             <div className="space-y-2">
               {customFields.map((f, idx) => (
@@ -1344,7 +1344,7 @@ export default function ArticleForm({
                       updateCustomField(idx, "label", e.target.value)
                     }
                     className="w-full sm:w-1/3 px-3 py-1.5 border border-border-light rounded text-sm"
-                    placeholder="Ø§Ù„Ø¹Ù†ÙˆØ§Ù† (Ù…Ø«Ø§Ù„: Ø§Ù„Ø·Ø±ÙŠÙ‚Ø©ØŒ Ø§Ù„Ù…Ø°Ù‡Ø¨...)"
+                    placeholder="العنوان (مثال: الطريقة، المذهب...)"
                   />
                   <div className="flex gap-2 items-center flex-1">
                     <input
@@ -1354,7 +1354,7 @@ export default function ArticleForm({
                         updateCustomField(idx, "value", e.target.value)
                       }
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§Ù„Ù‚ÙŠÙ…Ø©"
+                      placeholder="القيمة"
                     />
                     <button
                       type="button"
@@ -1372,7 +1372,7 @@ export default function ArticleForm({
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
               >
                 <Plus size={16} />
-                Ø¥Ø¶Ø§ÙØ© Ù…Ø¹Ù„ÙˆÙ…Ø©
+                إضافة معلومة
               </button>
             </div>
           </div>
@@ -1380,12 +1380,12 @@ export default function ArticleForm({
       ) : (
         <div className="bg-bg-sidebar rounded-lg p-4 border border-border-light space-y-4">
           <h3 className="font-bold text-lg font-heading text-primary">
-            Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ù…Ø³Ø¬Ø¯
+            معلومات المسجد
           </h3>
 
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ù†ÙˆØ¹ Ø§Ù„Ù…Ø³Ø¬Ø¯
+              نوع المسجد
             </label>
             <select
               value={mosqueTypeCustom ? "__custom__" : mosqueType}
@@ -1400,16 +1400,16 @@ export default function ArticleForm({
               }}
               className="w-full px-4 py-2 border border-border-light rounded bg-white"
             >
-              <option value="">Ø§Ø®ØªØ± Ù†ÙˆØ¹ Ø§Ù„Ù…Ø³Ø¬Ø¯</option>
-              <option value="Ø¬Ø§Ù…Ø¹ Ø§Ù„Ø¬Ø²Ø§Ø¦Ø±">Ø¬Ø§Ù…Ø¹ Ø§Ù„Ø¬Ø²Ø§Ø¦Ø±</option>
-              <option value="Ù…Ø³Ø¬Ø¯ ØªØ§Ø±ÙŠØ®ÙŠ">Ù…Ø³Ø¬Ø¯ ØªØ§Ø±ÙŠØ®ÙŠ</option>
-              <option value="Ù…Ø³Ø¬Ø¯ Ø±Ø¦ÙŠØ³ÙŠ">Ù…Ø³Ø¬Ø¯ Ø±Ø¦ÙŠØ³ÙŠ</option>
-              <option value="Ù…Ø³Ø¬Ø¯ ÙˆØ·Ù†ÙŠ">Ù…Ø³Ø¬Ø¯ ÙˆØ·Ù†ÙŠ</option>
-              <option value="Ù…Ø³Ø¬Ø¯ Ù…Ø­Ù„ÙŠ">Ù…Ø³Ø¬Ø¯ Ù…Ø­Ù„ÙŠ</option>
-              <option value="Ù…Ø³Ø¬Ø¯ Ø­ÙŠ">Ù…Ø³Ø¬Ø¯ Ø­ÙŠ</option>
-              <option value="Ù…Ø³Ø¬Ø¯ Ù‚Ø·Ø¨">Ù…Ø³Ø¬Ø¯ Ù‚Ø·Ø¨</option>
-              <option value="Ø²Ø§ÙˆÙŠØ© Ø¹Ù„Ù…ÙŠØ©">Ø²Ø§ÙˆÙŠØ© Ø¹Ù„Ù…ÙŠØ©</option>
-              <option value="__custom__">Ø£Ø®Ø±Ù‰ (ÙƒØªØ§Ø¨Ø© ÙŠØ¯ÙˆÙŠØ©)</option>
+              <option value="">اختر نوع المسجد</option>
+              <option value="جامع الجزائر">جامع الجزائر</option>
+              <option value="مسجد تاريخي">مسجد تاريخي</option>
+              <option value="مسجد رئيسي">مسجد رئيسي</option>
+              <option value="مسجد وطني">مسجد وطني</option>
+              <option value="مسجد محلي">مسجد محلي</option>
+              <option value="مسجد حي">مسجد حي</option>
+              <option value="مسجد قطب">مسجد قطب</option>
+              <option value="زاوية علمية">زاوية علمية</option>
+              <option value="__custom__">أخرى (كتابة يدوية)</option>
             </select>
             {mosqueTypeCustom && (
               <input
@@ -1417,7 +1417,7 @@ export default function ArticleForm({
                 value={mosqueType}
                 onChange={(e) => setMosqueType(e.target.value)}
                 className="w-full mt-2 px-4 py-2 border border-border-light rounded"
-                placeholder="Ø§ÙƒØªØ¨ Ù†ÙˆØ¹ Ø§Ù„Ù…Ø³Ø¬Ø¯"
+                placeholder="اكتب نوع المسجد"
               />
             )}
           </div>
@@ -1425,26 +1425,26 @@ export default function ArticleForm({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¨Ù†Ø§Ø¡
+                تاريخ البناء
               </label>
               <input
                 type="text"
                 value={dateBuilt}
                 onChange={(e) => setDateBuilt(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="Ù…Ø«Ø§Ù„: 1730 Ø£Ùˆ Ø§Ù„Ù‚Ø±Ù† 18"
+                placeholder="مثال: 1730 أو القرن 18"
               />
             </div>
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                ØªØ§Ø±ÙŠØ® Ø§Ù„Ø§ÙØªØªØ§Ø­
+                تاريخ الافتتاح
               </label>
               <input
                 type="text"
                 value={dateInauguration}
                 onChange={(e) => setDateInauguration(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="Ù…Ø«Ø§Ù„: 1735"
+                placeholder="مثال: 1735"
               />
             </div>
             <div>
@@ -1477,57 +1477,57 @@ export default function ArticleForm({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                Ù…Ø³Ø§Ø­Ø© Ù‚Ø§Ø¹Ø© Ø§Ù„ØµÙ„Ø§Ø©
+                مساحة قاعة الصلاة
               </label>
               <input
                 type="text"
                 value={prayerHallArea}
                 onChange={(e) => setPrayerHallArea(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="Ù…Ø«Ø§Ù„: 500 Ù…Â²"
+                placeholder="مثال: 500 م²"
               />
             </div>
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                Ø¹Ø¯Ø¯ Ø§Ù„Ù…ØµÙ„ÙŠÙ†
+                عدد المصلين
               </label>
               <input
                 type="text"
                 value={prayerHallCapacity}
                 onChange={(e) => setPrayerHallCapacity(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="Ù…Ø«Ø§Ù„: 1000"
+                placeholder="مثال: 1000"
               />
             </div>
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                Ø·ÙˆÙ„ Ø§Ù„Ù…Ø¦Ø°Ù†Ø©
+                طول المئذنة
               </label>
               <input
                 type="text"
                 value={minaretHeight}
                 onChange={(e) => setMinaretHeight(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="Ù…Ø«Ø§Ù„: 30 Ù…"
+                placeholder="مثال: 30 م"
               />
             </div>
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                Ø§Ù„Ù…Ø³Ø§Ø­Ø© Ø§Ù„ÙƒÙ„ÙŠØ©
+                المساحة الكلية
               </label>
               <input
                 type="text"
                 value={totalArea}
                 onChange={(e) => setTotalArea(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="Ù…Ø«Ø§Ù„: 2000 Ù…Â²"
+                placeholder="مثال: 2000 م²"
               />
             </div>
           </div>
 
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ù…Ø±Ø§ÙÙ‚ Ø£Ø®Ø±Ù‰
+              مرافق أخرى
             </label>
             <div className="space-y-2">
               {otherFacilities.map((facility, idx) => (
@@ -1537,7 +1537,7 @@ export default function ArticleForm({
                     value={facility}
                     onChange={(e) => updateOtherFacility(idx, e.target.value)}
                     className="flex-1 px-4 py-2 border border-border-light rounded"
-                    placeholder="Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ø§Ù„Ù…Ø±ÙÙ‚"
+                    placeholder="اكتب اسم المرفق"
                   />
                   <button
                     type="button"
@@ -1554,7 +1554,7 @@ export default function ArticleForm({
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
               >
                 <Plus size={16} />
-                Ø¥Ø¶Ø§ÙØ© Ù…Ø±ÙÙ‚ Ø¢Ø®Ø±
+                إضافة مرفق آخر
               </button>
             </div>
           </div>
@@ -1563,31 +1563,31 @@ export default function ArticleForm({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                Ø§Ù„Ø¥Ù…Ø§Ù… Ø§Ù„Ø­Ø§Ù„ÙŠ
+                الإمام الحالي
               </label>
               <input
                 type="text"
                 value={currentImam}
                 onChange={(e) => setCurrentImam(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="Ø§Ø³Ù… Ø§Ù„Ø¥Ù…Ø§Ù… Ø§Ù„Ø­Ø§Ù„ÙŠ"
+                placeholder="اسم الإمام الحالي"
               />
             </div>
             <div>
               <label className="block text-sm font-bold mb-2 text-black">
-                Ø§Ù„Ø¬Ù…Ø¹ÙŠØ© Ø§Ù„Ø­Ø§Ù„ÙŠØ©
+                الجمعية الحالية
               </label>
               <input
                 type="text"
                 value={currentAssociation}
                 onChange={(e) => setCurrentAssociation(e.target.value)}
                 className="w-full px-4 py-2 border border-border-light rounded"
-                placeholder="Ø§Ø³Ù… Ø§Ù„Ø¬Ù…Ø¹ÙŠØ© Ø§Ù„Ø­Ø§Ù„ÙŠØ©"
+                placeholder="اسم الجمعية الحالية"
               />
             </div>
             <div className="sm:col-span-2">
               <label className="block text-sm font-bold mb-2 text-black">
-                Ø£Ø¹Ø¶Ø§Ø¡ Ø§Ù„Ø¬Ù…Ø¹ÙŠØ© Ø§Ù„Ø­Ø§Ù„ÙŠØ©
+                أعضاء الجمعية الحالية
               </label>
               <div className="space-y-2">
                 {currentAssociationMembers.map((member, idx) => (
@@ -1602,7 +1602,7 @@ export default function ArticleForm({
                         updateCurrentAssociationMember(idx, e.target.value)
                       }
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§Ø³Ù… Ø¹Ø¶Ùˆ Ø§Ù„Ø¬Ù…Ø¹ÙŠØ©"
+                      placeholder="اسم عضو الجمعية"
                     />
                     <button
                       type="button"
@@ -1619,13 +1619,13 @@ export default function ArticleForm({
                   className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
                 >
                   <Plus size={16} />
-                  Ø¥Ø¶Ø§ÙØ© Ø¹Ø¶Ùˆ
+                  إضافة عضو
                 </button>
               </div>
             </div>
             <div className="sm:col-span-2">
               <label className="block text-sm font-bold mb-2 text-black">
-                Ø£Ø¹Ø¶Ø§Ø¡ Ù„Ø¬Ù†Ø© Ø³Ø§Ø¨Ù‚ÙˆÙ†
+                أعضاء لجنة سابقون
               </label>
               <div className="space-y-2">
                 {formerCommitteeMembers.map((member, idx) => (
@@ -1640,7 +1640,7 @@ export default function ArticleForm({
                         updateFormerCommitteeMember(idx, e.target.value)
                       }
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§Ø³Ù… Ø¹Ø¶Ùˆ Ù„Ø¬Ù†Ø© Ø³Ø§Ø¨Ù‚"
+                      placeholder="اسم عضو لجنة سابق"
                     />
                     <button
                       type="button"
@@ -1657,7 +1657,7 @@ export default function ArticleForm({
                   className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
                 >
                   <Plus size={16} />
-                  Ø¥Ø¶Ø§ÙØ© Ø¹Ø¶Ùˆ
+                  إضافة عضو
                 </button>
               </div>
             </div>
@@ -1666,7 +1666,7 @@ export default function ArticleForm({
           {/* Mosque workers */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø¹Ù…Ø§Ù„ Ø§Ù„Ù…Ø³Ø§Ø¬Ø¯
+              عمال المساجد
             </label>
             <div className="space-y-2">
               {mosqueWorkers.map((worker, idx) => (
@@ -1682,7 +1682,7 @@ export default function ArticleForm({
                         updateMosqueWorker(idx, "name", e.target.value)
                       }
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§Ø³Ù… Ø§Ù„Ø¹Ø§Ù…Ù„"
+                      placeholder="اسم العامل"
                     />
                     <button
                       type="button"
@@ -1700,7 +1700,7 @@ export default function ArticleForm({
                         updateMosqueWorker(idx, "rank", e.target.value)
                       }
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§Ù„Ø±ØªØ¨Ø©"
+                      placeholder="الرتبة"
                     />
                     <div className="flex gap-2">
                       <input
@@ -1710,7 +1710,7 @@ export default function ArticleForm({
                           updateMosqueWorker(idx, "fromDate", e.target.value)
                         }
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                        placeholder="Ù…Ù†"
+                        placeholder="من"
                       />
                       <input
                         type="text"
@@ -1719,7 +1719,7 @@ export default function ArticleForm({
                           updateMosqueWorker(idx, "toDate", e.target.value)
                         }
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                        placeholder="Ø¥Ù„Ù‰"
+                        placeholder="إلى"
                       />
                     </div>
                   </div>
@@ -1731,7 +1731,7 @@ export default function ArticleForm({
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
               >
                 <Plus size={16} />
-                Ø¥Ø¶Ø§ÙØ© Ø¹Ø§Ù…Ù„
+                إضافة عامل
               </button>
             </div>
           </div>
@@ -1739,7 +1739,7 @@ export default function ArticleForm({
           {/* Founders */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø§Ù„Ù…Ø¤Ø³Ø³ÙˆÙ†
+              المؤسسون
             </label>
             <div className="space-y-2">
               {founders.map((f, idx) => (
@@ -1752,7 +1752,7 @@ export default function ArticleForm({
                     value={f.name}
                     onChange={(e) => updateFounder(idx, "name", e.target.value)}
                     className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                    placeholder="Ø§Ø³Ù… Ø§Ù„Ù…Ø¤Ø³Ø³"
+                    placeholder="اسم المؤسس"
                   />
                   <div className="flex gap-2 items-center">
                     <input
@@ -1762,7 +1762,7 @@ export default function ArticleForm({
                         updateFounder(idx, "rutba", e.target.value)
                       }
                       className="flex-1 sm:w-40 px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§Ù„Ø±ØªØ¨Ø©"
+                      placeholder="الرتبة"
                     />
                     <button
                       type="button"
@@ -1780,7 +1780,7 @@ export default function ArticleForm({
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
               >
                 <Plus size={16} />
-                Ø¥Ø¶Ø§ÙØ© Ù…Ø¤Ø³Ø³
+                إضافة مؤسس
               </button>
             </div>
           </div>
@@ -1788,7 +1788,7 @@ export default function ArticleForm({
           {/* Imams served */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø§Ù„Ø£Ø¦Ù…Ø© Ø§Ù„Ø°ÙŠÙ† Ø¹Ù…Ù„Ùˆ ÙÙŠÙ‡
+              الأئمة الذين عملو فيه
             </label>
             <div className="space-y-2">
               {imamsServed.map((im, idx) => (
@@ -1804,7 +1804,7 @@ export default function ArticleForm({
                         updateImamRef(idx, "name", e.target.value)
                       }
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§Ø³Ù… Ø§Ù„Ø¥Ù…Ø§Ù…"
+                      placeholder="اسم الإمام"
                     />
                     <button
                       type="button"
@@ -1822,7 +1822,7 @@ export default function ArticleForm({
                         updateImamRef(idx, "rutba", e.target.value)
                       }
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§Ù„Ø±ØªØ¨Ø©"
+                      placeholder="الرتبة"
                     />
                     <div className="flex gap-2">
                       <input
@@ -1832,7 +1832,7 @@ export default function ArticleForm({
                           updateImamRef(idx, "startDate", e.target.value)
                         }
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                        placeholder="Ù…Ù†"
+                        placeholder="من"
                       />
                       <input
                         type="text"
@@ -1841,7 +1841,7 @@ export default function ArticleForm({
                           updateImamRef(idx, "endDate", e.target.value)
                         }
                         className="w-full sm:w-24 px-2 py-1.5 border border-border-light rounded text-sm text-center"
-                        placeholder="Ø¥Ù„Ù‰"
+                        placeholder="إلى"
                       />
                     </div>
                   </div>
@@ -1853,7 +1853,7 @@ export default function ArticleForm({
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
               >
                 <Plus size={16} />
-                Ø¥Ø¶Ø§ÙØ© Ø¥Ù…Ø§Ù…
+                إضافة إمام
               </button>
             </div>
           </div>
@@ -1861,7 +1861,7 @@ export default function ArticleForm({
           {/* Mosque Gallery */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ù…Ø¹Ø±Ø¶ ØµÙˆØ± Ø§Ù„Ù…Ø³Ø¬Ø¯
+              معرض صور المسجد
             </label>
             <div className="space-y-3">
               {mosqueGallery.map((imgUrl, idx) => (
@@ -1882,7 +1882,7 @@ export default function ArticleForm({
                       {imgUrl && (
                         <img
                           src={imgUrl}
-                          alt={`ØµÙˆØ±Ø© ${idx + 1}`}
+                          alt={`صورة ${idx + 1}`}
                           className="w-24 h-24 object-cover rounded mt-2"
                         />
                       )}
@@ -1908,7 +1908,7 @@ export default function ArticleForm({
                   className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
                 >
                   <Plus size={16} />
-                  Ø¥Ø¶Ø§ÙØ© ØµÙˆØ±Ø©
+                  إضافة صورة
                 </button>
                 <label className={`flex items-center gap-2 px-4 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded text-sm text-amber-800 font-medium transition-colors cursor-pointer ${galleryUploading ? "opacity-50 pointer-events-none" : ""}`}>
                   {galleryUploading ? (
@@ -1916,7 +1916,7 @@ export default function ArticleForm({
                   ) : (
                     <Plus size={16} />
                   )}
-                  {galleryUploading ? "Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø±ÙØ¹..." : "Ø±ÙØ¹ ØµÙˆØ± Ù…ØªØ¹Ø¯Ø¯Ø©"}
+                  {galleryUploading ? "جاري الرفع..." : "رفع صور متعددة"}
                   <input
                     type="file"
                     multiple
@@ -1952,7 +1952,7 @@ export default function ArticleForm({
           {/* Custom mosque fields */}
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø¥Ø¶Ø§ÙÙŠØ© Ø¹Ù† Ø§Ù„Ù…Ø³Ø¬Ø¯
+              معلومات إضافية عن المسجد
             </label>
             <div className="space-y-2">
               {customMosqueFields.map((f, idx) => (
@@ -1967,7 +1967,7 @@ export default function ArticleForm({
                       updateCustomMosqueField(idx, "label", e.target.value)
                     }
                     className="w-full sm:w-1/3 px-3 py-1.5 border border-border-light rounded text-sm"
-                    placeholder="Ø§Ù„Ø¹Ù†ÙˆØ§Ù†"
+                    placeholder="العنوان"
                   />
                   <div className="flex gap-2 items-center flex-1">
                     <input
@@ -1977,7 +1977,7 @@ export default function ArticleForm({
                         updateCustomMosqueField(idx, "value", e.target.value)
                       }
                       className="flex-1 px-3 py-1.5 border border-border-light rounded text-sm"
-                      placeholder="Ø§Ù„Ù‚ÙŠÙ…Ø©"
+                      placeholder="القيمة"
                     />
                     <button
                       type="button"
@@ -1995,7 +1995,7 @@ export default function ArticleForm({
                 className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium transition-colors"
               >
                 <Plus size={16} />
-                Ø¥Ø¶Ø§ÙØ© Ù…Ø¹Ù„ÙˆÙ…Ø©
+                إضافة معلومة
               </button>
             </div>
           </div>
@@ -2005,36 +2005,36 @@ export default function ArticleForm({
       {/* Contact Info (all types) */}
       <div className="bg-bg-sidebar rounded-lg p-4 border border-border-light space-y-4">
         <h3 className="font-bold text-lg font-heading text-primary">
-          Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø§ØªØµØ§Ù„
+          معلومات الاتصال
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ
+              رقم الهاتف
             </label>
             <input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="w-full px-4 py-2 border border-border-light rounded"
-              placeholder="Ù…Ø«Ø§Ù„: 0550000000"
+              placeholder="مثال: 0550000000"
             />
           </div>
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø±Ù‚Ù… Ø§Ù„ÙˆØ§ØªØ³Ø§Ø¨
+              رقم الواتساب
             </label>
             <input
               type="tel"
               value={whatsapp}
               onChange={(e) => setWhatsapp(e.target.value)}
               className="w-full px-4 py-2 border border-border-light rounded"
-              placeholder="Ù…Ø«Ø§Ù„: +213550000000"
+              placeholder="مثال: +213550000000"
             />
           </div>
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø§Ù„Ø¥ÙŠÙ…ÙŠÙ„
+              الإيميل
             </label>
             <input
               type="email"
@@ -2047,31 +2047,31 @@ export default function ArticleForm({
           </div>
           <div>
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø§Ù„ÙÙŠØ³Ø¨ÙˆÙƒ
+              الفيسبوك
             </label>
             <input
               type="url"
               value={facebook}
               onChange={(e) => setFacebook(e.target.value)}
               className="w-full px-4 py-2 border border-border-light rounded"
-              placeholder="Ø±Ø§Ø¨Ø· ØµÙØ­Ø© Ø§Ù„ÙÙŠØ³Ø¨ÙˆÙƒ"
+              placeholder="رابط صفحة الفيسبوك"
             />
           </div>
           <div className="sm:col-span-2">
             <label className="block text-sm font-bold mb-2 text-black">
-              Ù‚Ù†Ø§Ø© Ø§Ù„ÙŠÙˆØªÙŠÙˆØ¨
+              قناة اليوتيوب
             </label>
             <input
               type="url"
               value={youtubeChannel}
               onChange={(e) => setYoutubeChannel(e.target.value)}
               className="w-full px-4 py-2 border border-border-light rounded"
-              placeholder="Ø±Ø§Ø¨Ø· Ù‚Ù†Ø§Ø© Ø§Ù„ÙŠÙˆØªÙŠÙˆØ¨"
+              placeholder="رابط قناة اليوتيوب"
             />
           </div>
           <div className="sm:col-span-2">
             <label className="block text-sm font-bold mb-2 text-black">
-              Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ
+              الموقع الإلكتروني
             </label>
             <input
               type="url"
@@ -2087,7 +2087,7 @@ export default function ArticleForm({
       {/* Image */}
       <div className="bg-bg-sidebar rounded-lg p-4 border border-border-light">
         <label className="block text-sm font-bold mb-2 text-black">
-          Ø§Ù„ØµÙˆØ±Ø©
+          الصورة
         </label>
         <ImageUploader
           onImageInsert={() => {}}
@@ -2095,10 +2095,10 @@ export default function ArticleForm({
         />
         {image && (
           <div className="mt-2 p-2 bg-white border border-border-light rounded">
-            <p className="text-xs text-text-secondary mb-1">Ø§Ù„ØµÙˆØ±Ø© Ø§Ù„Ù…Ø®ØªØ§Ø±Ø©:</p>
+            <p className="text-xs text-text-secondary mb-1">الصورة المختارة:</p>
             <img
               src={image}
-              alt="Ù…Ø¹Ø§ÙŠÙ†Ø©"
+              alt="معاينة"
               className="w-32 h-32 object-cover rounded"
             />
             {imageCaption && (
@@ -2112,7 +2112,7 @@ export default function ArticleForm({
               }}
               className="mt-2 text-xs text-destructive hover:underline"
             >
-              Ø­Ø°Ù Ø§Ù„ØµÙˆØ±Ø©
+              حذف الصورة
             </button>
           </div>
         )}
@@ -2144,7 +2144,7 @@ export default function ArticleForm({
                 }
                 className="px-3 py-2 bg-destructive text-white rounded hover:opacity-90 text-sm"
               >
-                Ø­Ø°Ù
+                حذف
               </button>
             </div>
           ))}
@@ -2154,7 +2154,7 @@ export default function ArticleForm({
             className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 rounded text-sm text-primary font-medium"
           >
             <Plus size={16} />
-            Ø¥Ø¶Ø§ÙØ© ÙÙŠØ¯ÙŠÙˆ
+            إضافة فيديو
           </button>
         </div>
       </div>
@@ -2163,7 +2163,7 @@ export default function ArticleForm({
       <div>
         <div className="flex justify-between items-center mb-2">
           <label className="block text-sm font-bold text-black">
-            Ù…Ø­ØªÙˆÙ‰ Ø§Ù„Ù…Ù‚Ø§Ù„ <span className="text-destructive">*</span>
+            محتوى المقال <span className="text-destructive">*</span>
           </label>
           <label className="flex items-center gap-2 text-sm text-black">
             <input
@@ -2172,12 +2172,12 @@ export default function ArticleForm({
               onChange={(e) => setUseRichText(e.target.checked)}
               className="rounded"
             />
-            <span>Ø§Ù„Ù…Ø­Ø±Ø± Ø§Ù„Ù…ØªÙ‚Ø¯Ù…</span>
+            <span>المحرر المتقدم</span>
           </label>
         </div>
         {!useRichText && (
           <div className="text-xs text-text-secondary mb-2">
-            Ø§Ø³ØªØ®Ø¯Ù… ØµÙŠØºØ© Markdown. Ù„Ù„Ø±ÙˆØ§Ø¨Ø· Ø§Ù„Ø¯Ø§Ø®Ù„ÙŠØ© Ø§Ø³ØªØ®Ø¯Ù…: [[Ø§Ø³Ù… Ø§Ù„Ù…Ù‚Ø§Ù„]]
+            استخدم صيغة Markdown. للروابط الداخلية استخدم: [[اسم المقال]]
           </div>
         )}
 
@@ -2186,7 +2186,7 @@ export default function ArticleForm({
             ref={editorRef}
             value={content}
             onChange={setContent}
-            placeholder="Ø§Ø¨Ø¯Ø£ ÙƒØªØ§Ø¨Ø© Ø§Ù„Ù…Ù‚Ø§Ù„ Ù‡Ù†Ø§..."
+            placeholder="ابدأ كتابة المقال هنا..."
           />
         ) : (
           <textarea
@@ -2196,12 +2196,12 @@ export default function ArticleForm({
             required
             rows={15}
             className="w-full px-4 py-2 border border-border-light rounded font-arabic text-sm"
-            placeholder={`## Ø§Ù„Ù…Ù‚Ø¯Ù…Ø©\n\nØ§ÙƒØªØ¨ Ù…Ø­ØªÙˆÙ‰ Ø§Ù„Ù…Ù‚Ø§Ù„ Ù‡Ù†Ø§...\n\n## Ø§Ù†Ø¸Ø± Ø£ÙŠØ¶Ø§Ù‹\n\n- [[Ù…Ù‚Ø§Ù„ Ù…Ø±ØªØ¨Ø·]]`}
+            placeholder={`## المقدمة\n\nاكتب محتوى المقال هنا...\n\n## انظر أيضاً\n\n- [[مقال مرتبط]]`}
           />
         )}
       </div>
 
-      {/* References / ØªÙ‡Ù…ÙŠØ´ */}
+      {/* References / تهميش */}
       <ReferencesManager
         references={references}
         onChange={setReferences}
@@ -2229,16 +2229,16 @@ export default function ArticleForm({
           {isSubmitting ? (
             <>
               <Loader2 size={20} className="animate-spin" />
-              Ø¬Ø§Ø±ÙŠ Ø§Ù„Ø¥Ø±Ø³Ø§Ù„...
+              جاري الإرسال...
             </>
           ) : mode === "submit" ? (
-            "ØªÙ‚Ø¯ÙŠÙ… Ø§Ù„Ù…Ù‚Ø§Ù„"
+            "تقديم المقال"
           ) : mode === "suggest_edit" ? (
             "إرسال اقتراح التعديل"
           ) : mode === "edit" ? (
-            "Ø­ÙØ¸ Ø§Ù„ØªØ¹Ø¯ÙŠÙ„Ø§Øª"
+            "حفظ التعديلات"
           ) : (
-            "Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ù…Ù‚Ø§Ù„"
+            "إنشاء المقال"
           )}
         </button>
         <button
@@ -2249,7 +2249,7 @@ export default function ArticleForm({
           }}
           className="px-6 py-2 bg-bg-sidebar hover:bg-border-light rounded font-medium transition-colors"
         >
-          Ø¥Ù„ØºØ§Ø¡
+          إلغاء
         </button>
       </div>
     </form>

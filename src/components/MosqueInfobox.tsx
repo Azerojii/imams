@@ -109,7 +109,7 @@ export default async function MosqueInfobox({
   bankName,
 }: MosqueInfoboxProps) {
   const parsedLegacyMembers = (associationMembers || "")
-    .split(/\r?\n|ØŒ|,|;/)
+    .split(/\r?\n|،|,|;/)
     .map((member) => member.trim())
     .filter(Boolean);
   const resolvedCurrentMembers = (
@@ -141,13 +141,13 @@ export default async function MosqueInfobox({
       )}
 
       {/* Mosque Info */}
-      <div className="infobox-section-header">Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ù…Ø³Ø¬Ø¯</div>
+      <div className="infobox-section-header">معلومات المسجد</div>
       <table className="w-full border-collapse text-sm">
         <tbody>
           {mosqueType && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                Ø§Ù„Ù†ÙˆØ¹
+                النوع
               </td>
               <td className="py-1.5 px-3">{mosqueType}</td>
             </tr>
@@ -155,7 +155,7 @@ export default async function MosqueInfobox({
           {dateBuilt && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¨Ù†Ø§Ø¡
+                تاريخ البناء
               </td>
               <td className="py-1.5 px-3">{dateBuilt}</td>
             </tr>
@@ -163,7 +163,7 @@ export default async function MosqueInfobox({
           {historicalPeriod && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                Ø§Ù„Ø¹Ù‡Ø¯ / Ø§Ù„Ø¯ÙˆÙ„Ø©
+                العهد / الدولة
               </td>
               <td className="py-1.5 px-3">{historicalPeriod}</td>
             </tr>
@@ -171,7 +171,7 @@ export default async function MosqueInfobox({
           {mosqueEngineer && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                Ù…Ù‡Ù†Ø¯Ø³ Ø§Ù„Ù…Ø³Ø¬Ø¯
+                مهندس المسجد
               </td>
               <td className="py-1.5 px-3">{mosqueEngineer}</td>
             </tr>
@@ -179,7 +179,7 @@ export default async function MosqueInfobox({
           {dateInauguration && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                ØªØ§Ø±ÙŠØ® Ø§Ù„Ø§ÙØªØªØ§Ø­
+                تاريخ الافتتاح
               </td>
               <td className="py-1.5 px-3">{dateInauguration}</td>
             </tr>
@@ -187,7 +187,7 @@ export default async function MosqueInfobox({
           {wilaya && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium">
-                Ø§Ù„ÙˆÙ„Ø§ÙŠØ©
+                الولاية
               </td>
               <td className="py-1.5 px-3">{wilaya}</td>
             </tr>
@@ -195,7 +195,7 @@ export default async function MosqueInfobox({
           {commune && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium">
-                Ø§Ù„Ø¨Ù„Ø¯ÙŠØ©
+                البلدية
               </td>
               <td className="py-1.5 px-3">{commune}</td>
             </tr>
@@ -203,7 +203,7 @@ export default async function MosqueInfobox({
           {prayerHallArea && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium">
-                Ù…Ø³Ø§Ø­Ø© Ù‚Ø§Ø¹Ø© Ø§Ù„ØµÙ„Ø§Ø©
+                مساحة قاعة الصلاة
               </td>
               <td className="py-1.5 px-3">{prayerHallArea}</td>
             </tr>
@@ -211,7 +211,7 @@ export default async function MosqueInfobox({
           {prayerHallCapacity && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium">
-                Ø¹Ø¯Ø¯ Ø§Ù„Ù…ØµÙ„ÙŠÙ†
+                عدد المصلين
               </td>
               <td className="py-1.5 px-3">{prayerHallCapacity}</td>
             </tr>
@@ -219,7 +219,7 @@ export default async function MosqueInfobox({
           {minaretHeight && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium">
-                Ø·ÙˆÙ„ Ø§Ù„Ù…Ø¦Ø°Ù†Ø©
+                طول المئذنة
               </td>
               <td className="py-1.5 px-3">{minaretHeight}</td>
             </tr>
@@ -227,7 +227,7 @@ export default async function MosqueInfobox({
           {totalArea && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium">
-                Ø§Ù„Ù…Ø³Ø§Ø­Ø© Ø§Ù„ÙƒÙ„ÙŠØ©
+                المساحة الكلية
               </td>
               <td className="py-1.5 px-3">{totalArea}</td>
             </tr>
@@ -235,7 +235,7 @@ export default async function MosqueInfobox({
           {otherFacilities && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium">
-                Ù…Ø±Ø§ÙÙ‚ Ø£Ø®Ø±Ù‰
+                مرافق أخرى
               </td>
               <td className="py-1.5 px-3">{otherFacilities}</td>
             </tr>
@@ -243,7 +243,7 @@ export default async function MosqueInfobox({
           {currentImam && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                Ø§Ù„Ø¥Ù…Ø§Ù… Ø§Ù„Ø­Ø§Ù„ÙŠ
+                الإمام الحالي
               </td>
               <td className="py-1.5 px-3">{currentImam}</td>
             </tr>
@@ -251,7 +251,7 @@ export default async function MosqueInfobox({
           {currentAssociation && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                Ø§Ù„Ø¬Ù…Ø¹ÙŠØ© Ø§Ù„Ø­Ø§Ù„ÙŠØ©
+                الجمعية الحالية
               </td>
               <td className="py-1.5 px-3">{currentAssociation}</td>
             </tr>
@@ -259,7 +259,7 @@ export default async function MosqueInfobox({
           {resolvedCurrentMembers.length > 0 && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                Ø£Ø¹Ø¶Ø§Ø¡ Ø§Ù„Ø¬Ù…Ø¹ÙŠØ© Ø§Ù„Ø­Ø§Ù„ÙŠØ©
+                أعضاء الجمعية الحالية
               </td>
               <td className="py-1.5 px-3">
                 <ul className="list-inside list-disc space-y-0.5">
@@ -273,7 +273,7 @@ export default async function MosqueInfobox({
           {resolvedFormerMembers.length > 0 && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                Ø£Ø¹Ø¶Ø§Ø¡ Ù„Ø¬Ù†Ø© Ø³Ø§Ø¨Ù‚ÙˆÙ†
+                أعضاء لجنة سابقون
               </td>
               <td className="py-1.5 px-3">
                 <ul className="list-inside list-disc space-y-0.5">
@@ -287,7 +287,7 @@ export default async function MosqueInfobox({
           {associationOtherInfo && (
             <tr className="border-t border-border-light">
               <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
-                Ø®Ø§Ù†Ø© Ø£Ø®Ø±Ù‰
+                خانة أخرى
               </td>
               <td className="py-1.5 px-3">{associationOtherInfo}</td>
             </tr>
@@ -298,7 +298,7 @@ export default async function MosqueInfobox({
       {/* Custom Mosque Fields */}
       {customMosqueFields && customMosqueFields.length > 0 && (
         <>
-          <div className="infobox-section-header">Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø¥Ø¶Ø§ÙÙŠØ©</div>
+          <div className="infobox-section-header">معلومات إضافية</div>
           <table className="w-full border-collapse text-sm">
             <tbody>
               {customMosqueFields.map((field, idx) => (
@@ -317,7 +317,7 @@ export default async function MosqueInfobox({
       {/* Founders */}
       {founders && founders.length > 0 && (
         <>
-          <div className="infobox-section-header">Ø§Ù„Ù…Ø¤Ø³Ø³ÙˆÙ†</div>
+          <div className="infobox-section-header">المؤسسون</div>
           <table className="w-full border-collapse text-sm">
             <tbody>
               {founders.map((founder, idx) => (
@@ -338,7 +338,7 @@ export default async function MosqueInfobox({
       {/* Imams Served */}
       {imamsServed && imamsServed.length > 0 && (
         <>
-          <div className="infobox-section-header">Ø§Ù„Ø£Ø¦Ù…Ø© Ø§Ù„Ø°ÙŠÙ† Ø¹Ù…Ù„ÙˆØ§ ÙÙŠÙ‡</div>
+          <div className="infobox-section-header">الأئمة الذين عملوا فيه</div>
           <table className="w-full border-collapse text-sm">
             <tbody>
               {imamsServed.map((imam, idx) => (
@@ -357,7 +357,7 @@ export default async function MosqueInfobox({
                     {imam.startDate && imam.endDate
                       ? `${imam.startDate} - ${imam.endDate}`
                       : imam.startDate
-                        ? `Ù…Ù†Ø° ${imam.startDate}`
+                        ? `منذ ${imam.startDate}`
                         : ""}
                   </td>
                 </tr>
@@ -370,7 +370,7 @@ export default async function MosqueInfobox({
       {/* Mosque workers */}
       {mosqueWorkers && mosqueWorkers.length > 0 && (
         <>
-          <div className="infobox-section-header">Ø¹Ù…Ø§Ù„ Ø§Ù„Ù…Ø³Ø¬Ø¯</div>
+          <div className="infobox-section-header">عمال المسجد</div>
           <table className="w-full border-collapse text-sm">
             <tbody>
               {mosqueWorkers.map((worker, idx) => (
@@ -389,7 +389,7 @@ export default async function MosqueInfobox({
                     {worker.fromDate && worker.toDate
                       ? `${worker.fromDate} - ${worker.toDate}`
                       : worker.fromDate
-                        ? `Ù…Ù†Ø° ${worker.fromDate}`
+                        ? `منذ ${worker.fromDate}`
                         : ""}
                   </td>
                 </tr>
@@ -407,14 +407,14 @@ export default async function MosqueInfobox({
         youtubeChannel ||
         website) && (
         <>
-          <div className="infobox-section-header">Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø§ØªØµØ§Ù„</div>
+          <div className="infobox-section-header">معلومات الاتصال</div>
           <table className="w-full border-collapse text-sm">
             <tbody>
               {phone && (
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium w-[35%]">
                     <span className="flex items-center gap-1">
-                      <Phone size={12} /> Ø§Ù„Ù‡Ø§ØªÙ
+                      <Phone size={12} /> الهاتف
                     </span>
                   </td>
                   <td className="py-1.5 px-3" dir="ltr">
@@ -426,7 +426,7 @@ export default async function MosqueInfobox({
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
                     <span className="flex items-center gap-1">
-                      <MessageCircle size={12} /> ÙˆØ§ØªØ³Ø§Ø¨
+                      <MessageCircle size={12} /> واتساب
                     </span>
                   </td>
                   <td className="py-1.5 px-3" dir="ltr">
@@ -438,7 +438,7 @@ export default async function MosqueInfobox({
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
                     <span className="flex items-center gap-1">
-                      <Mail size={12} /> Ø¥ÙŠÙ…ÙŠÙ„
+                      <Mail size={12} /> إيميل
                     </span>
                   </td>
                   <td className="py-1.5 px-3 break-all text-left" dir="ltr">
@@ -450,7 +450,7 @@ export default async function MosqueInfobox({
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
                     <span className="flex items-center gap-1">
-                      <Facebook size={12} /> ÙÙŠØ³Ø¨ÙˆÙƒ
+                      <Facebook size={12} /> فيسبوك
                     </span>
                   </td>
                   <td className="py-1.5 px-3">
@@ -460,7 +460,7 @@ export default async function MosqueInfobox({
                       rel="noopener noreferrer"
                       className="text-primary hover:underline text-xs"
                     >
-                      Ø±Ø§Ø¨Ø·
+                      رابط
                     </a>
                   </td>
                 </tr>
@@ -469,7 +469,7 @@ export default async function MosqueInfobox({
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
                     <span className="flex items-center gap-1">
-                      <Youtube size={12} /> ÙŠÙˆØªÙŠÙˆØ¨
+                      <Youtube size={12} /> يوتيوب
                     </span>
                   </td>
                   <td className="py-1.5 px-3">
@@ -479,7 +479,7 @@ export default async function MosqueInfobox({
                       rel="noopener noreferrer"
                       className="text-primary hover:underline text-xs"
                     >
-                      Ø±Ø§Ø¨Ø·
+                      رابط
                     </a>
                   </td>
                 </tr>
@@ -488,7 +488,7 @@ export default async function MosqueInfobox({
                 <tr className="border-t border-border-light">
                   <td className="py-1.5 px-3 text-text-secondary font-medium">
                     <span className="flex items-center gap-1">
-                      <Globe size={12} /> Ø§Ù„Ù…ÙˆÙ‚Ø¹
+                      <Globe size={12} /> الموقع
                     </span>
                   </td>
                   <td className="py-1.5 px-3">
@@ -498,7 +498,7 @@ export default async function MosqueInfobox({
                       rel="noopener noreferrer"
                       className="text-primary hover:underline text-xs"
                     >
-                      Ø±Ø§Ø¨Ø·
+                      رابط
                     </a>
                   </td>
                 </tr>
