@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import { UserCircle, Landmark, MapPin, ArrowLeft, BookOpen } from 'lucide-react'
+import { UserCircle, Landmark, MapPin, ArrowLeft, BookOpen, Eye } from 'lucide-react'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 import SearchBar from '@/components/SearchBar'
 import WikiHeader from '@/components/WikiHeader'
-import { getAllWikiMetadata } from '@/lib/wiki'
+import { getAllWikiMetadata, getTotalViews, getMostViewedArticles } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -29,7 +29,11 @@ function getTypeLabel(type: string) {
 }
 
 export default async function Home() {
-  const articles = await getAllWikiMetadata()
+  const [articles, totalViews, mostViewed] = await Promise.all([
+    getAllWikiMetadata(),
+    getTotalViews(),
+    getMostViewedArticles(6),
+  ])
   const imams = articles.filter(a => a.articleType === 'imam')
   const mosques = articles.filter(a => a.articleType === 'mosque')
   const quranTeachers = articles.filter(a => a.articleType === 'quran_teacher')
@@ -103,6 +107,18 @@ export default async function Home() {
               <div className="text-2xl sm:text-3xl font-bold text-accent">{wilayas.length}</div>
               <div className="text-white/60 text-xs sm:text-sm">ولاية</div>
             </div>
+            {totalViews > 0 && (
+              <>
+                <div className="hidden sm:block w-px bg-white/20"></div>
+                <div className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold text-accent flex items-center gap-1 justify-center">
+                    <Eye size={22} />
+                    {totalViews.toLocaleString('ar-DZ')}
+                  </div>
+                  <div className="text-white/60 text-xs sm:text-sm">مشاهدة</div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -215,6 +231,51 @@ export default async function Home() {
                   )
                 })}
               </div>
+            </div>
+          </section>
+        )}
+
+        {/* Most Viewed Articles */}
+        {mostViewed.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-heading font-bold text-primary mb-4 flex items-center gap-2">
+              <Eye size={22} />
+              الأكثر قراءة
+            </h2>
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {mostViewed.map(article => (
+                <Link
+                  key={article.slug}
+                  href={`/wiki/${article.slug}`}
+                  className="card-islamic block rounded-lg p-4 hover:no-underline"
+                >
+                  <div className="flex items-start gap-3">
+                    {article.imageSrc && (
+                      <img
+                        src={article.imageSrc}
+                        alt={article.title}
+                        className="w-10 h-10 rounded-full object-cover flex-shrink-0 border border-border-light"
+                      />
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                        {getTypeIcon(article.articleType)}
+                        <span className="text-xs text-accent-dark font-semibold">
+                          {getTypeLabel(article.articleType)}
+                        </span>
+                        {article.wilaya && (
+                          <span className="text-xs text-text-secondary">{article.wilaya}</span>
+                        )}
+                      </div>
+                      <h3 className="text-sm font-bold text-primary line-clamp-2">{article.title}</h3>
+                      <div className="flex items-center gap-1 mt-1.5 text-xs text-primary font-semibold">
+                        <Eye size={11} />
+                        {article.viewCount.toLocaleString('ar-DZ')} مشاهدة
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </section>
         )}

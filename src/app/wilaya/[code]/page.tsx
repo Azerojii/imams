@@ -3,7 +3,7 @@ import { MapPin } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
-import { getArticlesByWilaya } from '@/lib/wiki'
+import { getArticlesByWilaya, getViewCountsBySlugs } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,13 +31,15 @@ export default async function WilayaPage({
   const wilayaName = decodeURIComponent(code)
   const articles = await getArticlesByWilaya(wilayaName)
   const sortedArticles = [...articles].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
-  const totalPages = Math.max(1, Math.ceil(sortedArticles.length / PAGE_SIZE))
+  const viewCounts = await getViewCountsBySlugs(sortedArticles.map(i => i.slug))
+  const enrichedArticles = sortedArticles.map(i => ({ ...i, viewCount: viewCounts[i.slug] || 0 }))
+  const totalPages = Math.max(1, Math.ceil(enrichedArticles.length / PAGE_SIZE))
   const currentPage = Number.isFinite(pageValue)
     ? Math.min(Math.max(pageValue, 1), totalPages)
     : 1
 
   const startIndex = (currentPage - 1) * PAGE_SIZE
-  const paginatedArticles = sortedArticles.slice(startIndex, startIndex + PAGE_SIZE)
+  const paginatedArticles = enrichedArticles.slice(startIndex, startIndex + PAGE_SIZE)
 
   const stats = {
     imam: articles.filter(a => a.articleType === 'imam').length,
@@ -82,7 +84,7 @@ export default async function WilayaPage({
           ) : (
             <>
               <div className="mb-4 text-xs text-text-secondary">
-                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, sortedArticles.length)} من {sortedArticles.length}
+                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, enrichedArticles.length)} من {enrichedArticles.length}
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {paginatedArticles.map(article => (

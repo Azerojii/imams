@@ -126,6 +126,9 @@ export function buildProposedArticleRow(
       : [];
     row.mosque_engineer = cleanString(proposedData.mosqueEngineer);
     row.historical_period = cleanString(proposedData.historicalPeriod);
+    row.bank_account_name = cleanString(proposedData.bankAccountName);
+    row.bank_account_number = cleanString(proposedData.bankAccountNumber);
+    row.bank_name = cleanString(proposedData.bankName);
   }
 
   return row;

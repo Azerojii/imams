@@ -3,7 +3,7 @@ import { BookOpen, Landmark, UserCircle } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 import WikiHeader from '@/components/WikiHeader'
-import { getAllWikiMetadata } from '@/lib/wiki'
+import { getAllWikiMetadata, getViewCountsBySlugs } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -28,6 +28,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ name:
   const categoryName = decodeURIComponent(name)
   const allArticles = await getAllWikiMetadata()
   const categoryArticles = allArticles.filter(article => article.category === categoryName)
+  const viewCounts = await getViewCountsBySlugs(categoryArticles.map(i => i.slug))
+  const enrichedCategoryArticles = categoryArticles.map(i => ({ ...i, viewCount: viewCounts[i.slug] || 0 }))
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -49,9 +51,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ name:
           </h1>
           <p className="mb-6 text-text-secondary">{categoryArticles.length} مقال في هذا التصنيف</p>
 
-          {categoryArticles.length > 0 ? (
+          {enrichedCategoryArticles.length > 0 ? (
             <div className="space-y-3">
-              {categoryArticles.map(article => (
+              {enrichedCategoryArticles.map(article => (
                 <ArticleListCard key={article.slug} article={article} />
               ))}
             </div>

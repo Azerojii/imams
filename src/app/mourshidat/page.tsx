@@ -3,7 +3,7 @@ import ArticleListCard from '@/components/ArticleListCard'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
-import { getMourshibat } from '@/lib/wiki'
+import { getMourshibat, getViewCountsBySlugs } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,13 +19,15 @@ export default async function MourshidatPage({
 
   const mourshidat = await getMourshibat()
   const sortedMourshidat = [...mourshidat].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
-  const totalPages = Math.max(1, Math.ceil(sortedMourshidat.length / PAGE_SIZE))
+  const viewCounts = await getViewCountsBySlugs(sortedMourshidat.map(i => i.slug))
+  const enrichedMourshidat = sortedMourshidat.map(i => ({ ...i, viewCount: viewCounts[i.slug] || 0 }))
+  const totalPages = Math.max(1, Math.ceil(enrichedMourshidat.length / PAGE_SIZE))
   const currentPage = Number.isFinite(pageValue)
     ? Math.min(Math.max(pageValue, 1), totalPages)
     : 1
 
   const startIndex = (currentPage - 1) * PAGE_SIZE
-  const paginatedMourshidat = sortedMourshidat.slice(startIndex, startIndex + PAGE_SIZE)
+  const paginatedMourshidat = enrichedMourshidat.slice(startIndex, startIndex + PAGE_SIZE)
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -50,7 +52,7 @@ export default async function MourshidatPage({
           ) : (
             <>
               <div className="mb-4 text-xs text-text-secondary">
-                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, sortedMourshidat.length)} من {sortedMourshidat.length}
+                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, enrichedMourshidat.length)} من {enrichedMourshidat.length}
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {paginatedMourshidat.map(article => (

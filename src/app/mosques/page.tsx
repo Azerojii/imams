@@ -3,7 +3,7 @@ import { Landmark } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
-import { getMosques } from '@/lib/wiki'
+import { getMosques, getViewCountsBySlugs } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,13 +19,15 @@ export default async function MosquesPage({
 
   const mosques = await getMosques()
   const sortedMosques = [...mosques].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
-  const totalPages = Math.max(1, Math.ceil(sortedMosques.length / PAGE_SIZE))
+  const viewCounts = await getViewCountsBySlugs(sortedMosques.map(i => i.slug))
+  const enrichedMosques = sortedMosques.map(i => ({ ...i, viewCount: viewCounts[i.slug] || 0 }))
+  const totalPages = Math.max(1, Math.ceil(enrichedMosques.length / PAGE_SIZE))
   const currentPage = Number.isFinite(pageValue)
     ? Math.min(Math.max(pageValue, 1), totalPages)
     : 1
 
   const startIndex = (currentPage - 1) * PAGE_SIZE
-  const paginatedMosques = sortedMosques.slice(startIndex, startIndex + PAGE_SIZE)
+  const paginatedMosques = enrichedMosques.slice(startIndex, startIndex + PAGE_SIZE)
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -50,7 +52,7 @@ export default async function MosquesPage({
           ) : (
             <>
               <div className="mb-4 text-xs text-text-secondary">
-                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, sortedMosques.length)} من {sortedMosques.length}
+                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, enrichedMosques.length)} من {enrichedMosques.length}
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {paginatedMosques.map(mosque => (

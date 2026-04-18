@@ -359,6 +359,9 @@ export default function ArticleForm({
   const [mosqueGallery, setMosqueGallery] = useState<string[]>([]);
   const [mosqueEngineer, setMosqueEngineer] = useState("");
   const [historicalPeriod, setHistoricalPeriod] = useState("");
+  const [bankAccountName, setBankAccountName] = useState("");
+  const [bankAccountNumber, setBankAccountNumber] = useState("");
+  const [bankName, setBankName] = useState("");
   const [mosqueTypeCustom, setMosqueTypeCustom] = useState(false);
   const [galleryUploading, setGalleryUploading] = useState(false);
 
@@ -489,6 +492,9 @@ export default function ArticleForm({
     setMosqueGallery(initialData.mosqueGallery || []);
     setMosqueEngineer(initialData.mosqueEngineer || "");
     setHistoricalPeriod(initialData.historicalPeriod || "");
+    setBankAccountName(initialData.bankAccountName || "");
+    setBankAccountNumber(initialData.bankAccountNumber || "");
+    setBankName(initialData.bankName || "");
     setReferences(initialData.references || []);
   }, [initialData]);
 
@@ -778,6 +784,9 @@ export default function ArticleForm({
         );
         articleData.mosqueEngineer = mosqueEngineer || undefined;
         articleData.historicalPeriod = historicalPeriod || undefined;
+        articleData.bankAccountName = bankAccountName || undefined;
+        articleData.bankAccountNumber = bankAccountNumber || undefined;
+        articleData.bankName = bankName || undefined;
       }
 
       if (mode === "submit" || mode === "suggest_edit") {
@@ -1997,6 +2006,45 @@ export default function ArticleForm({
                 <Plus size={16} />
                 إضافة معلومة
               </button>
+            </div>
+          </div>
+
+          {/* Bank donation info */}
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3">
+            <h4 className="font-bold text-sm text-amber-800 flex items-center gap-2">
+              معلومات التبرع للمسجد (اختياري)
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label className="block text-xs font-bold mb-1 text-amber-900">اسم البنك</label>
+                <input
+                  type="text"
+                  value={bankName}
+                  onChange={e => setBankName(e.target.value)}
+                  placeholder="مثال: بنك الفلاحة والتنمية الريفية"
+                  className="w-full px-3 py-2 border border-amber-300 rounded text-sm bg-white"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold mb-1 text-amber-900">اسم الحساب</label>
+                <input
+                  type="text"
+                  value={bankAccountName}
+                  onChange={e => setBankAccountName(e.target.value)}
+                  placeholder="اسم صاحب الحساب"
+                  className="w-full px-3 py-2 border border-amber-300 rounded text-sm bg-white"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold mb-1 text-amber-900">رقم الحساب</label>
+                <input
+                  type="text"
+                  value={bankAccountNumber}
+                  onChange={e => setBankAccountNumber(e.target.value)}
+                  placeholder="رقم الحساب البنكي"
+                  className="w-full px-3 py-2 border border-amber-300 rounded text-sm bg-white"
+                />
+              </div>
             </div>
           </div>
         </div>

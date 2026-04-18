@@ -160,11 +160,11 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
               </span>
             )}
             {viewCounts.total > 0 && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-border-light text-text-secondary text-xs rounded mr-auto print:hidden">
-                <Eye size={11} />
-                {viewCounts.total.toLocaleString('ar-DZ')} مطالعة
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-sm font-semibold rounded-full mr-auto print:hidden">
+                <Eye size={14} />
+                {viewCounts.total.toLocaleString('ar-DZ')} مشاهدة
                 {viewCounts.byCountry.length > 0 && (
-                  <span className="mr-1 text-text-secondary/70">
+                  <span className="font-normal text-primary/70 text-xs mr-1">
                     ({viewCounts.byCountry.slice(0, 3).map(c => `${c.countryName} ${c.viewCount}`).join(' · ')})
                   </span>
                 )}
@@ -179,25 +179,31 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             </p>
           )}
 
-          <div className="flex flex-col-reverse gap-6 md:flex-row">
+          <div className="flex flex-col-reverse gap-6 lg:flex-row">
+            {/* Suggested Articles — visual RIGHT in RTL (first child in flex-row) */}
+            <aside className="w-full lg:w-72 lg:flex-shrink-0 print:hidden">
+              <SuggestedArticles
+                currentSlug={slug}
+                wilaya={article.wilaya}
+                articleType={article.articleType}
+              />
+            </aside>
+
+            {/* Article Content — middle */}
             <div className="min-w-0 flex-1">
-              {/* Article Content */}
               <div className="prose-arabic">
                 <ArticleReferences content={article.content} references={article.references} />
               </div>
 
-              {/* YouTube Videos */}
               {article.youtubeVideos && article.youtubeVideos.length > 0 && (
                 <YouTubeVideos videos={article.youtubeVideos} />
               )}
 
-              {/* Contribution phrase */}
               <div className="mt-8 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
                 <span aria-hidden="true">✏️</span>
                 <span>هذه المقالة بحاجة إلى توسيع وتطوير، ويُرجى المساهمة في تحسينها.</span>
               </div>
 
-              {/* Footer */}
               <div className="mt-12 pt-6 border-t border-border-light">
                 <div className="text-sm text-text-secondary">
                   <p>
@@ -221,8 +227,8 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
               </div>
             </div>
 
-            {/* Right Sidebar */}
-            <aside className="w-full md:w-80 md:flex-shrink-0">
+            {/* Infobox + TOC — visual LEFT in RTL (last child in flex-row) */}
+            <aside className="w-full lg:w-80 lg:flex-shrink-0">
               {isImamLike ? (
                 <ImamInfobox
                   title={article.title}
@@ -282,11 +288,6 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                 />
               )}
               {toc.length > 0 && <TableOfContents items={toc} />}
-              <SuggestedArticles
-                currentSlug={slug}
-                wilaya={article.wilaya}
-                articleType={article.articleType}
-              />
             </aside>
           </div>
         </main>

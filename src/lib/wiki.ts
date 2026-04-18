@@ -132,6 +132,7 @@ export interface WikiMetadata {
   commune?: string
   authorName?: string
   imageSrc?: string
+  viewCount?: number
 }
 
 /**
@@ -495,4 +496,65 @@ export async function searchArticles(query: string): Promise<WikiMetadata[]> {
 
   if (error || !data) return []
   return data.map(rowToMetadata)
+}
+
+/**
+ * Get the total number of views across all articles
+ */
+export async function getTotalViews(): Promise<number> {
+  const { data, error } = await supabase
+    .from('article_view_counts')
+    .select('view_count')
+  if (error || !data) return 0
+  return data.reduce((sum: number, row: any) => sum + Number(row.view_count), 0)
+}
+
+/**
+ * Get the most viewed articles, sorted by total view count descending
+ */
+export async function getMostViewedArticles(limit = 6): Promise<Array<WikiMetadata & { viewCount: number }>> {
+  const { data: viewData, error: viewError } = await supabase
+    .from('article_view_counts')
+    .select('slug, view_count')
+  if (viewError || !viewData || viewData.length === 0) return []
+
+  const totals: Record<string, number> = {}
+  for (const row of viewData as any[]) {
+    totals[row.slug] = (totals[row.slug] || 0) + Number(row.view_count)
+  }
+
+  const topSlugs = Object.entries(totals)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, limit)
+    .map(([slug]) => slug)
+
+  if (topSlugs.length === 0) return []
+
+  const { data, error } = await supabase
+    .from('articles')
+    .select(METADATA_COLUMNS)
+    .in('slug', topSlugs)
+
+  if (error || !data) return []
+
+  return (data as any[])
+    .map(row => ({ ...rowToMetadata(row), viewCount: totals[row.slug] || 0 }))
+    .sort((a, b) => b.viewCount - a.viewCount)
+}
+
+/**
+ * Get view count totals for a batch of slugs — returns { slug: totalViews }
+ */
+export async function getViewCountsBySlugs(slugs: string[]): Promise<Record<string, number>> {
+  if (slugs.length === 0) return {}
+  const { data, error } = await supabase
+    .from('article_view_counts')
+    .select('slug, view_count')
+    .in('slug', slugs)
+  if (error || !data) return {}
+  const result: Record<string, number> = {}
+  for (const row of data as any[]) {
+    result[row.slug] = (result[row.slug] || 0) + Number(row.view_count)
+  }
+  return result
 }

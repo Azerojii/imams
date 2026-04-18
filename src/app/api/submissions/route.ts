@@ -53,6 +53,9 @@ export async function POST(request: Request) {
       references,
       mosqueEngineer,
       historicalPeriod,
+      bankAccountName,
+      bankAccountNumber,
+      bankName,
     } = body;
 
     if (!title || !content || !submitterName || !submitterEmail) {
@@ -136,6 +139,9 @@ export async function POST(request: Request) {
       if (mosqueWorkers?.length) row.mosque_workers = mosqueWorkers;
       if (mosqueEngineer) row.mosque_engineer = mosqueEngineer;
       if (historicalPeriod) row.historical_period = historicalPeriod;
+      if (bankAccountName) row.bank_account_name = bankAccountName;
+      if (bankAccountNumber) row.bank_account_number = bankAccountNumber;
+      if (bankName) row.bank_name = bankName;
     }
 
     const { data, error } = await supabase

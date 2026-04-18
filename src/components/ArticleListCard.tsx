@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { BookOpen, Landmark, MapPin, UserCircle } from 'lucide-react'
+import { BookOpen, Eye, Landmark, MapPin, UserCircle } from 'lucide-react'
 import HijabiWomanIcon from './HijabiWomanIcon'
 import type { WikiMetadata } from '@/lib/wiki'
 
@@ -91,6 +91,12 @@ export default function ArticleListCard({ article }: { article: WikiMetadata }) 
             )}
             {article.authorName && (
               <span className="text-text-secondary">بقلم: {article.authorName}</span>
+            )}
+            {article.viewCount != null && article.viewCount > 0 && (
+              <span className="flex items-center gap-1 text-primary font-semibold mr-auto">
+                <Eye size={11} />
+                {article.viewCount.toLocaleString('ar-DZ')}
+              </span>
             )}
           </div>
         </div>

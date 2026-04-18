@@ -3,7 +3,7 @@ import { BookOpen } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
-import { getQuranTeachers } from '@/lib/wiki'
+import { getQuranTeachers, getViewCountsBySlugs } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,13 +19,15 @@ export default async function QuranTeachersPage({
 
   const teachers = await getQuranTeachers()
   const sortedTeachers = [...teachers].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
-  const totalPages = Math.max(1, Math.ceil(sortedTeachers.length / PAGE_SIZE))
+  const viewCounts = await getViewCountsBySlugs(sortedTeachers.map(i => i.slug))
+  const enrichedTeachers = sortedTeachers.map(i => ({ ...i, viewCount: viewCounts[i.slug] || 0 }))
+  const totalPages = Math.max(1, Math.ceil(enrichedTeachers.length / PAGE_SIZE))
   const currentPage = Number.isFinite(pageValue)
     ? Math.min(Math.max(pageValue, 1), totalPages)
     : 1
 
   const startIndex = (currentPage - 1) * PAGE_SIZE
-  const paginatedTeachers = sortedTeachers.slice(startIndex, startIndex + PAGE_SIZE)
+  const paginatedTeachers = enrichedTeachers.slice(startIndex, startIndex + PAGE_SIZE)
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -50,7 +52,7 @@ export default async function QuranTeachersPage({
           ) : (
             <>
               <div className="mb-4 text-xs text-text-secondary">
-                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, sortedTeachers.length)} من {sortedTeachers.length}
+                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, enrichedTeachers.length)} من {enrichedTeachers.length}
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {paginatedTeachers.map(teacher => (
