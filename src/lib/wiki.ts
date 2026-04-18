@@ -450,7 +450,12 @@ export async function getSuggestedArticles(
     .neq('slug', currentSlug)
     .limit(limit)
 
-  if (error || !data) return []
+  if (error) {
+    console.error('[getSuggestedArticles] supabase error:', JSON.stringify(error), { wilaya, articleType, currentSlug })
+    return []
+  }
+  if (!data) return []
+  console.log(`[getSuggestedArticles] ${data.length} results | wilaya="${wilaya}" type="${articleType}" slug="${currentSlug}"`)
   return data.map(rowToMetadata)
 }
 
