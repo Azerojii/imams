@@ -115,6 +115,10 @@ export interface WikiArticle {
   // New fields v9
   mosqueEngineer?: string
   historicalPeriod?: string
+  // Bank info v11
+  bankAccountName?: string
+  bankAccountNumber?: string
+  bankName?: string
 }
 
 export interface WikiMetadata {
@@ -258,6 +262,9 @@ function rowToArticle(row: any): WikiArticle {
     references: row.references?.length ? row.references : undefined,
     mosqueEngineer: row.mosque_engineer || undefined,
     historicalPeriod: row.historical_period || undefined,
+    bankAccountName: row.bank_account_name || undefined,
+    bankAccountNumber: row.bank_account_number || undefined,
+    bankName: row.bank_name || undefined,
   }
 }
 
@@ -422,6 +429,59 @@ export async function getWikiArticle(slug: string): Promise<WikiArticle | null> 
     console.error(`Error loading article ${slug}:`, error)
     return null
   }
+}
+
+/**
+ * Get suggested articles from same wilaya and same type (excluding current slug)
+ */
+export async function getSuggestedArticles(
+  currentSlug: string,
+  wilaya: string | undefined,
+  articleType: string,
+  limit = 5
+): Promise<WikiMetadata[]> {
+  if (!wilaya) return []
+
+  const { data, error } = await supabase
+    .from('articles')
+    .select(METADATA_COLUMNS)
+    .eq('wilaya', wilaya)
+    .eq('article_type', articleType)
+    .neq('slug', currentSlug)
+    .limit(limit)
+
+  if (error || !data) return []
+  return data.map(rowToMetadata)
+}
+
+export interface ViewCountByCountry {
+  countryCode: string
+  countryName: string
+  viewCount: number
+}
+
+/**
+ * Get total view count and per-country breakdown for an article
+ */
+export async function getArticleViewCounts(slug: string): Promise<{
+  total: number
+  byCountry: ViewCountByCountry[]
+}> {
+  const { data, error } = await supabase
+    .from('article_view_counts')
+    .select('country_code, country_name, view_count')
+    .eq('slug', slug)
+    .order('view_count', { ascending: false })
+
+  if (error || !data) return { total: 0, byCountry: [] }
+
+  const byCountry: ViewCountByCountry[] = data.map((row: any) => ({
+    countryCode: row.country_code,
+    countryName: row.country_name,
+    viewCount: Number(row.view_count),
+  }))
+  const total = byCountry.reduce((sum, c) => sum + c.viewCount, 0)
+  return { total, byCountry }
 }
 
 /**

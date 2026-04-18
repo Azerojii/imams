@@ -1,6 +1,6 @@
 ﻿import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getWikiArticle, getAllWikiSlugs, generateTableOfContents } from '@/lib/wiki'
+import { getWikiArticle, getAllWikiSlugs, generateTableOfContents, getArticleViewCounts } from '@/lib/wiki'
 import WikiHeader from '@/components/WikiHeader'
 import TableOfContents from '@/components/TableOfContents'
 import ImamInfobox from '@/components/ImamInfobox'
@@ -9,7 +9,9 @@ import ArticleReferences from '@/components/ArticleReferences'
 import YouTubeVideos from '@/components/YouTubeVideos'
 import PrintButton from '@/components/PrintButton'
 import SuggestEditButton from '@/components/SuggestEditButton'
-import { UserCircle, Landmark, BookOpen } from 'lucide-react'
+import SuggestedArticles from '@/components/SuggestedArticles'
+import ViewTracker from '@/components/ViewTracker'
+import { UserCircle, Landmark, BookOpen, Eye } from 'lucide-react'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 
 export const dynamic = 'force-dynamic'
@@ -84,9 +86,11 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
 
   const toc = generateTableOfContents(article.rawContent)
   const isImamLike = article.articleType === 'imam' || article.articleType === 'quran_teacher' || article.articleType === 'mourshida'
+  const viewCounts = await getArticleViewCounts(slug)
 
   return (
     <div className="min-h-screen bg-bg-main">
+      <ViewTracker slug={slug} />
       <WikiHeader />
 
       <div className="mx-auto max-w-[1680px]">
@@ -143,8 +147,8 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             </div>
           )}
 
-          {/* Type badge */}
-          <div className="flex items-center gap-2 mb-4">
+          {/* Type badge + view count */}
+          <div className="flex items-center gap-2 mb-4 flex-wrap">
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-primary/10 text-primary text-xs font-semibold rounded">
               {getTypeIcon(article.articleType)}
               {getTypeLabel(article.articleType)}
@@ -152,6 +156,17 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             {article.wilaya && (
               <span className="text-xs text-text-secondary">
                 {article.wilaya}{article.commune ? ` - ${article.commune}` : ''}
+              </span>
+            )}
+            {viewCounts.total > 0 && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-border-light text-text-secondary text-xs rounded mr-auto print:hidden">
+                <Eye size={11} />
+                {viewCounts.total.toLocaleString('ar-DZ')} مطالعة
+                {viewCounts.byCountry.length > 0 && (
+                  <span className="mr-1 text-text-secondary/70">
+                    ({viewCounts.byCountry.slice(0, 3).map(c => `${c.countryName} ${c.viewCount}`).join(' · ')})
+                  </span>
+                )}
               </span>
             )}
           </div>
@@ -260,9 +275,17 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
                   mosqueWorkers={article.mosqueWorkers}
                   mosqueEngineer={article.mosqueEngineer}
                   historicalPeriod={article.historicalPeriod}
+                  bankAccountName={article.bankAccountName}
+                  bankAccountNumber={article.bankAccountNumber}
+                  bankName={article.bankName}
                 />
               )}
               {toc.length > 0 && <TableOfContents items={toc} />}
+              <SuggestedArticles
+                currentSlug={slug}
+                wilaya={article.wilaya}
+                articleType={article.articleType}
+              />
             </aside>
           </div>
         </main>

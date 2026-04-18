@@ -14,6 +14,7 @@ import {
   Facebook,
   Youtube,
   Globe,
+  HandCoins,
 } from "lucide-react";
 
 interface MosqueInfoboxProps {
@@ -52,6 +53,9 @@ interface MosqueInfoboxProps {
   mosqueWorkers?: MosqueWorker[];
   mosqueEngineer?: string;
   historicalPeriod?: string;
+  bankAccountName?: string;
+  bankAccountNumber?: string;
+  bankName?: string;
 }
 
 async function ImamLink({ imam }: { imam: ImamReference }) {
@@ -100,6 +104,9 @@ export default async function MosqueInfobox({
   mosqueWorkers,
   mosqueEngineer,
   historicalPeriod,
+  bankAccountName,
+  bankAccountNumber,
+  bankName,
 }: MosqueInfoboxProps) {
   const parsedLegacyMembers = (associationMembers || "")
     .split(/\r?\n|ØŒ|,|;/)
@@ -504,8 +511,40 @@ export default async function MosqueInfobox({
       {/* Mosque Gallery */}
       {mosqueGallery && mosqueGallery.length > 0 && (
         <>
-          <div className="infobox-section-header">Ù…Ø¹Ø±Ø¶ Ø§Ù„ØµÙˆØ±</div>
+          <div className="infobox-section-header">معرض الصور</div>
           <MosqueGalleryLightbox images={mosqueGallery} />
+        </>
+      )}
+
+      {/* Donation / Bank Info */}
+      {(bankAccountName || bankAccountNumber || bankName) && (
+        <>
+          <div className="infobox-section-header flex items-center gap-1.5">
+            <HandCoins size={13} />
+            تصدق للمسجد
+          </div>
+          <div className="bg-amber-50 border-t border-amber-200 px-3 py-3 text-sm space-y-2">
+            {bankName && (
+              <div className="flex justify-between gap-2">
+                <span className="text-text-secondary font-medium">البنك</span>
+                <span className="font-semibold text-amber-900">{bankName}</span>
+              </div>
+            )}
+            {bankAccountName && (
+              <div className="flex justify-between gap-2">
+                <span className="text-text-secondary font-medium">اسم الحساب</span>
+                <span className="font-semibold text-amber-900">{bankAccountName}</span>
+              </div>
+            )}
+            {bankAccountNumber && (
+              <div className="flex justify-between gap-2">
+                <span className="text-text-secondary font-medium">رقم الحساب</span>
+                <span className="font-mono font-bold text-amber-900 text-xs" dir="ltr">
+                  {bankAccountNumber}
+                </span>
+              </div>
+            )}
+          </div>
         </>
       )}
     </div>
