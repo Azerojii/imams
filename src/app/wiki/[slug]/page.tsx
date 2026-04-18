@@ -77,7 +77,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function WikiPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+  const { slug: rawSlug } = await params
+  const slug = decodeURIComponent(rawSlug)
   const article = await getWikiArticle(slug)
 
   if (!article) {
