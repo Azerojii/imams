@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Analytics } from '@vercel/analytics/next'
 import AuthProvider from '@/components/AuthProvider'
 import { getSiteFooterSettings } from '@/lib/site-settings'
 import './globals.css'
@@ -29,6 +30,7 @@ export default async function RootLayout({
       </head>
       <body>
         <AuthProvider>{children}</AuthProvider>
+        <Analytics />
         <footer className="border-t border-border-light bg-bg-sidebar">
           <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-3 px-4 py-5 text-center text-sm text-text-secondary md:px-6">
             <p className="w-full text-center">{siteSettings.footerText}</p>
