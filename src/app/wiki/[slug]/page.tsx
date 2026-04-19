@@ -124,10 +124,16 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
             <span className="text-text-primary">{article.title}</span>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2 flex-wrap print:hidden">
-            <PrintButton />
-            <SuggestEditButton article={article} />
+          {/* Action Buttons + Improvement Notice */}
+          <div className="flex items-center gap-2 flex-wrap print:hidden mb-3">
+            <span className="inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs text-amber-800 flex-1 min-w-0">
+              <span aria-hidden="true">✏️</span>
+              <span>هذه المقالة بحاجة إلى توسيع وتطوير، يُرجى المساهمة في تحسينها.</span>
+            </span>
+            <div className="flex items-center gap-2 mr-auto">
+              <PrintButton />
+              <SuggestEditButton article={article} />
+            </div>
           </div>
 
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-primary border-b-2 border-border-light pb-2 mb-4">
@@ -198,11 +204,6 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
               {article.youtubeVideos && article.youtubeVideos.length > 0 && (
                 <YouTubeVideos videos={article.youtubeVideos} />
               )}
-
-              <div className="mt-8 flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                <span aria-hidden="true">✏️</span>
-                <span>هذه المقالة بحاجة إلى توسيع وتطوير، ويُرجى المساهمة في تحسينها.</span>
-              </div>
 
               <div className="mt-12 pt-6 border-t border-border-light">
                 <div className="text-sm text-text-secondary">

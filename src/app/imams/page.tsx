@@ -3,6 +3,7 @@ import { UserCircle } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
+import WilayaFilter from '@/components/WilayaFilter'
 import { getImams, getViewCountsBySlugs } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
@@ -12,22 +13,27 @@ const PAGE_SIZE = 10
 export default async function ImamsPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ page?: string }>
+  searchParams?: Promise<{ page?: string; wilaya?: string }>
 }) {
   const params = (await searchParams) || {}
   const pageValue = Number.parseInt(params.page || '1', 10)
+  const selectedWilaya = params.wilaya || ''
 
   const imams = await getImams()
   const sortedImams = [...imams].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
   const viewCounts = await getViewCountsBySlugs(sortedImams.map(i => i.slug))
   const enrichedImams = sortedImams.map(i => ({ ...i, viewCount: viewCounts[i.slug] || 0 }))
-  const totalPages = Math.max(1, Math.ceil(enrichedImams.length / PAGE_SIZE))
+
+  const wilayas = Array.from(new Set(enrichedImams.map(m => m.wilaya).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b, 'ar'))
+  const filtered = selectedWilaya ? enrichedImams.filter(m => m.wilaya === selectedWilaya) : enrichedImams
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const currentPage = Number.isFinite(pageValue)
     ? Math.min(Math.max(pageValue, 1), totalPages)
     : 1
 
   const startIndex = (currentPage - 1) * PAGE_SIZE
-  const paginatedImams = enrichedImams.slice(startIndex, startIndex + PAGE_SIZE)
+  const paginatedImams = filtered.slice(startIndex, startIndex + PAGE_SIZE)
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -39,27 +45,35 @@ export default async function ImamsPage({
             <UserCircle size={32} />
             الأئمة
           </h1>
-          <p className="mb-6 text-text-secondary">{imams.length} إمام في الموسوعة</p>
+          <p className="mb-4 text-text-secondary">{imams.length} إمام في الموسوعة</p>
 
-          {imams.length === 0 ? (
+          <WilayaFilter wilayas={wilayas} selectedWilaya={selectedWilaya} />
+
+          {filtered.length === 0 ? (
             <div className="py-16 text-center text-text-secondary">
               <UserCircle size={48} className="mx-auto mb-4 opacity-30" />
-              <p className="text-lg">لا توجد مقالات عن أئمة بعد.</p>
-              <Link href="/submit" className="mt-2 inline-block text-primary hover:underline">
-                كن أول من يضيف مقالاً
-              </Link>
+              <p className="text-lg">لا توجد نتائج.</p>
+              {selectedWilaya && (
+                <Link href="/imams" className="mt-2 inline-block text-primary hover:underline">
+                  عرض الكل
+                </Link>
+              )}
             </div>
           ) : (
             <>
               <div className="mb-4 text-xs text-text-secondary">
-                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, enrichedImams.length)} من {enrichedImams.length}
+                عرض {startIndex + 1} - {Math.min(startIndex + PAGE_SIZE, filtered.length)} من {filtered.length}
               </div>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {paginatedImams.map(imam => (
                   <ArticleListCard key={imam.slug} article={imam} />
                 ))}
               </div>
-              <PaginationControls basePath="/imams" currentPage={currentPage} totalPages={totalPages} />
+              <PaginationControls
+                basePath={selectedWilaya ? `/imams?wilaya=${encodeURIComponent(selectedWilaya)}` : '/imams'}
+                currentPage={currentPage}
+                totalPages={totalPages}
+              />
             </>
           )}
         </main>

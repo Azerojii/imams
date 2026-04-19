@@ -7,10 +7,15 @@ interface PaginationControlsProps {
 }
 
 function buildHref(basePath: string, page: number): string {
+  const [path, existingQuery] = basePath.split('?')
+  const params = new URLSearchParams(existingQuery || '')
   if (page <= 1) {
-    return basePath
+    params.delete('page')
+  } else {
+    params.set('page', String(page))
   }
-  return `${basePath}?page=${page}`
+  const queryString = params.toString()
+  return queryString ? `${path}?${queryString}` : path
 }
 
 function getVisiblePages(currentPage: number, totalPages: number): number[] {

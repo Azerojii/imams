@@ -107,18 +107,6 @@ export default async function Home() {
               <div className="text-2xl sm:text-3xl font-bold text-accent">{wilayas.length}</div>
               <div className="text-white/60 text-xs sm:text-sm">ولاية</div>
             </div>
-            {totalViews > 0 && (
-              <>
-                <div className="hidden sm:block w-px bg-white/20"></div>
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-accent flex items-center gap-1 justify-center">
-                    <Eye size={22} />
-                    {totalViews.toLocaleString('ar-DZ')}
-                  </div>
-                  <div className="text-white/60 text-xs sm:text-sm">مشاهدة</div>
-                </div>
-              </>
-            )}
           </div>
         </div>
       </div>
@@ -207,6 +195,21 @@ export default async function Home() {
             </div>
           </Link>
         </div>
+
+        {/* Site Views */}
+        {totalViews > 0 && (
+          <section className="mb-12">
+            <div className="bg-bg-card border border-border-light rounded-lg p-5 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Eye size={22} className="text-primary" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-primary">{totalViews.toLocaleString('ar-DZ')}</div>
+                <div className="text-sm text-text-secondary">مشاهدات الموقع</div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Browse by Wilaya */}
         {wilayas.length > 0 && (
