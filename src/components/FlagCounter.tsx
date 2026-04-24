@@ -1,11 +1,11 @@
+import Image from 'next/image'
 import { getGlobalViewsByCountry } from '@/lib/wiki'
 
-function countryCodeToFlag(code: string): string {
-  return code
-    .toUpperCase()
-    .split('')
-    .map(char => String.fromCodePoint(char.charCodeAt(0) - 65 + 0x1f1e6))
-    .join('')
+function getTwemojiUrl(code: string): string {
+  const upper = code.toUpperCase()
+  const cp1 = (0x1f1e6 + upper.charCodeAt(0) - 65).toString(16)
+  const cp2 = (0x1f1e6 + upper.charCodeAt(1) - 65).toString(16)
+  return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/${cp1}-${cp2}.svg`
 }
 
 export default async function FlagCounter() {
@@ -20,7 +20,14 @@ export default async function FlagCounter() {
       <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
         {countries.map(c => (
           <div key={c.countryCode} className="flex items-center gap-1.5 text-xs text-text-secondary" title={c.countryName}>
-            <span className="text-base leading-none">{countryCodeToFlag(c.countryCode)}</span>
+            <Image
+              src={getTwemojiUrl(c.countryCode)}
+              alt={c.countryName}
+              width={20}
+              height={20}
+              className="inline-block"
+              unoptimized
+            />
             <span className="font-semibold text-primary">{c.viewCount.toLocaleString('ar-DZ')}</span>
             <span className="text-text-secondary/70">{c.countryName}</span>
           </div>
