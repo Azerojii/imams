@@ -39,6 +39,8 @@ const QuillEditor = forwardRef<QuillEditorHandle, QuillEditorProps>(function Qui
   const quillRef = useRef<InstanceType<typeof import('quill').default> | null>(null)
   const onChangeRef = useRef(onChange)
   onChangeRef.current = onChange
+  const valueRef = useRef(value)
+  valueRef.current = value
 
   useImperativeHandle(ref, () => ({
     insertCitation(refId: string, refNumber: number) {
@@ -66,8 +68,8 @@ const QuillEditor = forwardRef<QuillEditorHandle, QuillEditorProps>(function Qui
 
       quillRef.current = quill
 
-      if (value) {
-        quill.clipboard.dangerouslyPasteHTML(value)
+      if (valueRef.current) {
+        quill.clipboard.dangerouslyPasteHTML(valueRef.current)
       }
 
       quill.on('text-change', () => {
