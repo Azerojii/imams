@@ -1,6 +1,8 @@
 import Link from 'next/link'
-import { UserCircle, Landmark, MapPin, ArrowLeft, BookOpen, Eye } from 'lucide-react'
+import { MapPin, ArrowLeft, BookOpen, Eye } from 'lucide-react'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
+import ImamIcon from '@/components/ImamIcon'
+import MosqueIcon from '@/components/MosqueIcon'
 import SearchBar from '@/components/SearchBar'
 import WikiHeader from '@/components/WikiHeader'
 import { getAllWikiMetadata, getMostViewedArticles } from '@/lib/wiki'
@@ -10,11 +12,11 @@ export const revalidate = 0
 
 function getTypeIcon(type: string) {
   switch (type) {
-    case 'imam': return <UserCircle size={14} className="text-accent-dark" />
-    case 'mosque': return <Landmark size={14} className="text-accent-dark" />
+    case 'imam': return <ImamIcon size={14} className="text-accent-dark" />
+    case 'mosque': return <MosqueIcon size={14} className="text-accent-dark" />
     case 'quran_teacher': return <BookOpen size={14} className="text-accent-dark" />
     case 'mourshida': return <HijabiWomanIcon size={14} className="text-accent-dark" />
-    default: return <UserCircle size={14} className="text-accent-dark" />
+    default: return <ImamIcon size={14} className="text-accent-dark" />
   }
 }
 
@@ -117,7 +119,7 @@ export default async function Home() {
           <Link href="/imams" className="card-islamic rounded-lg p-5 sm:p-8 group hover:no-underline">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <UserCircle size={28} className="text-primary" />
+                <ImamIcon size={28} className="text-primary" />
               </div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-heading font-bold text-primary">الأئمة</h2>
@@ -137,7 +139,7 @@ export default async function Home() {
           <Link href="/mosques" className="card-islamic rounded-lg p-5 sm:p-8 group hover:no-underline">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <Landmark size={28} className="text-primary" />
+                <MosqueIcon size={28} className="text-primary" />
               </div>
               <div>
                 <h2 className="text-xl sm:text-2xl font-heading font-bold text-primary">المساجد</h2>

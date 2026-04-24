@@ -46,7 +46,7 @@ export default async function RootLayout({
                 <span className="font-normal text-text-secondary">مشاهدات الموقع</span>
               </div>
             )}
-            <FlagCounter />
+            {/* <FlagCounter /> */}
             <p className="w-full text-center">{siteSettings.footerText}</p>
             <div className="flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm">
               {siteSettings.contactLinks.slice(0, 2).map(link => (

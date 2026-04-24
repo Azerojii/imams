@@ -6,11 +6,11 @@ import {
   Loader2,
   Plus,
   Trash2,
-  UserCircle,
-  Landmark,
   BookOpen,
 } from "lucide-react";
 import HijabiWomanIcon from "./HijabiWomanIcon";
+import ImamIcon from "./ImamIcon";
+import MosqueIcon from "./MosqueIcon";
 import LocationPicker from "./LocationPicker";
 import ImageUploader from "./ImageUploader";
 import QuillEditor, { type QuillEditorHandle } from "./QuillEditor";
@@ -886,8 +886,8 @@ export default function ArticleForm({
         </label>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { type: "imam" as const, icon: UserCircle, label: "إمام" },
-            { type: "mosque" as const, icon: Landmark, label: "مسجد" },
+            { type: "imam" as const, icon: ImamIcon, label: "إمام" },
+            { type: "mosque" as const, icon: MosqueIcon, label: "مسجد" },
             {
               type: "quran_teacher" as const,
               icon: BookOpen,

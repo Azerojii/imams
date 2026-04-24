@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Landmark, UserCircle, BookOpen } from 'lucide-react'
+import { BookOpen } from 'lucide-react'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
+import ImamIcon from '@/components/ImamIcon'
+import MosqueIcon from '@/components/MosqueIcon'
 import { getSuggestedArticles } from '@/lib/wiki'
 import type { WikiMetadata } from '@/lib/wiki'
 
@@ -13,10 +15,10 @@ interface SuggestedArticlesProps {
 
 function TypeIcon({ type, size = 14 }: { type: string; size?: number }) {
   switch (type) {
-    case 'mosque': return <Landmark size={size} />
+    case 'mosque': return <MosqueIcon size={size} />
     case 'quran_teacher': return <BookOpen size={size} />
     case 'mourshida': return <HijabiWomanIcon size={size} />
-    default: return <UserCircle size={size} />
+    default: return <ImamIcon size={size} />
   }
 }
 

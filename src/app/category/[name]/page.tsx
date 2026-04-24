@@ -1,7 +1,9 @@
 import Link from 'next/link'
-import { BookOpen, Landmark, UserCircle } from 'lucide-react'
+import { BookOpen } from 'lucide-react'
 import ArticleListCard from '@/components/ArticleListCard'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
+import ImamIcon from '@/components/ImamIcon'
+import MosqueIcon from '@/components/MosqueIcon'
 import WikiHeader from '@/components/WikiHeader'
 import { getAllWikiMetadata, getViewCountsBySlugs } from '@/lib/wiki'
 
@@ -11,15 +13,15 @@ export const revalidate = 0
 function getCategoryIcon(categoryName: string) {
   switch (categoryName) {
     case 'أئمة':
-      return <UserCircle size={32} />
+      return <ImamIcon size={32} />
     case 'مساجد':
-      return <Landmark size={32} />
+      return <MosqueIcon size={32} />
     case 'معلمو القرآن':
       return <BookOpen size={32} />
     case 'مرشدات':
       return <HijabiWomanIcon size={32} />
     default:
-      return <UserCircle size={32} />
+      return <ImamIcon size={32} />
   }
 }
 

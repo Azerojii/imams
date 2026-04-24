@@ -3,22 +3,24 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { BookOpen, Eye, Landmark, MapPin, UserCircle } from 'lucide-react'
+import { BookOpen, Eye, MapPin } from 'lucide-react'
 import HijabiWomanIcon from './HijabiWomanIcon'
+import ImamIcon from './ImamIcon'
+import MosqueIcon from './MosqueIcon'
 import type { WikiMetadata } from '@/lib/wiki'
 
 function getTypeIcon(type: WikiMetadata['articleType']) {
   switch (type) {
     case 'imam':
-      return <UserCircle size={14} className="text-accent-dark" />
+      return <ImamIcon size={14} className="text-accent-dark" />
     case 'mosque':
-      return <Landmark size={14} className="text-accent-dark" />
+      return <MosqueIcon size={14} className="text-accent-dark" />
     case 'quran_teacher':
       return <BookOpen size={14} className="text-accent-dark" />
     case 'mourshida':
       return <HijabiWomanIcon size={14} className="text-accent-dark" />
     default:
-      return <UserCircle size={14} className="text-accent-dark" />
+      return <ImamIcon size={14} className="text-accent-dark" />
   }
 }
 

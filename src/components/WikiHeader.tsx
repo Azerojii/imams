@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { BookOpen, Landmark, Mail, Menu, UserCircle, X } from 'lucide-react'
+import { BookOpen, Landmark, Mail, Menu, X } from 'lucide-react'
 import HijabiWomanIcon from './HijabiWomanIcon'
+import ImamIcon from './ImamIcon'
+import MosqueIcon from './MosqueIcon'
 import SearchBar from './SearchBar'
 
 export default function WikiHeader() {
@@ -31,14 +33,14 @@ export default function WikiHeader() {
                 href="/imams"
                 className="flex items-center gap-1 text-white/80 transition-colors hover:text-accent hover:no-underline"
               >
-                <UserCircle size={14} />
+                <ImamIcon size={14} />
                 الأئمة
               </Link>
               <Link
                 href="/mosques"
                 className="flex items-center gap-1 text-white/80 transition-colors hover:text-accent hover:no-underline"
               >
-                <Landmark size={14} />
+                <MosqueIcon size={14} />
                 المساجد
               </Link>
               <Link
@@ -100,7 +102,7 @@ export default function WikiHeader() {
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-accent hover:no-underline"
           >
-            <UserCircle size={16} />
+            <ImamIcon size={16} />
             الأئمة
           </Link>
           <Link
@@ -108,7 +110,7 @@ export default function WikiHeader() {
             onClick={() => setMobileMenuOpen(false)}
             className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-accent hover:no-underline"
           >
-            <Landmark size={16} />
+            <MosqueIcon size={16} />
             المساجد
           </Link>
           <Link

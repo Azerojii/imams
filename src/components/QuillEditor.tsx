@@ -101,8 +101,11 @@ const QuillEditor = forwardRef<QuillEditorHandle, QuillEditorProps>(function Qui
           min-height: 400px;
           line-height: 1.8;
           direction: rtl;
-          text-align: right;
         }
+        .quill-wrapper .ql-editor .ql-align-center  { text-align: center; }
+        .quill-wrapper .ql-editor .ql-align-left    { text-align: left; }
+        .quill-wrapper .ql-editor .ql-align-right   { text-align: right; }
+        .quill-wrapper .ql-editor .ql-align-justify { text-align: justify; }
         .quill-wrapper .ql-toolbar {
           border-top-left-radius: 4px;
           border-top-right-radius: 4px;

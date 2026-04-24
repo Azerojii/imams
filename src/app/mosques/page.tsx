@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Landmark } from 'lucide-react'
+import MosqueIcon from '@/components/MosqueIcon'
 import ArticleListCard from '@/components/ArticleListCard'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
@@ -45,7 +45,7 @@ export default async function MosquesPage({
       <div className="mx-auto max-w-[1500px]">
         <main className="px-4 py-4 md:px-6">
           <h1 className="mb-2 flex items-center gap-3 border-b-2 border-border-light pb-2 text-2xl font-heading font-bold text-primary md:text-4xl">
-            <Landmark size={32} />
+            <MosqueIcon size={32} />
             المساجد
           </h1>
           <p className="mb-4 text-text-secondary">{mosques.length} مسجد في الموسوعة</p>
@@ -54,7 +54,7 @@ export default async function MosquesPage({
 
           {filtered.length === 0 ? (
             <div className="py-16 text-center text-text-secondary">
-              <Landmark size={48} className="mx-auto mb-4 opacity-30" />
+              <MosqueIcon size={48} className="mx-auto mb-4 opacity-30" />
               <p className="text-lg">لا توجد نتائج.</p>
               {selectedWilaya && (
                 <Link href="/mosques" className="mt-2 inline-block text-primary hover:underline">

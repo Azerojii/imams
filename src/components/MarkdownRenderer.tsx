@@ -191,6 +191,10 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
           text-align: right;
         }
 
+        .quill-content .ql-align-justify {
+          text-align: justify;
+        }
+
         .quill-content blockquote {
           border-right: 4px solid #d1d5db;
           border-left: none;

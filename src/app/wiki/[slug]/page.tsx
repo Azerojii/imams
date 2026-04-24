@@ -11,19 +11,21 @@ import PrintButton from '@/components/PrintButton'
 import SuggestEditButton from '@/components/SuggestEditButton'
 import SuggestedArticles from '@/components/SuggestedArticles'
 import ViewTracker from '@/components/ViewTracker'
-import { UserCircle, Landmark, BookOpen, Eye } from 'lucide-react'
+import { BookOpen, Eye } from 'lucide-react'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
+import ImamIcon from '@/components/ImamIcon'
+import MosqueIcon from '@/components/MosqueIcon'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 function getTypeIcon(type: string) {
   switch (type) {
-    case 'imam': return <UserCircle size={12} />
-    case 'mosque': return <Landmark size={12} />
+    case 'imam': return <ImamIcon size={12} />
+    case 'mosque': return <MosqueIcon size={12} />
     case 'quran_teacher': return <BookOpen size={12} />
     case 'mourshida': return <HijabiWomanIcon size={12} />
-    default: return <UserCircle size={12} />
+    default: return <ImamIcon size={12} />
   }
 }
 

@@ -1,7 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { UserCircle, Landmark, Home, PenSquare } from 'lucide-react'
+import { Home, PenSquare } from 'lucide-react'
+import ImamIcon from './ImamIcon'
+import MosqueIcon from './MosqueIcon'
 
 export default function WikiSidebar() {
   return (
@@ -19,13 +21,13 @@ export default function WikiSidebar() {
             </li>
             <li>
               <Link href="/imams" className="flex items-center gap-2 text-primary hover:text-primary-light transition-colors">
-                <UserCircle size={15} />
+                <ImamIcon size={15} />
                 الأئمة
               </Link>
             </li>
             <li>
               <Link href="/mosques" className="flex items-center gap-2 text-primary hover:text-primary-light transition-colors">
-                <Landmark size={15} />
+                <MosqueIcon size={15} />
                 المساجد
               </Link>
             </li>
