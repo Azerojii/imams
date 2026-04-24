@@ -171,11 +171,6 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-sm font-semibold rounded-full mr-auto print:hidden">
                 <Eye size={14} />
                 {viewCounts.total.toLocaleString('ar-DZ')} مشاهدة
-                {viewCounts.byCountry.length > 0 && (
-                  <span className="font-normal text-primary/70 text-xs mr-1">
-                    ({viewCounts.byCountry.slice(0, 3).map(c => `${c.countryName} ${c.viewCount}`).join(' · ')})
-                  </span>
-                )}
               </span>
             )}
           </div>
