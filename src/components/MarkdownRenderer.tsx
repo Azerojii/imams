@@ -174,48 +174,6 @@ export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
         {processedContent}
       </ReactMarkdown>
       </div>
-      <style jsx global>{`
-        .quill-content {
-          direction: rtl;
-        }
-
-        .quill-content .ql-align-center {
-          text-align: center;
-        }
-
-        .quill-content .ql-align-left {
-          text-align: left;
-        }
-
-        .quill-content .ql-align-right {
-          text-align: right;
-        }
-
-        .quill-content .ql-align-justify {
-          text-align: justify;
-        }
-
-        .quill-content blockquote {
-          border-right: 4px solid #d1d5db;
-          border-left: none;
-          padding-right: 1rem;
-          padding-left: 0;
-        }
-
-        .quill-content img {
-          display: block;
-          max-width: 100%;
-          height: auto;
-          margin: 1.5rem auto;
-          border-radius: 0.5rem;
-          box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
-        }
-
-        .quill-content .cite-ref a {
-          color: #067782;
-          text-decoration: none;
-        }
-      `}</style>
     </>
   )
 }
