@@ -13,11 +13,12 @@ const PAGE_SIZE = 10
 export default async function MosquesPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ page?: string; wilaya?: string }>
+  searchParams?: Promise<{ page?: string; wilaya?: string; q?: string }>
 }) {
   const params = (await searchParams) || {}
   const pageValue = Number.parseInt(params.page || '1', 10)
   const selectedWilaya = params.wilaya || ''
+  const searchQuery = params.q || ''
 
   const mosques = await getMosques()
   const sortedMosques = [...mosques].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
@@ -25,7 +26,9 @@ export default async function MosquesPage({
   const enrichedMosques = sortedMosques.map(i => ({ ...i, viewCount: viewCounts[i.slug] || 0 }))
 
   const wilayas = Array.from(new Set(enrichedMosques.map(m => m.wilaya).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b, 'ar'))
-  const filtered = selectedWilaya ? enrichedMosques.filter(m => m.wilaya === selectedWilaya) : enrichedMosques
+  const filtered = enrichedMosques
+    .filter(m => !selectedWilaya || m.wilaya === selectedWilaya)
+    .filter(m => !searchQuery || m.title.includes(searchQuery))
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const currentPage = Number.isFinite(pageValue)
@@ -47,7 +50,7 @@ export default async function MosquesPage({
           </h1>
           <p className="mb-4 text-text-secondary">{mosques.length} مسجد في الموسوعة</p>
 
-          <WilayaFilter wilayas={wilayas} selectedWilaya={selectedWilaya} />
+          <WilayaFilter wilayas={wilayas} selectedWilaya={selectedWilaya} searchQuery={searchQuery} />
 
           {filtered.length === 0 ? (
             <div className="py-16 text-center text-text-secondary">
@@ -70,7 +73,7 @@ export default async function MosquesPage({
                 ))}
               </div>
               <PaginationControls
-                basePath={selectedWilaya ? `/mosques?wilaya=${encodeURIComponent(selectedWilaya)}` : '/mosques'}
+                basePath={`/mosques?${new URLSearchParams({ ...(selectedWilaya && { wilaya: selectedWilaya }), ...(searchQuery && { q: searchQuery }) }).toString()}`.replace(/\?$/, '')}
                 currentPage={currentPage}
                 totalPages={totalPages}
               />

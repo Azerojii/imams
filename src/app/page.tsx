@@ -3,7 +3,7 @@ import { UserCircle, Landmark, MapPin, ArrowLeft, BookOpen, Eye } from 'lucide-r
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 import SearchBar from '@/components/SearchBar'
 import WikiHeader from '@/components/WikiHeader'
-import { getAllWikiMetadata, getTotalViews, getMostViewedArticles } from '@/lib/wiki'
+import { getAllWikiMetadata, getMostViewedArticles } from '@/lib/wiki'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -29,9 +29,8 @@ function getTypeLabel(type: string) {
 }
 
 export default async function Home() {
-  const [articles, totalViews, mostViewed] = await Promise.all([
+  const [articles, mostViewed] = await Promise.all([
     getAllWikiMetadata(),
-    getTotalViews(),
     getMostViewedArticles(6),
   ])
   const imams = articles.filter(a => a.articleType === 'imam')
@@ -195,21 +194,6 @@ export default async function Home() {
             </div>
           </Link>
         </div>
-
-        {/* Site Views */}
-        {totalViews > 0 && (
-          <section className="mb-12">
-            <div className="bg-bg-card border border-border-light rounded-lg p-5 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Eye size={22} className="text-primary" />
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-primary">{totalViews.toLocaleString('ar-DZ')}</div>
-                <div className="text-sm text-text-secondary">مشاهدات الموقع</div>
-              </div>
-            </div>
-          </section>
-        )}
 
         {/* Browse by Wilaya */}
         {wilayas.length > 0 && (

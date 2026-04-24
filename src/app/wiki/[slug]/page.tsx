@@ -125,12 +125,12 @@ export default async function WikiPage({ params }: { params: Promise<{ slug: str
           </div>
 
           {/* Action Buttons + Improvement Notice */}
-          <div className="flex items-center gap-2 flex-wrap print:hidden mb-3">
+          <div className="print:hidden mb-3 flex flex-col sm:flex-row gap-2 sm:items-center">
             <span className="inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs text-amber-800 flex-1 min-w-0">
               <span aria-hidden="true">✏️</span>
               <span>هذه المقالة بحاجة إلى توسيع وتطوير، يُرجى المساهمة في تحسينها.</span>
             </span>
-            <div className="flex items-center gap-2 mr-auto">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <PrintButton />
               <SuggestEditButton article={article} />
             </div>

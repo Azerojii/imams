@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import AuthProvider from '@/components/AuthProvider'
 import { getSiteFooterSettings } from '@/lib/site-settings'
+import { getTotalViews } from '@/lib/wiki'
+import { Eye } from 'lucide-react'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -16,7 +18,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const siteSettings = await getSiteFooterSettings()
+  const [siteSettings, totalViews] = await Promise.all([
+    getSiteFooterSettings(),
+    getTotalViews(),
+  ])
 
   return (
     <html lang="ar" dir="rtl">
@@ -33,6 +38,13 @@ export default async function RootLayout({
         <Analytics />
         <footer className="border-t border-border-light bg-bg-sidebar">
           <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-3 px-4 py-5 text-center text-sm text-text-secondary md:px-6">
+            {totalViews > 0 && (
+              <div className="flex items-center gap-2 text-sm font-semibold text-primary">
+                <Eye size={16} />
+                <span>{totalViews.toLocaleString('ar-DZ')}</span>
+                <span className="font-normal text-text-secondary">مشاهدات الموقع</span>
+              </div>
+            )}
             <p className="w-full text-center">{siteSettings.footerText}</p>
             <div className="flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm">
               {siteSettings.contactLinks.slice(0, 2).map(link => (

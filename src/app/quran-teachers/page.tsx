@@ -13,11 +13,12 @@ const PAGE_SIZE = 10
 export default async function QuranTeachersPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ page?: string; wilaya?: string }>
+  searchParams?: Promise<{ page?: string; wilaya?: string; q?: string }>
 }) {
   const params = (await searchParams) || {}
   const pageValue = Number.parseInt(params.page || '1', 10)
   const selectedWilaya = params.wilaya || ''
+  const searchQuery = params.q || ''
 
   const teachers = await getQuranTeachers()
   const sortedTeachers = [...teachers].sort((a, b) => a.title.localeCompare(b.title, 'ar'))
@@ -25,7 +26,9 @@ export default async function QuranTeachersPage({
   const enrichedTeachers = sortedTeachers.map(i => ({ ...i, viewCount: viewCounts[i.slug] || 0 }))
 
   const wilayas = Array.from(new Set(enrichedTeachers.map(m => m.wilaya).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b, 'ar'))
-  const filtered = selectedWilaya ? enrichedTeachers.filter(m => m.wilaya === selectedWilaya) : enrichedTeachers
+  const filtered = enrichedTeachers
+    .filter(m => !selectedWilaya || m.wilaya === selectedWilaya)
+    .filter(m => !searchQuery || m.title.includes(searchQuery))
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const currentPage = Number.isFinite(pageValue)
@@ -47,7 +50,7 @@ export default async function QuranTeachersPage({
           </h1>
           <p className="mb-4 text-text-secondary">{teachers.length} معلم قرآن في الموسوعة</p>
 
-          <WilayaFilter wilayas={wilayas} selectedWilaya={selectedWilaya} />
+          <WilayaFilter wilayas={wilayas} selectedWilaya={selectedWilaya} searchQuery={searchQuery} />
 
           {filtered.length === 0 ? (
             <div className="py-16 text-center text-text-secondary">
@@ -70,7 +73,7 @@ export default async function QuranTeachersPage({
                 ))}
               </div>
               <PaginationControls
-                basePath={selectedWilaya ? `/quran-teachers?wilaya=${encodeURIComponent(selectedWilaya)}` : '/quran-teachers'}
+                basePath={`/quran-teachers?${new URLSearchParams({ ...(selectedWilaya && { wilaya: selectedWilaya }), ...(searchQuery && { q: searchQuery }) }).toString()}`.replace(/\?$/, '')}
                 currentPage={currentPage}
                 totalPages={totalPages}
               />
