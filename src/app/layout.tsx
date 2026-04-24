@@ -3,6 +3,7 @@ import { Analytics } from '@vercel/analytics/next'
 import AuthProvider from '@/components/AuthProvider'
 import { getSiteFooterSettings } from '@/lib/site-settings'
 import { getTotalViews } from '@/lib/wiki'
+import FlagCounter from '@/components/FlagCounter'
 import { Eye } from 'lucide-react'
 import './globals.css'
 
@@ -45,6 +46,7 @@ export default async function RootLayout({
                 <span className="font-normal text-text-secondary">مشاهدات الموقع</span>
               </div>
             )}
+            <FlagCounter />
             <p className="w-full text-center">{siteSettings.footerText}</p>
             <div className="flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm">
               {siteSettings.contactLinks.slice(0, 2).map(link => (

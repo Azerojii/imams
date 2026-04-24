@@ -510,6 +510,35 @@ export async function getTotalViews(): Promise<number> {
 }
 
 /**
+ * Get global view counts aggregated by country across all articles
+ */
+export async function getGlobalViewsByCountry(): Promise<ViewCountByCountry[]> {
+  const { data, error } = await supabase
+    .from('article_view_counts')
+    .select('country_code, country_name, view_count')
+
+  if (error || !data) return []
+
+  const map = new Map<string, ViewCountByCountry>()
+  for (const row of data) {
+    const code = row.country_code as string
+    if (!code) continue
+    const existing = map.get(code)
+    if (existing) {
+      existing.viewCount += Number(row.view_count)
+    } else {
+      map.set(code, {
+        countryCode: code,
+        countryName: row.country_name as string || code,
+        viewCount: Number(row.view_count),
+      })
+    }
+  }
+
+  return Array.from(map.values()).sort((a, b) => b.viewCount - a.viewCount)
+}
+
+/**
  * Get the most viewed articles, sorted by total view count descending
  */
 export async function getMostViewedArticles(limit = 6): Promise<Array<WikiMetadata & { viewCount: number }>> {
