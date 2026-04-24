@@ -80,7 +80,9 @@ const QuillEditor = forwardRef<QuillEditorHandle, QuillEditorProps>(function Qui
   useEffect(() => {
     const quill = quillRef.current
     if (!quill) return
-    if (quill.root.innerHTML !== value) {
+    // Only sync from parent when editor is not focused (external update, e.g. reset)
+    // While focused, the user is editing — don't override their changes
+    if (!quill.hasFocus() && quill.root.innerHTML !== value) {
       quill.clipboard.dangerouslyPasteHTML(value || '')
     }
   }, [value])
