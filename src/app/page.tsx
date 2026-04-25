@@ -197,33 +197,6 @@ export default async function Home() {
           </Link>
         </div>
 
-        {/* Browse by Wilaya */}
-        {wilayas.length > 0 && (
-          <section className="mb-12">
-            <h2 className="text-2xl font-heading font-bold text-primary mb-4 flex items-center gap-2">
-              <MapPin size={22} />
-              حسب الولاية
-            </h2>
-            <div className="bg-bg-card border border-border-light rounded-lg p-6">
-              <div className="flex flex-wrap gap-2">
-                {wilayas.map(wilaya => {
-                  const count = articles.filter(a => a.wilaya === wilaya).length
-                  return (
-                    <Link
-                      key={wilaya}
-                      href={`/wilaya/${encodeURIComponent(wilaya)}`}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-bg-sidebar border border-border-light rounded-full text-sm text-primary hover:bg-primary hover:text-white hover:border-primary transition-colors hover:no-underline"
-                    >
-                      {wilaya}
-                      <span className="text-xs opacity-60">({count})</span>
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
-          </section>
-        )}
-
         {/* Most Viewed Articles */}
         {mostViewed.length > 0 && (
           <section className="mb-12">
@@ -316,6 +289,33 @@ export default async function Home() {
                   </div>
                 </Link>
               ))}
+            </div>
+          </section>
+        )}
+
+        {/* Browse by Wilaya */}
+        {wilayas.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-heading font-bold text-primary mb-4 flex items-center gap-2">
+              <MapPin size={22} />
+              حسب الولاية
+            </h2>
+            <div className="bg-bg-card border border-border-light rounded-lg p-6">
+              <div className="flex flex-wrap gap-2">
+                {wilayas.map(wilaya => {
+                  const count = articles.filter(a => a.wilaya === wilaya).length
+                  return (
+                    <Link
+                      key={wilaya}
+                      href={`/wilaya/${encodeURIComponent(wilaya)}`}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-bg-sidebar border border-border-light rounded-full text-sm text-primary hover:bg-primary hover:text-white hover:border-primary transition-colors hover:no-underline"
+                    >
+                      {wilaya}
+                      <span className="text-xs opacity-60">({count})</span>
+                    </Link>
+                  )
+                })}
+              </div>
             </div>
           </section>
         )}

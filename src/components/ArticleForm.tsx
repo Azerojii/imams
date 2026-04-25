@@ -257,6 +257,7 @@ function MosqueLocationPicker({
 interface ArticleFormProps {
   mode: "submit" | "create" | "edit" | "suggest_edit";
   initialTitle?: string;
+  initialArticleType?: ArticleType;
   initialData?: WikiArticle;
   slug?: string;
   suggestionSlug?: string;
@@ -269,6 +270,7 @@ interface ArticleFormProps {
 export default function ArticleForm({
   mode,
   initialTitle = "",
+  initialArticleType,
   initialData,
   slug,
   suggestionSlug,
@@ -281,7 +283,7 @@ export default function ArticleForm({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const editorRef = useRef<QuillEditorHandle>(null);
 
-  const [articleType, setArticleType] = useState<ArticleType>("imam");
+  const [articleType, setArticleType] = useState<ArticleType>(initialArticleType ?? "imam");
   const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");

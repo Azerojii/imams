@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import MosqueIcon from '@/components/MosqueIcon'
+import AddArticleCTA from '@/components/AddArticleCTA'
 import ArticleListCard from '@/components/ArticleListCard'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
@@ -49,6 +50,8 @@ export default async function MosquesPage({
             المساجد
           </h1>
           <p className="mb-4 text-text-secondary">{mosques.length} مسجد في الموسوعة</p>
+
+          <AddArticleCTA articleType="mosque" />
 
           <WilayaFilter wilayas={wilayas} selectedWilaya={selectedWilaya} searchQuery={searchQuery} />
 

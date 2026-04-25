@@ -9,6 +9,11 @@ import { Info, Loader2 } from 'lucide-react'
 function SubmitContent() {
   const searchParams = useSearchParams()
   const initialTitle = searchParams.get('title') || ''
+  const typeParam = searchParams.get('type')
+  const allowed = ['imam', 'mosque', 'quran_teacher', 'mourshida'] as const
+  const initialArticleType = (allowed as readonly string[]).includes(typeParam ?? '')
+    ? (typeParam as typeof allowed[number])
+    : undefined
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -30,7 +35,7 @@ function SubmitContent() {
             </div>
           </div>
 
-          <ArticleForm mode="submit" initialTitle={initialTitle} />
+          <ArticleForm mode="submit" initialTitle={initialTitle} initialArticleType={initialArticleType} />
         </main>
       </div>
     </div>

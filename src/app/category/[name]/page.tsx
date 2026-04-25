@@ -1,11 +1,26 @@
 import Link from 'next/link'
 import { BookOpen } from 'lucide-react'
+import AddArticleCTA from '@/components/AddArticleCTA'
 import ArticleListCard from '@/components/ArticleListCard'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 import ImamIcon from '@/components/ImamIcon'
 import MosqueIcon from '@/components/MosqueIcon'
 import WikiHeader from '@/components/WikiHeader'
 import { getAllWikiMetadata, getViewCountsBySlugs } from '@/lib/wiki'
+
+type ArticleType = 'imam' | 'mosque' | 'quran_teacher' | 'mourshida'
+
+function categoryToArticleType(name: string): ArticleType | null {
+  switch (name) {
+    case 'أئمة': return 'imam'
+    case 'مساجد': return 'mosque'
+    case 'معلمو القرآن':
+    case 'معلمو القرآن الكريم': return 'quran_teacher'
+    case 'مرشدات':
+    case 'مرشدات دينيات': return 'mourshida'
+    default: return null
+  }
+}
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -32,6 +47,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ name:
   const categoryArticles = allArticles.filter(article => article.category === categoryName)
   const viewCounts = await getViewCountsBySlugs(categoryArticles.map(i => i.slug))
   const enrichedCategoryArticles = categoryArticles.map(i => ({ ...i, viewCount: viewCounts[i.slug] || 0 }))
+  const articleType = categoryToArticleType(categoryName)
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -51,7 +67,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ name:
             {getCategoryIcon(categoryName)}
             {categoryName}
           </h1>
-          <p className="mb-6 text-text-secondary">{categoryArticles.length} مقال في هذا التصنيف</p>
+          <p className="mb-4 text-text-secondary">{categoryArticles.length} مقال في هذا التصنيف</p>
+
+          {articleType && <AddArticleCTA articleType={articleType} />}
 
           {enrichedCategoryArticles.length > 0 ? (
             <div className="space-y-3">

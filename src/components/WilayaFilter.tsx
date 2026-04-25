@@ -47,6 +47,9 @@ export default function WilayaFilter({ wilayas, selectedWilaya, searchQuery = ''
 
   return (
     <div className="mb-5">
+      <p className="mb-2 text-xs text-text-secondary/70 text-right">
+        الولايات التي تظهر هي التي تتوفر فيها مقالات.
+      </p>
       <div className="flex flex-col sm:flex-row gap-2">
         {/* Search input */}
         <div className="relative flex-1">
@@ -90,9 +93,6 @@ export default function WilayaFilter({ wilayas, selectedWilaya, searchQuery = ''
           </button>
         )}
       </div>
-      <p className="mt-2 text-xs text-text-secondary/70 text-right">
-        الولايات التي تحتوي على مقالات.
-      </p>
     </div>
   )
 }

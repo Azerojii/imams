@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import ImamIcon from '@/components/ImamIcon'
+import AddArticleCTA from '@/components/AddArticleCTA'
 import ArticleListCard from '@/components/ArticleListCard'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
@@ -49,6 +50,8 @@ export default async function ImamsPage({
             الأئمة
           </h1>
           <p className="mb-4 text-text-secondary">{imams.length} إمام في الموسوعة</p>
+
+          <AddArticleCTA articleType="imam" />
 
           <WilayaFilter wilayas={wilayas} selectedWilaya={selectedWilaya} searchQuery={searchQuery} />
 

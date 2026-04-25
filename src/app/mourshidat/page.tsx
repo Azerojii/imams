@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import AddArticleCTA from '@/components/AddArticleCTA'
 import ArticleListCard from '@/components/ArticleListCard'
 import HijabiWomanIcon from '@/components/HijabiWomanIcon'
 import PaginationControls from '@/components/PaginationControls'
@@ -49,6 +50,8 @@ export default async function MourshidatPage({
             المرشدات الدينيات
           </h1>
           <p className="mb-4 text-text-secondary">{mourshidat.length} مرشدة دينية في الموسوعة</p>
+
+          <AddArticleCTA articleType="mourshida" />
 
           <WilayaFilter wilayas={wilayas} selectedWilaya={selectedWilaya} searchQuery={searchQuery} />
 

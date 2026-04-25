@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { BookOpen } from 'lucide-react'
+import AddArticleCTA from '@/components/AddArticleCTA'
 import ArticleListCard from '@/components/ArticleListCard'
 import PaginationControls from '@/components/PaginationControls'
 import WikiHeader from '@/components/WikiHeader'
@@ -49,6 +50,8 @@ export default async function QuranTeachersPage({
             معلمو القرآن
           </h1>
           <p className="mb-4 text-text-secondary">{teachers.length} معلم قرآن في الموسوعة</p>
+
+          <AddArticleCTA articleType="quran_teacher" />
 
           <WilayaFilter wilayas={wilayas} selectedWilaya={selectedWilaya} searchQuery={searchQuery} />
 
