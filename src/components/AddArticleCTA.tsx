@@ -14,10 +14,10 @@ function getTypeLabel(type: ArticleType): string {
 
 export default function AddArticleCTA({ articleType }: { articleType: ArticleType }) {
   return (
-    <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-primary/20 bg-primary/5 px-5 py-3">
+    <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-yellow-300 bg-yellow-50 px-5 py-3">
       <div dir="rtl">
-        <p className="text-sm font-semibold text-primary font-heading">أضف إلى هذه المقالات</p>
-        <p className="text-xs text-text-secondary mt-0.5">
+        <p className="text-sm font-semibold text-yellow-800 font-heading">أضف إلى هذه المقالات</p>
+        <p className="text-xs text-yellow-700 mt-0.5">
           ساهم بتوثيق {getTypeLabel(articleType)} جديد في الموسوعة
         </p>
       </div>
